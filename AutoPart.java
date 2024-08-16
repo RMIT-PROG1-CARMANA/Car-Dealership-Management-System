@@ -1,4 +1,7 @@
+package model;
 
+import java.util.ArrayList;
+import java.util.List;
 
 public class AutoPart {
     private String partID;
@@ -10,6 +13,19 @@ public class AutoPart {
     private double cost;
     private String notes;
 
+    // Default Constructor
+    public AutoPart() {
+        this.partID = "p-default";
+        this.partName = "Default Part Name";
+        this.manufacturer = "Default Manufacturer";
+        this.partNumber = "0000";
+        this.condition = "new";
+        this.warranty = "1 year";
+        this.cost = 0.0;
+        this.notes = "No additional notes.";
+    }
+
+    // Parameterized Constructor
     public AutoPart(String partID, String partName, String manufacturer, String partNumber, String condition, String warranty, double cost, String notes) {
         this.partID = partID;
         this.partName = partName;
@@ -21,6 +37,7 @@ public class AutoPart {
         this.notes = notes;
     }
 
+    // Getters and Setters
     public String getPartID() {
         return partID;
     }

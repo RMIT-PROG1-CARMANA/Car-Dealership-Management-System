@@ -1,3 +1,5 @@
+package model;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,6 +13,19 @@ public class Service {
     private double serviceCost;
     private String notes;
 
+    // Default Constructor
+    public Service() {
+        this.serviceID = "s-default";
+        this.serviceDate = "01/01/2024";
+        this.clientID = "c-default";
+        this.mechanicID = "m-default";
+        this.serviceType = "General Maintenance";
+        this.replacedParts = new ArrayList<>();
+        this.serviceCost = 0.0;
+        this.notes = "No additional notes.";
+    }
+
+    // Parameterized Constructor
     public Service(String serviceID, String serviceDate, String clientID, String mechanicID, String serviceType, double serviceCost, String notes) {
         this.serviceID = serviceID;
         this.serviceDate = serviceDate;
@@ -22,6 +37,7 @@ public class Service {
         this.notes = notes;
     }
 
+    // Getters and Setters
     public String getServiceID() {
         return serviceID;
     }
