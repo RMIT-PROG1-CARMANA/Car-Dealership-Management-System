@@ -1,14 +1,26 @@
+import java.util.ArrayList;
 import java.util.List;
 
 public class SalesTransaction {
-    private String transactionID; // format t-number
+    private String transactionID;
     private String transactionDate;
     private String clientID;
     private String salespersonID;
-    private List<Object> purchasedItems; // Cars/Parts
+    private List<Object> purchasedItems;
     private double discount;
     private double totalAmount;
     private String notes;
+
+    public SalesTransaction() {
+        this.transactionID = "t-000";
+        this.transactionDate = "1970-01-01";
+        this.clientID = "c-000";
+        this.salespersonID = "s-000";
+        this.purchasedItems = new ArrayList<>();
+        this.discount = 0.0;
+        this.totalAmount = 0.0;
+        this.notes = "No additional notes";
+    }
 
     public SalesTransaction(String transactionID, String transactionDate, String clientID, String salespersonID, List<Object> purchasedItems, double discount, double totalAmount, String notes) {
         this.transactionID = transactionID;
@@ -100,5 +112,18 @@ public class SalesTransaction {
         System.out.println("Discount: " + discount);
         System.out.println("Total Amount: " + totalAmount);
         System.out.println("Notes: " + notes);
+    }
+    @Override
+    public String toString() {
+        return "SalesTransaction{" +
+                "carID='" + transactionID + '\'' +
+                ", make='" + transactionDate + '\'' +
+                ", model='" + clientID + '\'' +
+                ", year=" + salespersonID +
+                ", mileage=" + purchasedItems +
+                ", color='" + discount + '\'' +
+                ", price=" + totalAmount +
+                ", notes='" + notes + '\'';
+
     }
 }
