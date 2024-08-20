@@ -2,6 +2,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Car {
+    private final ArrayList<Object> serviceHistory;
     private String carID; // format c-number
     private String make;
     private String model;
@@ -11,8 +12,19 @@ public class Car {
     private boolean status; // true for available, false for sold
     private double price;
     private String notes;
-    private List<Service> serviceHistory;
+//    private List<Service> serviceHistory;
 
+    public Car() {
+        this.carID = "c-000";
+        this.make = "Unknown";
+        this.year = 2000;
+        this.mileage = 0;
+        this.color = "Unspecified";
+        this.status = true;
+        this.price = 0.0;
+        this.notes = "No additional notes";
+        this.serviceHistory = new ArrayList<>();
+    }
     public Car(String carID, String make, String model, int year, int mileage, String color, boolean status, double price, String notes) {
         this.carID = carID;
         this.make = make;
@@ -99,13 +111,13 @@ public class Car {
         this.notes = notes;
     }
 
-    public List<Service> getServiceHistory() {
-        return serviceHistory;
-    }
-
-    public void addService(Service service) {
-        this.serviceHistory.add(service);
-    }
+//    public List<Service> getServiceHistory() {
+//        return serviceHistory;
+//    }
+//
+//    public void addService(Service service) {
+//        this.serviceHistory.add(service);
+//    }
 
     // Additional Methods
     public void updateStatus(boolean newStatus) {
@@ -127,5 +139,21 @@ public class Car {
         System.out.println("Price: " + price);
         System.out.println("Notes: " + notes);
         System.out.println("Service History: " + serviceHistory.size() + " services");
+    }
+
+    @Override
+    public String toString() {
+        return "Car{" +
+                "carID='" + carID + '\'' +
+                ", make='" + make + '\'' +
+                ", model='" + model + '\'' +
+                ", year=" + year +
+                ", mileage=" + mileage +
+                ", color='" + color + '\'' +
+                ", status=" + (status ? "Available" : "Sold") +
+                ", price=" + price +
+                ", notes='" + notes + '\'' +
+                ", serviceHistory=" + serviceHistory +
+                " services}";
     }
 }
