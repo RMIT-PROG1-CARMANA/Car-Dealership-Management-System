@@ -1,8 +1,6 @@
+package user;
+
 import FileHandling.*;
-import Database.*;
-
-
-
 import java.util.*;
 import java.io.*;
 
@@ -11,7 +9,7 @@ public class User {
     private String fullName;
     private Date dateOfBirth;
     private String address;
-    private String phoneNumber;
+    private long phoneNumber;
     private String email;
     private UserType userType;
     private boolean status;
@@ -27,15 +25,15 @@ public class User {
         this.fullName = "";
         this.dateOfBirth = null;
         this.address = "";
-        this.phoneNumber = "";
+        this.phoneNumber = 0L;
         this.email = "";
         this.userType = UserType.MANAGER;
         this.status = false;
         this.password = "";
         this.username = ""; // Added username initialization
     }
-
-    public User(String userID, String fullName, Date dateOfBirth, String address, String phoneNumber, String email, UserType userType, boolean status, String password, String username) {
+//constructor
+    public User(String userID, String fullName, Date dateOfBirth, String address, Long phoneNumber, String email, UserType userType, boolean status, String password, String username) {
         this.userID = userID;
         this.fullName = fullName;
         this.dateOfBirth = dateOfBirth;
@@ -53,15 +51,6 @@ public class User {
         return this.username.equals(username) && this.password.equals(password);
     }
 
-    // Register method
-    public void register(String username, String password, String fullName, String email) {
-        this.username = username;
-        this.password = password;
-        this.fullName = fullName;
-        this.email = email;
-        this.status = true; // Assuming the user becomes active upon registration
-    }
-
     public void viewInformation() {
         System.out.println("User ID: " + userID);
         System.out.println("Full Name: " + fullName);
@@ -76,50 +65,10 @@ public class User {
 
     public void modifyInformation(Map<String, String> newInfo) {
         if (newInfo.containsKey("address")) this.address = newInfo.get("address");
-        if (newInfo.containsKey("phoneNumber")) this.phoneNumber = newInfo.get("phoneNumber");
+        if (newInfo.containsKey("phoneNumber")) this.phoneNumber = Long.parseLong(newInfo.get("phoneNumber"));
         if (newInfo.containsKey("email")) this.email = newInfo.get("email");
         if (newInfo.containsKey("password")) this.password = newInfo.get("password");
         if (newInfo.containsKey("username")) this.username = newInfo.get("username");
-    }
-
-    public static void register() {
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("Enter full name: ");
-        String fullName = scanner.nextLine();
-
-        System.out.println("Enter date of birth (yyyy-mm-dd): ");
-        Date dateOfBirth = Date.parse(scanner.nextLine());
-
-        System.out.println("Enter address: ");
-        String address = scanner.nextLine();
-
-        System.out.println("Enter phone number: ");
-        String phoneNumber = scanner.nextLine();
-
-        System.out.println("Enter email: ");
-        String email = scanner.nextLine();
-
-        System.out.println("Enter a username: ");
-        String username = scanner.nextLine();
-
-        System.out.println("Enter a password: ");
-        String password = scanner.nextLine();
-
-        // Generate userID (e.g., auto-increment or other logic)
-        String userID = generateUserID();
-
-        // Default userType to CLIENT and status to false
-        UserType userType = UserType.CLIENT;
-        boolean status = false;
-
-        User newUser = new User(userID, fullName, dateOfBirth, address, phoneNumber, email, userType, status, password, username);
-
-        try {
-            saveUserToFile(newUser);
-            System.out.println("Registration successful! Your User ID is " + userID);
-        } catch (IOException e) {
-            System.out.println("Error saving user data: " + e.getMessage());
-        }
     }
 
     private static String generateUserID() {
@@ -159,11 +108,11 @@ public class User {
         this.email = email;
     }
 
-    public String getPhoneNumber() {
+    public Number getPhoneNumber() {
         return phoneNumber;
     }
 
-    public void setPhoneNumber(String phoneNumber) {
+    public void setPhoneNumber(Long phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
 

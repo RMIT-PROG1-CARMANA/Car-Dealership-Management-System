@@ -4,7 +4,6 @@ import java.io.File;
 import java.util.*;
 
 public class Client extends User {
-    private String clientID;
     private MembershipType membershipType;
     private double totalSpending;
 
@@ -12,9 +11,8 @@ public class Client extends User {
         REGULAR, SILVER, GOLD, PLATINUM
     }
 
-    public Client(String userID, String fullName, Date dateOfBirth, String address, String phoneNumber, String email, boolean status, String password, String clientID, MembershipType membershipType, double totalSpending) {
-        super(userID, fullName, dateOfBirth, address, phoneNumber, email, UserType.CLIENT, status, password);
-        this.clientID = clientID;
+    public Client(String userID, String fullName, Date dateOfBirth, String address, Long phoneNumber, String email, boolean status, String password,String username, MembershipType membershipType, double totalSpending) {
+        super(userID, fullName, dateOfBirth, address, phoneNumber, email, UserType.CLIENT,status, password,username);
         this.membershipType = membershipType;
         this.totalSpending = totalSpending;
     }
