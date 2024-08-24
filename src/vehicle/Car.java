@@ -1,5 +1,6 @@
+package vehicle;
+
 import java.util.ArrayList;
-import java.util.List;
 
 public class Car {
     private final ArrayList<Object> serviceHistory;
@@ -12,7 +13,7 @@ public class Car {
     private boolean status; // true for available, false for sold
     private double price;
     private String notes;
-//    private List<Service> serviceHistory;
+//    private List<service.Service> serviceHistory;
 
     public Car() {
         this.carID = "c-000";
@@ -111,11 +112,11 @@ public class Car {
         this.notes = notes;
     }
 
-//    public List<Service> getServiceHistory() {
+//    public List<service.Service> getServiceHistory() {
 //        return serviceHistory;
 //    }
 //
-//    public void addService(Service service) {
+//    public void addService(service.Service service) {
 //        this.serviceHistory.add(service);
 //    }
 
@@ -129,7 +130,7 @@ public class Car {
     }
 
     public void displayInfo() {
-        System.out.println("Car ID: " + carID);
+        System.out.println("vehicle.Car ID: " + carID);
         System.out.println("Make: " + make);
         System.out.println("Model: " + model);
         System.out.println("Year: " + year);
@@ -138,12 +139,12 @@ public class Car {
         System.out.println("Status: " + (status ? "Available" : "Sold"));
         System.out.println("Price: " + price);
         System.out.println("Notes: " + notes);
-        System.out.println("Service History: " + serviceHistory.size() + " services");
+        System.out.println("service.Service History: " + serviceHistory.size() + " services");
     }
 
     @Override
     public String toString() {
-        return "Car{" +
+        return "vehicle.Car{" +
                 "carID='" + carID + '\'' +
                 ", make='" + make + '\'' +
                 ", model='" + model + '\'' +

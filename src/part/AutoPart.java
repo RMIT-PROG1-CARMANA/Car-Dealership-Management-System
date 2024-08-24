@@ -1,7 +1,4 @@
-package model;
-
-import java.util.ArrayList;
-import java.util.List;
+package part;
 
 public class AutoPart {
     private String partID;
@@ -104,7 +101,7 @@ public class AutoPart {
 
     @Override
     public String toString() {
-        return "AutoPart{" +
+        return "part.AutoPart{" +
                 "partID='" + partID + '\'' +
                 ", partName='" + partName + '\'' +
                 ", manufacturer='" + manufacturer + '\'' +

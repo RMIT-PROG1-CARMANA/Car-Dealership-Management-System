@@ -1,3 +1,5 @@
+package sales;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -115,7 +117,7 @@ public class SalesTransaction {
     }
     @Override
     public String toString() {
-        return "SalesTransaction{" +
+        return "sales.SalesTransaction{" +
                 "carID='" + transactionID + '\'' +
                 ", make='" + transactionDate + '\'' +
                 ", model='" + clientID + '\'' +
