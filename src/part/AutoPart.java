@@ -1,4 +1,4 @@
-package model;
+package part;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,6 +12,8 @@ public class AutoPart {
     private String warranty;
     private double cost;
     private String notes;
+
+    private static List<AutoPart> partsList = new ArrayList<>();
 
     // Default Constructor
     public AutoPart() {
@@ -104,7 +106,7 @@ public class AutoPart {
 
     @Override
     public String toString() {
-        return "AutoPart{" +
+        return "part.AutoPart{" +
                 "partID='" + partID + '\'' +
                 ", partName='" + partName + '\'' +
                 ", manufacturer='" + manufacturer + '\'' +
@@ -116,18 +118,58 @@ public class AutoPart {
                 '}';
     }
 
-    public void addPart(AutoPart part) {
-        // Assuming you have a list of parts somewhere in your system
-        // You can add the part to that list
+    // CRUD Operations
+
+    // Create
+    public static void addPart(AutoPart part) {
+        partsList.add(part);
+        System.out.println("Auto part added successfully: " + part.toString());
     }
 
-    public void updatePart(String partName, String manufacturer, String partNumber, String condition, String warranty, double cost, String notes) {
-        if (partName != null) this.partName = partName;
-        if (manufacturer != null) this.manufacturer = manufacturer;
-        if (partNumber != null) this.partNumber = partNumber;
-        if (condition != null) this.condition = condition;
-        if (warranty != null) this.warranty = warranty;
-        if (cost != 0) this.cost = cost;
-        if (notes != null) this.notes = notes;
+    // Read
+    public static AutoPart getPartByID(String partID) {
+        for (AutoPart part : partsList) {
+            if (part.getPartID().equals(partID)) {
+                return part;
+            }
+        }
+        System.out.println("Auto part not found with ID: " + partID);
+        return null;
+    }
+
+    // Update
+    public static void updatePart(String partID, String partName, String manufacturer, String partNumber, String condition, String warranty, double cost, String notes) {
+        AutoPart part = getPartByID(partID);
+        if (part != null) {
+            if (partName != null) part.setPartName(partName);
+            if (manufacturer != null) part.setManufacturer(manufacturer);
+            if (partNumber != null) part.setPartNumber(partNumber);
+            if (condition != null) part.setCondition(condition);
+            if (warranty != null) part.setWarranty(warranty);
+            if (cost != 0) part.setCost(cost);
+            if (notes != null) part.setNotes(notes);
+            System.out.println("Auto part updated successfully: " + part.toString());
+        }
+    }
+
+    // Delete
+    public static void deletePart(String partID) {
+        AutoPart part = getPartByID(partID);
+        if (part != null) {
+            partsList.remove(part);
+            System.out.println("Auto part deleted successfully with ID: " + partID);
+        }
+    }
+
+    // List all parts
+    public static void listAllParts() {
+        if (partsList.isEmpty()) {
+            System.out.println("No parts available.");
+        } else {
+            for (AutoPart part : partsList) {
+                System.out.println(part.toString());
+                System.out.println("---------------------------------");
+            }
+        }
     }
 }
