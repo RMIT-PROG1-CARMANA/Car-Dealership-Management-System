@@ -12,9 +12,9 @@ public class SalesTransaction {
     private String notes;
 
     public SalesTransaction() {
-        this.transactionID = "t-000";
+        this.transactionID = "t-000";//t-XXX formatted
         this.transactionDate = "1970-01-01";
-        this.clientID = "c-000";
+        this.clientID = "cl-000"; //cl-XXX formatted
         this.salespersonID = "s-000";
         this.purchasedItems = new ArrayList<>();
         this.discount = 0.0;
@@ -22,15 +22,13 @@ public class SalesTransaction {
         this.notes = "No additional notes";
     }
 
-    public SalesTransaction(String transactionID, String transactionDate, String clientID, String salespersonID, List<Object> purchasedItems, double discount, double totalAmount, String notes) {
+    public SalesTransaction(String transactionID, String transactionDate, List<Object> purchasedItems) {
         this.transactionID = transactionID;
         this.transactionDate = transactionDate;
-        this.clientID = clientID;
-        this.salespersonID = salespersonID;
         this.purchasedItems = purchasedItems;
-        this.discount = discount;
-        this.totalAmount = totalAmount;
-        this.notes = notes;
+        this.discount = 0.0;
+        this.totalAmount = 0.0;
+        this.notes = "";
     }
 
     // Getters and Setters
@@ -113,6 +111,7 @@ public class SalesTransaction {
         System.out.println("Total Amount: " + totalAmount);
         System.out.println("Notes: " + notes);
     }
+
     @Override
     public String toString() {
         return "SalesTransaction{" +
