@@ -116,14 +116,14 @@ public class SalesTransaction {
     @Override
     public String toString() {
         return "SalesTransaction{" +
-                "carID='" + transactionID + '\'' +
-                ", make='" + transactionDate + '\'' +
-                ", model='" + clientID + '\'' +
-                ", year=" + salespersonID +
-                ", mileage=" + purchasedItems +
-                ", color='" + discount + '\'' +
-                ", price=" + totalAmount +
-                ", notes='" + notes + '\'';
-
+                "transactionID='" + transactionID + '\'' +
+                ", transactionDate='" + transactionDate + '\'' +
+                ", clientID='" + clientID + '\'' +
+                ", salespersonID='" + salespersonID + '\'' +
+                ", purchasedItems=" + purchasedItems +
+                ", discount=" + discount +
+                ", totalAmount=" + totalAmount +
+                ", notes='" + notes + '\'' +
+                '}';
     }
 }
