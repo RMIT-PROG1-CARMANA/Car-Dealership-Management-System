@@ -1,0 +1,10 @@
+t-001,2024-01-15,cl-001,sp-001,c-002|c-010,0.10,53000.00,End of season sale
+t-002,2024-02-20,cl-002,sp-002,c-005,0.05,16150.00,Returning customer discount
+t-003,2024-03-10,cl-003,sp-001,c-003,0.00,14000.00,No additional notes
+t-004,2024-04-05,cl-004,sp-003,c-001|c-008,0.15,36500.00,Loyalty discount
+t-005,2024-05-22,cl-005,sp-002,c-007,0.00,16000.00,No additional notes
+t-006,2024-06-11,cl-006,sp-004,c-004,0.10,14400.00,Service package included
+t-007,2024-07-30,cl-007,sp-005,c-009,0.05,22800.00,Well-maintained vehicle
+t-008,2024-08-14,cl-008,sp-003,c-006,0.10,18000.00,Included warranty
+t-009,2024-09-02,cl-009,sp-001,c-002|c-003,0.12,28240.00,Multiple car purchase discount
+t-010,2024-10-25,cl-010,sp-004,c-005,0.05,16150.00,Returning customer
