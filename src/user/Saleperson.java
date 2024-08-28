@@ -3,8 +3,8 @@ package user;
 import java.io.File;
 import java.util.*;
 
-public class Salesperson extends Employee {
-    public Salesperson(String userID, String fullName, Date dateOfBirth, String address, String phoneNumber, String email, boolean status, String password) {
+public class Saleperson extends Employee {
+    public Saleperson(String userID, String fullName, Date dateOfBirth, String address, String phoneNumber, String email, boolean status, String password) {
         super(userID, fullName, dateOfBirth, address, phoneNumber, email, status, password, Position.SALESPERSON);
     }
 

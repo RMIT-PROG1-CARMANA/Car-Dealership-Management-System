@@ -4,7 +4,7 @@ import java.io.File;
 import java.util.*;
 
 
-public class Manager extends User {
+public abstract class Manager extends User {
     private List<Car> cars;
     private List<Part> parts;
     private List<Service> services;

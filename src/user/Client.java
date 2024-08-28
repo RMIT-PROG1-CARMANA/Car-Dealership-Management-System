@@ -3,7 +3,7 @@ package user;
 import java.io.File;
 import java.util.*;
 
-public class Client extends User {
+public abstract class Client extends User {
     private String clientID;
     private MembershipType membershipType;
     private double totalSpending;

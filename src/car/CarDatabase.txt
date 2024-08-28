@@ -1,0 +1,10 @@
+c-001,Toyota,Corolla,2015,50000,White,true,15000.00,No additional notes
+c-002,Honda,Civic,2018,30000,Black,false,18000.00,Recently sold
+c-003,Ford,Focus,2016,40000,Blue,true,14000.00,No additional notes
+c-004,Chevrolet,Malibu,2017,35000,Red,false,16000.00,Recently serviced
+c-005,Nissan,Altima,2019,25000,Gray,true,17000.00,Low mileage, well-maintained
+c-006,Hyundai,Elantra,2020,15000,Silver,false,20000.00,Sold with a 3-year warranty
+c-007,Volkswagen,Passat,2017,45000,Black,true,16000.00,No additional notes
+c-008,BMW,3 Series,2018,35000,Blue,false,28000.00,Recently serviced, excellent condition
+c-009,Audi,A4,2016,55000,White,true,24000.00,Well-maintained, ready to sell
+c-010,Mercedes-Benz,C-Class,2019,30000,Red,false,35000.00,Recently sold, luxury package
