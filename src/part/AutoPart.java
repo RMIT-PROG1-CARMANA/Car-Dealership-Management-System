@@ -106,7 +106,7 @@ public class AutoPart {
 
     @Override
     public String toString() {
-        return "part.AutoPart{" +
+        return "AutoPart{" +
                 "partID='" + partID + '\'' +
                 ", partName='" + partName + '\'' +
                 ", manufacturer='" + manufacturer + '\'' +
@@ -171,5 +171,12 @@ public class AutoPart {
                 System.out.println("---------------------------------");
             }
         }
+    }
+
+    // Initialize with some hardcoded data
+    static {
+        addPart(new AutoPart("p-001", "Brake Pad", "Brembo", "BP1234", "new", "2 years", 1500.0, "Front brake pad"));
+        addPart(new AutoPart("p-002", "Oil Filter", "Bosch", "OF5678", "new", "1 year", 300.0, "For diesel engine"));
+        addPart(new AutoPart("p-003", "Air Filter", "K&N", "AF9101", "new", "1 year", 500.0, "High flow air filter"));
     }
 }
