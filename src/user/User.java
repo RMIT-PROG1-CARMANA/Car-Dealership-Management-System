@@ -1,10 +1,10 @@
-import FileHandling.*;
-import Database.*;
+package user;
 
 
-
-import java.util.*;
-import java.io.*;
+import java.io.IOException;
+import java.util.Date;
+import java.util.Map;
+import java.util.Scanner;
 
 public class User {
     private String userID;
@@ -82,58 +82,6 @@ public class User {
         if (newInfo.containsKey("username")) this.username = newInfo.get("username");
     }
 
-    public static void register() {
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("Enter full name: ");
-        String fullName = scanner.nextLine();
-
-        System.out.println("Enter date of birth (yyyy-mm-dd): ");
-        Date dateOfBirth = Date.parse(scanner.nextLine());
-
-        System.out.println("Enter address: ");
-        String address = scanner.nextLine();
-
-        System.out.println("Enter phone number: ");
-        String phoneNumber = scanner.nextLine();
-
-        System.out.println("Enter email: ");
-        String email = scanner.nextLine();
-
-        System.out.println("Enter a username: ");
-        String username = scanner.nextLine();
-
-        System.out.println("Enter a password: ");
-        String password = scanner.nextLine();
-
-        // Generate userID (e.g., auto-increment or other logic)
-        String userID = generateUserID();
-
-        // Default userType to CLIENT and status to false
-        UserType userType = UserType.CLIENT;
-        boolean status = false;
-
-        User newUser = new User(userID, fullName, dateOfBirth, address, phoneNumber, email, userType, status, password, username);
-
-        try {
-            saveUserToFile(newUser);
-            System.out.println("Registration successful! Your User ID is " + userID);
-        } catch (IOException e) {
-            System.out.println("Error saving user data: " + e.getMessage());
-        }
-    }
-
-    private static String generateUserID() {
-        // Logic to generate a unique userID (e.g., based on current timestamp, counter, etc.)
-        // Placeholder implementation
-        int idCounter = 1; // You should implement a counter or another method for generating unique IDs.
-        return String.format("u%05d", idCounter++);
-    }
-
-    private static void saveUserToFile(User user) throws IOException {
-        String fileName = "Database/UserDatabase/u" + user.getUserID() + ".txt";
-        String userData = user.toString();
-        EditFile.saveToFile(fileName, userData);
-    }
 
     public boolean isStatus() {
         return status;
@@ -205,6 +153,14 @@ public class User {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     @Override

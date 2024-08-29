@@ -29,13 +29,13 @@ public class Service {
     }
 
     // Parameterized Constructor
-    public Service(String serviceID, String serviceDate, String clientID, String mechanicID, String serviceType, double serviceCost, String notes) {
+    public Service(String serviceID, String serviceDate, String clientID, String mechanicID, String serviceType,List<AutoPart> replacedParts, double serviceCost, String notes) {
         this.serviceID = serviceID;
         this.serviceDate = serviceDate;
         this.clientID = clientID;
         this.mechanicID = mechanicID;
         this.serviceType = serviceType;
-        this.replacedParts = new ArrayList<>();
+        this.replacedParts = replacedParts;
         this.serviceCost = serviceCost;
         this.notes = notes;
     }

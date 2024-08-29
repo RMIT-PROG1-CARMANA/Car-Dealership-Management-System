@@ -24,13 +24,16 @@ public class SalesTransaction {
         this.notes = "No additional notes";
     }
 
-    public SalesTransaction(String transactionID, String transactionDate, List<Object> purchasedItems) {
+    public SalesTransaction(String transactionID, String transactionDate, List<Object> purchasedItems,
+                            String clientID, String salespersonID, double discount, double totalAmount, String notes) {
         this.transactionID = transactionID;
         this.transactionDate = transactionDate;
-        this.purchasedItems = purchasedItems;
-        this.discount = 0.0;
-        this.totalAmount = 0.0;
-        this.notes = "";
+        this.purchasedItems = purchasedItems != null ? new ArrayList<>(purchasedItems) : new ArrayList<>();
+        this.clientID = clientID;
+        this.salespersonID = salespersonID;
+        this.discount = discount;
+        this.totalAmount = totalAmount;
+        this.notes = notes != null ? notes : "";
     }
 
     // Getters and Setters

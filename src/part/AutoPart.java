@@ -1,4 +1,4 @@
-package part;
+package AutoPart;
 
 import java.util.ArrayList;
 import java.util.List;
