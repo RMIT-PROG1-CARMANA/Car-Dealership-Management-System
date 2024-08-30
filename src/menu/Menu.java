@@ -62,8 +62,6 @@ public class Menu  {
 //        scanner.nextLine();
 //    }
 //
-
-
     protected void printCentered(String text, int width) {
         menuStyle.printCentered(text, width);
     }
@@ -82,6 +80,22 @@ public class Menu  {
     }
 
 
+    // Method to display the role of the logged-in user
+    public String displayUserRole() {
+        if (loggedUser.getUserType() == User.UserType.EMPLOYEE) {
+            // Check if the loggedUser is an instance of Salesperson or Mechanic
+            if (loggedUser instanceof Salesperson) {
+                // position for Salesperson
+                return ((Salesperson) loggedUser).getPosition().name();
+            } else if (loggedUser instanceof Mechanic) {
+                //position for Mechanic
+                return ((Mechanic) loggedUser).getPosition().name();
+            }
+        }
+        // For other types
+        return loggedUser.getUserType().name();
+    }
+
     public boolean run(){
         Scanner input = new Scanner(System.in);
         int choice;
@@ -90,7 +104,7 @@ public class Menu  {
             System.out.println("Welcome ");
             System.out.println("0. View Profile");
             System.out.println("1. Edit Profile");
-            System.out.println("2. Go to " + loggedUser.getUserType() + " Main Menu");
+            System.out.println("2. Go to " + displayUserRole() + " Main Menu");
             System.out.println("3. Exit");
 
             choice = getValidatedChoice(0, 3);
@@ -129,7 +143,7 @@ public class Menu  {
                         System.exit(0);
                     }
                     Divider.printDivider(); // Print a divider for clarity
-                    break;
+                    continue;
                 default:
                     System.out.println("Invalid choice. Please try again.");
                     break;
