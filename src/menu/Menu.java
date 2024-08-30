@@ -1,86 +1,140 @@
 package menu;
 
-import exceptions.UserLogoutException;
-import user.Authenticator;
-import user.UserRoles;
+import menu.UserMenu.EmployeeBaseMenu;
+import menu.UserMenu.EmployeeRoles.MechanicMenu;
+import menu.UserMenu.EmployeeRoles.SalespersonMenu;
+import menu.UserMenu.ManagerMenu;
+import user.Employee;
+import user.Mechanic;
+import user.Salesperson;
+import user.User;
 import utils.Divider;
-import utils.InputValidator;
-
+import utils.InputValidation;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
-import java.util.stream.Stream;
 
-public class Menu implements Serializable {
-    List<MenuEvent> eventList;
+import static user.AccountDatabase.displayInfoUsers;
+import static user.AccountDatabase.editProfile;
 
-    public Menu() {
-        eventList = new ArrayList<>();
+
+public class Menu  {
+
+    private static User loggedUser;  // Static variable
+
+    // Method to set loggedUser
+    public static void setLoggedUser(User user) {
+        loggedUser = user;
     }
+    protected Scanner scanner = new Scanner(System.in);
+    protected MenuStyle menuStyle = new MenuStyle();
 
-    public void addEvent(String name, Runnable action) {
-        eventList.add(new MenuEvent(name, action));
-    }
-
-    public void addEvent(MenuEvent event) {
-        eventList.add(event);
-    }
-
-    public void addEvent(MenuEvent event, UserRoles... AccessLevel) {
-        // Get all roles' names
-        List<String> roles = Stream.of(AccessLevel).map(UserRoles::getValue).toList();
-
-        // Get current user's role
-        String userRole = Authenticator.loggedUser.getClass().getName();
-
-        // Check if current user's role is in the list of roles
-        if (roles.contains(userRole)) {
-            eventList.add(event);
+    public void displayMenuHeader(String menuName, int... widths) {
+        int totalWidth = 0;
+        for (int width : widths) {
+            // 3 extra characters account for spaces and the "|"
+            totalWidth += width + 3;
         }
+
+        // Delegate menu header printing to MenuStyle
+        menuStyle.printMenuHeader(menuName, totalWidth);
     }
 
-    public void display() {
-
-        System.out.printf("%d)%-1s: %s%n", -1, "", "Exit");
-        System.out.printf("%d)%-2s: %s%n", 0, "", "Back");
-
-        int index = 1;
-        for (MenuEvent e : eventList) {
-
-            int width = 3 - String.valueOf(index).length();
-
-            System.out.printf("%d)%-" + (width > 0 ? width : 1) + "s: %s%n", index, "", e.getDisplayName());
-            index++;
-        }
-        System.out.printf("%d)%-2s: %s%n", index, "", "Logout");
-
-        Divider.printDivider();
+    protected void displayHorizontalLine(int width) {
+        menuStyle.printSeparator(width, '-');
     }
 
-    public boolean run() {
+    protected void displayMessage(String message) {
+        System.out.println(message);
+    }
+
+    protected void displayOption(String option) {
+        System.out.printf("| %-53s |\n", option);
+    }
+
+    protected int promptForInput(String prompt) {
+        System.out.print(prompt);
+        return scanner.nextInt();
+    }
+//
+//    protected void backToMenu() {
+//        System.out.print("Press enter to continue...");
+//        scanner.nextLine(); // To consume the remaining newline
+//        scanner.nextLine();
+//    }
+//
+
+
+    protected void printCentered(String text, int width) {
+        menuStyle.printCentered(text, width);
+    }
+
+    protected void printSeparator(int width) {
+        menuStyle.printSeparator(width, '-');
+    }
+
+
+    protected int getValidatedChoice(int min, int max) {
+        return InputValidation.validateInt(
+                v -> v >= min && v <= max, // Validate that input is within the specified range
+                "Enter Selection: ",       // Prompt message
+                "Invalid input. Please enter a number between " + min + " and " + max + "." // Error message
+        );
+    }
+
+
+    public boolean run(){
         Scanner input = new Scanner(System.in);
-        int choice = 1;
-
+        int choice;
         while (true) {
-            display();
-            System.out.print("Enter choice: ");
-            choice = InputValidator.validateInt(i -> i >= -1 && i <= eventList.size() + 1);
-            if (choice == -1) {
-                if (InputValidator.validateBoolean("Are you sure you want to exit?")) {
-                    input.close();
-                    System.exit(0);
-                }
-                Divider.printDivider();
-                continue;
-            } else if (choice == eventList.size() + 1) {
-                // Return false to break the menu loop
-                return false;
-            } else if (choice == 0) {
-                // Return true so the menu can be displayed again
-                return true;
+            // Display menu options
+            System.out.println("Welcome ");
+            System.out.println("0. View Profile");
+            System.out.println("1. Edit Profile");
+            System.out.println("2. Go to " + loggedUser.getUserType() + " Main Menu");
+            System.out.println("3. Exit");
+
+            choice = getValidatedChoice(0, 3);
+            // Handle menu options
+            switch (choice) {
+                case 0:
+                    displayInfoUsers();
+                    break;
+                case 1:
+                    editProfile();
+                    break;
+                case 2:
+                    // Navigate to the appropriate menu based on the user's role
+                    User.UserType userType = loggedUser.getUserType();
+                    if (userType == User.UserType.MANAGER) {
+                        ManagerMenu managerMenu = new ManagerMenu();
+                        managerMenu.displayManagerMenu();
+                    } else if (userType == User.UserType.EMPLOYEE) {
+                        if (loggedUser instanceof Salesperson) {
+                            //  SalespersonMenu
+                            EmployeeBaseMenu salesPersonMenu = new SalespersonMenu();
+                            salesPersonMenu.displayEmployeeMenu();
+                        } else if (loggedUser instanceof Mechanic) {
+                            //  MechanicMenu
+                            EmployeeBaseMenu mechanicMenu = new MechanicMenu();
+                            mechanicMenu.displayEmployeeMenu();
+                        }
+                    } else if (userType == User.UserType.CLIENT) {
+                        // Implement ClientMenu
+                    }
+                    break;
+                case 3:
+                    boolean confirmExit = InputValidation.validateBoolean("Are you sure you want to exit? (yes/no): ");
+                    if (confirmExit) {
+                        input.close();
+                        System.exit(0);
+                    }
+                    Divider.printDivider(); // Print a divider for clarity
+                    break;
+                default:
+                    System.out.println("Invalid choice. Please try again.");
+                    break;
             }
-            if (!eventList.get(choice - 1).run()) return false;
+
             Divider.printDivider();
         }
     }

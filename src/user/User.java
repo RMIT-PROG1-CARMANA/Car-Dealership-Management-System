@@ -16,6 +16,7 @@ public class User {
     private String password;
     private String username;
 
+
     public enum UserType {
         MANAGER, EMPLOYEE, CLIENT
     }
@@ -46,11 +47,6 @@ public class User {
         this.username = username;
     }
 
-    // Authentication method
-    public boolean login(String username, String password) {
-        return this.username.equals(username) && this.password.equals(password);
-    }
-
     public void viewInformation() {
         System.out.println("User ID: " + userID);
         System.out.println("Full Name: " + fullName);
@@ -69,19 +65,6 @@ public class User {
         if (newInfo.containsKey("email")) this.email = newInfo.get("email");
         if (newInfo.containsKey("password")) this.password = newInfo.get("password");
         if (newInfo.containsKey("username")) this.username = newInfo.get("username");
-    }
-
-    private static String generateUserID() {
-        // Logic to generate a unique userID (e.g., based on current timestamp, counter, etc.)
-        // Placeholder implementation
-        int idCounter = 1; // You should implement a counter or another method for generating unique IDs.
-        return String.format("u%05d", idCounter++);
-    }
-
-    private static void saveUserToFile(User user) throws IOException {
-        String fileName = "Database/UserDatabase/u" + user.getUserID() + ".txt";
-        String userData = user.toString();
-        EditFile.saveToFile(fileName, userData);
     }
 
     public boolean isStatus() {
@@ -148,13 +131,22 @@ public class User {
         this.userID = userID;
     }
 
-    public String getUsername() {
-        return username;
-    }
 
     public void setUsername(String username) {
         this.username = username;
     }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
 
     @Override
     public String toString() {

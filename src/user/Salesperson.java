@@ -4,8 +4,8 @@ import java.util.*;
 
 public class Salesperson extends Employee {
 
-    public Salesperson(String userID, String fullName, Date dateOfBirth, String address, long phoneNumber, String email, boolean status, String password) {
-        super(userID, fullName, dateOfBirth, address, phoneNumber, email, status, password, Position.SALESPERSON);
+    public Salesperson(String userID, String fullName, Date dateOfBirth, String address, long phoneNumber, String email, boolean status, String password,String username) {
+        super(userID, fullName, dateOfBirth, address, phoneNumber, email, status, password, username,Position.SALESPERSON);
     }
 
 //    public void processTransaction(sales.SalesTransaction transaction) {

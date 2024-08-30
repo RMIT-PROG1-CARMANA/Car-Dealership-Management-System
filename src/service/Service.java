@@ -1,5 +1,7 @@
 package service;
 
+import part.AutoPart;
+
 import java.util.ArrayList;
 import java.util.List;
 
