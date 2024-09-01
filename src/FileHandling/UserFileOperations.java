@@ -107,7 +107,7 @@ public class UserFileOperations {
                 user.getFullName(),
                 user.getDateOfBirth() != null ? DATE_FORMAT.format(user.getDateOfBirth()) : "",
                 user.getAddress(),
-                user.getPhoneNumber(),
+                String.valueOf(user.getPhoneNumber()),
                 user.getEmail(),
                 user.getUserType().name(),
                 Boolean.toString(user.isStatus()),
@@ -131,7 +131,12 @@ public class UserFileOperations {
             user.setDateOfBirth(null);
         }
         user.setAddress(fields[3]);
-        user.setPhoneNumber(fields[4]);
+        long phoneNumber = 0;
+        try {
+            phoneNumber = Long.parseLong(fields[4]); // Convert String to long
+        } catch (NumberFormatException e) {
+            e.printStackTrace(); // Handle parsing exception
+        }
         user.setEmail(fields[5]);
         user.setUserType(User.UserType.valueOf(fields[6]));
         user.setStatus(Boolean.parseBoolean(fields[7]));

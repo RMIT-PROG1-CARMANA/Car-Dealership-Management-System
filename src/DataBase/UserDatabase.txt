@@ -1,0 +1,3 @@
+12345;John Doe;2024-08-29;123 Main St;00000;johndoe@example.com;CLIENT;true;password123;johndoe
+1;John Mechanic;2024-09-01;123 Mechanic St;5551234;johnmechanic@example.com;MECHANIC;true;password1;johnmechanic
+

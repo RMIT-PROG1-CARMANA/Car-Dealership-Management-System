@@ -1,0 +1,2 @@
+t-001;2024-08-29;cl-001;s-001;10.0;150.0;First transaction;2;Item1,Item2,
+t-002;2024-08-30;cl-002;s-002;5.0;75.0;Second transaction;1;Item3,

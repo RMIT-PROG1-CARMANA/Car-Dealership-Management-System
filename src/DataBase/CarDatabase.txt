@@ -1,0 +1,2 @@
+c-002;Honda;Civic;2020;20000;Blue;true;22000.0;One owner
+c-003;Ford;Mustang;2022;5000;Black;true;30000.0;Like new
