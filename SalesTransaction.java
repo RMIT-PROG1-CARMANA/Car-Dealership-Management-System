@@ -1,3 +1,5 @@
+package SalesTransaction;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -6,29 +8,33 @@ public class SalesTransaction {
     private String transactionDate;
     private String clientID;
     private String salespersonID;
-    private List<Object> purchasedItems;
+    private List<String> purchasedItems; // Use String instead of Object for type safety
     private double discount;
     private double totalAmount;
     private String notes;
 
     public SalesTransaction() {
-        this.transactionID = "t-000";//t-XXX formatted
+        this.transactionID = "t-000"; // t-XXX formatted
         this.transactionDate = "1970-01-01";
-        this.clientID = "cl-000"; //cl-XXX formatted
-        this.salespersonID = "s-000";
+        this.clientID = "cl-000"; // cl-XXX formatted
+        this.salespersonID = "sp-000";
         this.purchasedItems = new ArrayList<>();
         this.discount = 0.0;
         this.totalAmount = 0.0;
         this.notes = "No additional notes";
     }
 
-    public SalesTransaction(String transactionID, String transactionDate, List<Object> purchasedItems) {
+    public SalesTransaction(String transactionID, String transactionDate, String clientID,
+                            String salespersonID, List<String> purchasedItems,
+                            double discount, double totalAmount, String notes) {
         this.transactionID = transactionID;
         this.transactionDate = transactionDate;
-        this.purchasedItems = purchasedItems;
-        this.discount = 0.0;
-        this.totalAmount = 0.0;
-        this.notes = "";
+        this.clientID = clientID;
+        this.salespersonID = salespersonID;
+        this.purchasedItems = purchasedItems != null ? new ArrayList<>(purchasedItems) : new ArrayList<>();
+        this.discount = discount;
+        this.totalAmount = totalAmount;
+        this.notes = notes != null ? notes : "";
     }
 
     // Getters and Setters
@@ -64,12 +70,12 @@ public class SalesTransaction {
         this.salespersonID = salespersonID;
     }
 
-    public List<Object> getPurchasedItems() {
+    public List<String> getPurchasedItems() {
         return purchasedItems;
     }
 
-    public void setPurchasedItems(List<Object> purchasedItems) {
-        this.purchasedItems = purchasedItems;
+    public void setPurchasedItems(List<String> purchasedItems) {
+        this.purchasedItems = new ArrayList<>(purchasedItems);
     }
 
     public double getDiscount() {
@@ -97,7 +103,7 @@ public class SalesTransaction {
     }
 
     // Additional Methods
-    public void addPurchasedItem(Object item) {
+    public void addPurchasedItem(String item) {
         this.purchasedItems.add(item);
     }
 
@@ -125,4 +131,9 @@ public class SalesTransaction {
                 ", notes='" + notes + '\'' +
                 '}';
     }
+
+    public CharSequence getSerializedPurchasedItemID() {
+        return String.join("|", purchasedItems);
+    }
 }
+
