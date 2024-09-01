@@ -1,3 +1,5 @@
+package car;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,6 +14,7 @@ public class Car {
     private boolean status; // true for available, false for sold
     private double price;
     private String notes;
+    private boolean deleted;
 //    private List<Service> serviceHistory;
 
     public Car() {
@@ -23,6 +26,7 @@ public class Car {
         this.status = true;
         this.price = 0.0;
         this.notes = "No additional notes";
+        this.deleted = true;
         this.serviceHistory = new ArrayList<>();
     }
     public Car(String carID, String make, String model, int year, int mileage, String color, boolean status, double price, String notes) {
@@ -35,6 +39,21 @@ public class Car {
         this.status = status;
         this.price = price;
         this.notes = notes;
+        this.deleted = false;
+        this.serviceHistory = new ArrayList<>();
+    }
+
+    public Car(String carID, String make, String model, int year, int mileage, String color, boolean status, double price, String notes, boolean isDeleted) {
+        this.carID = carID;
+        this.make = make;
+        this.model = model;
+        this.year = year;
+        this.mileage = mileage;
+        this.color = color;
+        this.status = status;
+        this.price = price;
+        this.notes = notes;
+        this.deleted = isDeleted;
         this.serviceHistory = new ArrayList<>();
     }
 
@@ -111,6 +130,14 @@ public class Car {
         this.notes = notes;
     }
 
+    public boolean isDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
+    }
+
 //    public List<Service> getServiceHistory() {
 //        return serviceHistory;
 //    }
@@ -139,6 +166,7 @@ public class Car {
         System.out.println("Price: " + price);
         System.out.println("Notes: " + notes);
         System.out.println("Service History: " + serviceHistory.size() + " services");
+        System.out.println("Deleted: " + deleted);
     }
 
     @Override
@@ -153,7 +181,8 @@ public class Car {
                 ", status=" + (status ? "Available" : "Sold") +
                 ", price=" + price +
                 ", notes='" + notes + '\'' +
-                ", serviceHistory=" + serviceHistory +
-                " services}";
+                ", serviceHistory=" + serviceHistory + " services" +
+                ", deleted=" + deleted +
+                "}";
     }
 }
