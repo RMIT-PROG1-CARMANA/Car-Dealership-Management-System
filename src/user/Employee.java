@@ -1,8 +1,9 @@
 package user;
 
+import java.io.Serializable;
 import java.util.*;
 
-public abstract class Employee extends User {
+public abstract class Employee extends User implements Serializable {
     private Position position;
 
     public enum Position {
@@ -18,7 +19,4 @@ public abstract class Employee extends User {
         return position;
     }
 
-    // Abstract methods to be implemented by subclasses
-    public abstract double calculateRevenue(String period);
-    public abstract void listItems(String itemType, String period);
 }

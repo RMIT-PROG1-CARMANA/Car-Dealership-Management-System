@@ -1,8 +1,11 @@
 package vehicle;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Car {
+
+// deal with the object
+public class Car  implements Serializable {
     private final ArrayList<Object> serviceHistory;
     private String carID; // format c-number
     private String make;

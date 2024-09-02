@@ -13,20 +13,4 @@ public class Mechanic extends Employee {
 //        // Implementation for processing a service
 //    }
 
-    @Override
-    public double calculateRevenue(String timePeriod) {
-        // Implementation for calculating revenue for this mechanic
-        return 0.0; // Placeholder
-    }
-
-//    @Override
-//    public List<service.Service> listServices(String timePeriod) {
-//        // Implementation for listing services done in the given period
-//        return null; // Placeholder
-//    }
-
-    @Override
-    public void listItems(String itemType, String period) {
-        // Mechanic-specific logic for listing items
-    }
 }

@@ -1,9 +1,10 @@
 package sales;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SalesTransaction {
+public class SalesTransaction  implements Serializable {
     private String transactionID;
     private String transactionDate;
     private String clientID;

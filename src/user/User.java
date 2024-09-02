@@ -4,7 +4,7 @@ import FileHandling.*;
 import java.util.*;
 import java.io.*;
 
-public class User {
+public abstract class User implements Serializable {
     private String userID;
     private String fullName;
     private Date dateOfBirth;

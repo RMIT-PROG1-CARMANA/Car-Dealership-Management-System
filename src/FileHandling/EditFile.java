@@ -49,7 +49,7 @@ public class EditFile {
     }
 
     public static void writeUserDataToFile(String userID, String userData) throws IOException {
-        String fileName = "Database/UserDatabase/u" + userID + ".txt";
+        String fileName = "DataBase/UserDatabase/u" + userID + ".txt";
         BufferedWriter writer = new BufferedWriter(new FileWriter(fileName, false));
         writer.write(userData);
         writer.newLine();
@@ -65,7 +65,7 @@ public class EditFile {
     }
 
     public static List<String> readUserDataFromFile(String userID) throws IOException {
-        String fileName = "Database/UserDatabase/u" + userID + ".txt";
+        String fileName = "DataBase/UserDatabase/u" + userID + ".txt";
         return readFile(fileName);
     }
 }

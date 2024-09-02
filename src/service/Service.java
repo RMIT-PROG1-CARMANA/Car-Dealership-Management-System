@@ -2,10 +2,11 @@ package service;
 
 import part.AutoPart;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Service {
+public class Service  implements Serializable {
     private String serviceID;
     private String serviceDate;
     private String clientID;

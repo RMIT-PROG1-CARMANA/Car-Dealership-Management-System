@@ -24,14 +24,5 @@ public class Manager extends User {
     public List<User> getEmployees() {
         return employees;
     }
-    // Example statistics methods
-    public int calculateCarsSold(Date month) {
-        // Implementation would filter cars sold in the specified month
-        return 0; // Placeholder
-    }
 
-    public double calculateRevenue(String timePeriod) {
-        // Implementation would calculate revenue in the given time period
-        return 0.0; // Placeholder
-    }
 }

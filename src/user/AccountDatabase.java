@@ -28,62 +28,23 @@ public class AccountDatabase {
 //    }
 
     // hard code to test function
-    public static Map<String, User> getInstance() {
-        if (usersInstance == null) {
-            usersInstance = new HashMap<>();
+//    public static Map<String, User> getInstance() {
+//        if (usersInstance == null) {
+//            usersInstance = new HashMap<>();
+//
+//
+//            // Add users to the usersInstance map
+//            usersInstance.put(user1.getUsername(), user1);
+//            usersInstance.put(user2.getUsername(), user2);
+//            usersInstance.put(employee1.getUsername(), employee1);
+//            usersInstance.put(employee2.getUsername(), employee2);
+//
+//            // You can add more users as needed
+//        }
+//        return usersInstance;
+//    }
 
-            // Hardcode user instances here
-            User user1 = new User( "U00001",
-                    "John Doe",
-                    new Date(92, 7, 15),
-                    "123 Main Street",
-                    1234567890L,
-                    "john.doe@example.com",
-                    User.UserType.MANAGER,
-                    true,
-                    "password123",
-                    "john_doe"              );
-            User user2 = new User( "U00002",
-                    "kuasd Dis",
-                    new Date(82, 6, 5),
-                    "153 Last Street",
-                    12863267890L,
-                    "huy.test@example.com",
-                    User.UserType.EMPLOYEE,
-                    true,
-                    "giahuy2004",
-                    "huypham"              );
 
-            Employee employee1 = new Mechanic("U00003",
-                    "Hai Nguyen",
-                    new Date(02, 4, 25),
-                    "RMIT Main Street",
-                    1234567890L,
-                    "Hai.doe@example.com",
-                    true,
-                    "hai123",
-            "hainguyen");
-
-            Employee employee2 = new Salesperson("U00004",
-                    "Dzi Thach",
-                    new Date(2004, 1, 5),
-                    "TDT Main Street",
-                    1234567890L,
-                    "Dzi.doe@example.com",
-                    true,
-                    "dzi123",
-            "dzinguyen");
-
-            // Add users to the usersInstance map
-            usersInstance.put(user1.getUsername(), user1);
-            usersInstance.put(user2.getUsername(), user2);
-            usersInstance.put(employee1.getUsername(), employee1);
-            usersInstance.put(employee2.getUsername(), employee2);
-
-            // You can add more users as needed
-        }
-        return usersInstance;
-    }
 
 
     public static void addUser(User user) {
