@@ -47,26 +47,6 @@ public abstract class User implements Serializable {
         this.username = username;
     }
 
-    public void viewInformation() {
-        System.out.println("User ID: " + userID);
-        System.out.println("Full Name: " + fullName);
-        System.out.println("Date of Birth: " + dateOfBirth);
-        System.out.println("Address: " + address);
-        System.out.println("Phone Number: " + phoneNumber);
-        System.out.println("Email: " + email);
-        System.out.println("Username: " + username); // Added username display
-        System.out.println("User Type: " + userType);
-        System.out.println("Status: " + status);
-    }
-
-    public void modifyInformation(Map<String, String> newInfo) {
-        if (newInfo.containsKey("address")) this.address = newInfo.get("address");
-        if (newInfo.containsKey("phoneNumber")) this.phoneNumber = Long.parseLong(newInfo.get("phoneNumber"));
-        if (newInfo.containsKey("email")) this.email = newInfo.get("email");
-        if (newInfo.containsKey("password")) this.password = newInfo.get("password");
-        if (newInfo.containsKey("username")) this.username = newInfo.get("username");
-    }
-
     public boolean isStatus() {
         return status;
     }
@@ -160,6 +140,7 @@ public abstract class User implements Serializable {
                 ", fullName='" + fullName + '\'' +
                 ", userID='" + userID + '\'' +
                 ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
                 '}';
     }
 }

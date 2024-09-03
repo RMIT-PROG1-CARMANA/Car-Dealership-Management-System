@@ -1,7 +1,9 @@
 package menu.UserMenu;
 
-import logout.UserLogOut;
+
 import menu.Menu;
+import operations.UserService;
+import user.Authenticator;
 import utils.Divider;
 import utils.InputValidation;
 
@@ -11,6 +13,7 @@ import java.util.Scanner;
 public class ManagerMenu extends Menu {
     int choice;
     Scanner input = new Scanner(System.in);
+    private operations.UserService UserService;
 
     public void displayManagerMenu(){
 //        uiUtils.clearScreen();
@@ -104,7 +107,7 @@ public class ManagerMenu extends Menu {
                 break;
             case 6:
                 System.exit(0);// terminates the program
-                new UserLogOut();
+                Authenticator.UserLogOut();
                 break;
             default:
                 System.err.println("\n**Please, Enter a Valid Input**");
@@ -146,7 +149,7 @@ public class ManagerMenu extends Menu {
                 break;
             case 6:
                 System.exit(0);// terminates the program
-                new UserLogOut();
+                Authenticator.UserLogOut();
                 break;
             default:
                 System.err.println("\n**Please, Enter a Valid Input**");
@@ -189,7 +192,7 @@ public class ManagerMenu extends Menu {
                 break;
             case 6:
                 System.exit(0);// terminates the program
-                new UserLogOut();
+                Authenticator.UserLogOut();
                 break;
             default:
                 System.err.println("\n**Please, Enter a Valid Input**");
@@ -199,13 +202,41 @@ public class ManagerMenu extends Menu {
     }
     public void displayManagerUsersMenu(){
         displayMenuHeader("ADMIN USERS MENU", 53);
-        displayOption("0. Add ");
-        displayOption("1. Update ");
-        displayOption("2. Delete ");
-        displayOption("3. Search ");
-        displayOption("4. View All");
+        displayOption("0. Add User");
+        displayOption("1. Update User");
+        displayOption("2. Delete User");
+        displayOption("3. Search User");
+        displayOption("4. View All User");
         displayOption("5. Back");
+        Divider.printDivider();
 
+        System.out.print("Enter Selection from 0-5: ");
+        System.out.println();
+
+        switch (choice) {
+            case 0:
+                UserService.createUser();
+                break;
+
+            case 1:
+
+                break;
+            case 2:
+
+                break;
+            case 3:
+
+                break;
+            case 4:
+
+                break;
+            case 5:
+
+                break;
+            default:
+                System.err.println("\n**Please, Enter a Valid Input**");
+                System.out.println();
+        }
     }
     public void displayManagerServicesMenu(){
         displayMenuHeader("MANAGER SERVICE MENU", 53);
@@ -242,7 +273,7 @@ public class ManagerMenu extends Menu {
                 break;
             case 6:
                 System.exit(0);// terminates the program
-                new UserLogOut();
+                Authenticator.UserLogOut();
                 break;
             default:
                 System.err.println("\n**Please, Enter a Valid Input**");
@@ -286,7 +317,7 @@ public class ManagerMenu extends Menu {
                 break;
             case 6:
                 System.exit(0);// terminates the program
-                new UserLogOut();
+                Authenticator.UserLogOut();
                 break;
             default:
                 System.err.println("\n**Please, Enter a Valid Input**");

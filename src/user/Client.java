@@ -1,42 +1,45 @@
 package user;
 
+import sales.SalesTransaction;
+
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 public class Client extends User implements Serializable {
-    private MembershipType membershipType;
-    private double totalSpending;
+    private Membership membership;
+    private List<SalesTransaction> transactions;
 
     public enum MembershipType {
         REGULAR, SILVER, GOLD, PLATINUM
     }
 
-    public Client(String userID, String fullName, Date dateOfBirth, String address, long phoneNumber, String email, boolean status, String password, String username, MembershipType membershipType, double totalSpending) {
+    public Client(String userID, String fullName, Date dateOfBirth, String address, long phoneNumber, String email, boolean status, String password, String username, List<SalesTransaction> transactions, double v) {
         super(userID, fullName, dateOfBirth, address, phoneNumber, email, UserType.CLIENT, status, password, username);
-        this.membershipType = membershipType;
-        this.totalSpending = totalSpending;
+        this.transactions = transactions;
+        updateMembership();
     }
 
-    public MembershipType getMembershipType() {
-        return membershipType;
+    public double calculateTotalSpending() {
+        return transactions.stream().mapToDouble(SalesTransaction::getTotalAmount).sum();
     }
 
-    public void setMembershipType(MembershipType membershipType) {
-        this.membershipType = membershipType;
+    private void updateMembership() {
+        double totalSpending = calculateTotalSpending();
+        this.membership = new Membership(totalSpending);
     }
 
-    public double getTotalSpending() {
-        return totalSpending;
+    public Membership getMembership() {
+        return membership;
     }
 
-    public void setTotalSpending(double totalSpending) {
-        this.totalSpending = totalSpending;
+    public void addTransaction(SalesTransaction transaction) {
+        transactions.add(transaction);
+        updateMembership(); // Recalculate membership level after adding a transaction
     }
-
-
 
     @Override
     public String toString() {
-        return super.toString() + ", MembershipType: " + membershipType + ", TotalSpending: " + totalSpending;
+        return super.toString() + ", Membership: " + membership + ", TotalSpending: " + calculateTotalSpending();
     }
 }

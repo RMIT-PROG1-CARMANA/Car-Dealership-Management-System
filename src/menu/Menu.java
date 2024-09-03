@@ -1,9 +1,11 @@
 package menu;
 
+import FileHandling.UserDataHandler;
 import menu.UserMenu.EmployeeBaseMenu;
 import menu.UserMenu.EmployeeRoles.MechanicMenu;
 import menu.UserMenu.EmployeeRoles.SalespersonMenu;
 import menu.UserMenu.ManagerMenu;
+import operations.UserService;
 import user.Employee;
 import user.Mechanic;
 import user.Salesperson;
@@ -13,13 +15,23 @@ import utils.InputValidation;
 import java.io.Serializable;
 import java.util.Scanner;
 
-import static user.AccountDatabase.displayInfoUsers;
-import static user.AccountDatabase.editProfile;
+
+import static operations.UserService.deleteUser;
+
+import static operations.UserService.displayInfoUsers;
+
 
 
 public class Menu  {
 
     private static User loggedUser;  // Static variable
+//    private final UserService userRepository = new UserService();
+private static UserService userService = new UserService();
+
+
+
+    public Menu() {
+    }
 
     // Method to set loggedUser
     public static void setLoggedUser(User user) {
@@ -79,7 +91,6 @@ public class Menu  {
         );
     }
 
-
     // Method to display the role of the logged-in user
     public String displayUserRole() {
         if (loggedUser.getUserType() == User.UserType.EMPLOYEE) {
@@ -101,9 +112,9 @@ public class Menu  {
         int choice;
         while (true) {
             // Display menu options
-            System.out.println("Welcome ");
+            System.out.println("Welcome " + loggedUser.getUsername());
             System.out.println("0. View Profile");
-            System.out.println("1. Edit Profile");
+            System.out.println("1. edit user");
             System.out.println("2. Go to " + displayUserRole() + " Main Menu");
             System.out.println("3. Exit");
 
@@ -114,7 +125,7 @@ public class Menu  {
                     displayInfoUsers();
                     break;
                 case 1:
-                    editProfile();
+                    UserService.createUser();
                     break;
                 case 2:
                     // Navigate to the appropriate menu based on the user's role
@@ -141,9 +152,11 @@ public class Menu  {
                     if (confirmExit) {
                         input.close();
                         System.exit(0);
+
                     }
-                    Divider.printDivider(); // Print a divider for clarity
+                    Divider.printDivider();
                     continue;
+
                 default:
                     System.out.println("Invalid choice. Please try again.");
                     break;

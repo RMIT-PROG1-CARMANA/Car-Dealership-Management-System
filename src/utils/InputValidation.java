@@ -8,6 +8,36 @@ import java.util.Scanner;
 import java.util.function.Function;
 
 public class InputValidation {
+    public static long validateLong(String question) {
+        return validateLong((v) -> true, question, "Invalid input, please try again.");
+    }
+
+    public static long validateLong(Function<Long, Boolean> function) {
+        return validateLong(function, "", "Invalid input, please try again.");
+    }
+
+    public static long validateLong(Function<Long, Boolean> function, String question) {
+        return validateLong(function, question, "Invalid input, please try again.");
+    }
+
+    public static long validateLong(Function<Long, Boolean> function, String question, String errorMessage) {
+        Scanner scanner = new Scanner(System.in);
+        while (true) {
+            try {
+                System.out.print(question);
+                long userInput = scanner.nextLong();
+
+                if (userInput == -1) return -1;
+                if (function.apply(userInput)) return userInput;
+                System.out.println(errorMessage);
+            } catch (InputMismatchException e) {
+                System.out.println("Invalid input. Please enter a valid long integer.");
+                scanner.nextLine();  // Clear the invalid input
+            } catch (Exception e) {
+                System.out.println("Error occurred, please try again.");
+            }
+        }
+    }
     public static int validateInt(String question) {
         return validateInt((v) -> true, question, "Invalid input, please try again.");
     }
@@ -19,25 +49,6 @@ public class InputValidation {
         return validateInt(function, question, "Invalid input, please try again.");
     }
 
-    public static Date validateDate(String question) {
-        Scanner scanner = new Scanner(System.in);
-        while (true) {
-            try {
-                System.out.print(question);
-                String userInput = scanner.nextLine();
-
-                if (userInput.equals("-1")) return null;
-                Date date = (new SimpleDateFormat("dd/MM/yyyy")).parse(userInput);
-                if (date != null) return date;
-                System.out.println("Invalid input. Please enter a valid date.");
-            } catch (InputMismatchException e) {
-                System.out.println("Invalid input. Please enter a valid date.");
-                scanner.nextLine();
-            } catch (Exception e) {
-                System.out.println("Error occurred, please try again.");
-            }
-        }
-    }
 
     public static int validateInt(Function<Integer, Boolean> function, String question, String errorMessage) {
         Scanner scanner = new Scanner(System.in);
@@ -51,6 +62,25 @@ public class InputValidation {
                 System.out.println(errorMessage);
             } catch (InputMismatchException e) {
                 System.out.println("Invalid input. Please enter a valid integer.");
+                scanner.nextLine();
+            } catch (Exception e) {
+                System.out.println("Error occurred, please try again.");
+            }
+        }
+    }
+    public static Date validateDate(String question) {
+        Scanner scanner = new Scanner(System.in);
+        while (true) {
+            try {
+                System.out.print(question);
+                String userInput = scanner.nextLine();
+
+                if (userInput.equals("-1")) return null;
+                Date date = (new SimpleDateFormat("dd/MM/yyyy")).parse(userInput);
+                if (date != null) return date;
+                System.out.println("Invalid input. Please enter a valid date.");
+            } catch (InputMismatchException e) {
+                System.out.println("Invalid input. Please enter a valid date.");
                 scanner.nextLine();
             } catch (Exception e) {
                 System.out.println("Error occurred, please try again.");
@@ -126,9 +156,5 @@ public class InputValidation {
                 "Invalid input. Please enter a valid boolean.");
         return !answer.equals("-1") && Arrays.asList("true", "t", "yes", "y").contains(answer.toLowerCase());
     }
-    int choice = InputValidation.validateInt(
-            v -> v >= 0 && v <= 6, // Validating that the input is within the range of menu options
-            "Enter Selection: ", // Prompt message
-            "Invalid input. Please enter a number between 0 and 6." // Error message
-    );
+
 }

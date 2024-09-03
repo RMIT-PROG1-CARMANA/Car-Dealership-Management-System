@@ -1,7 +1,8 @@
 package menu.UserMenu.EmployeeRoles;
 
-import logout.UserLogOut;
+
 import menu.UserMenu.EmployeeBaseMenu;
+import user.Authenticator;
 import utils.Divider;
 
 public class MechanicMenu extends EmployeeBaseMenu {
@@ -49,7 +50,7 @@ public class MechanicMenu extends EmployeeBaseMenu {
                     break;
                 case 6:
                     System.exit(0);// terminates the program
-                    new UserLogOut();
+                    Authenticator.UserLogOut();
                     break;
                 default:
                     System.err.println("\n**Please, Enter a Valid Input**");

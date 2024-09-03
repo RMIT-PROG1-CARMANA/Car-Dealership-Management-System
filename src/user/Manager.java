@@ -7,7 +7,7 @@ import java.util.*;
 
 public class Manager extends User {
     private List<User> employees;
-    public Manager(String userID, String fullName, Date dateOfBirth, String address, Long phoneNumber,String username, String email, boolean status, String password) {
+    public Manager(String userID, String fullName, Date dateOfBirth, String address, Long phoneNumber, String email, boolean status, String password, String username) {
         super(userID, fullName, dateOfBirth, address, phoneNumber, email, UserType.MANAGER, status,username, password);
         this.employees = new ArrayList<>();
     }
