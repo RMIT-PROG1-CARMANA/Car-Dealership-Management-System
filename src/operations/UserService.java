@@ -20,19 +20,20 @@ public class UserService {
         managersList.add(newUserManager);
         userDAO.writeUsersToFile(managersList.toArray(new User[0]));
     }
+
     private static final UserDataHandler userDAO = new UserDataHandler();
 
     // manager can add user
-    public static void createUser(){
-        String userID = InputValidation.validateString("Enter User ID (u-number format): ");
+    public static void createUser() {
+        String userID = InputValidation.validateUserID("Enter User ID (uXXXX format): ");
         String fullName = InputValidation.validateString("Enter Full Name: ");
-        Date dateOfBirth = InputValidation.validateDate("Enter Date of Birth: ");
+        Date dateOfBirth = InputValidation.validateDate("Enter Date of Birth (dd/MM/yyyy): ");
         String address = InputValidation.validateString("Enter Address: ");
         long phoneNumber = InputValidation.validateLong("Enter Phone Number: ");
-        String email = InputValidation.validateString("Enter email: ");
-        String username = InputValidation.validateString("Enter username: ");
-        String password = InputValidation.validateString("Enter password: ");
-        Boolean status = InputValidation.validateBoolean("Enter status (true/false): ");
+        String email = InputValidation.validateString("Enter Email: ");
+        String username = InputValidation.validateUsername("Enter Username: ");
+        String password = InputValidation.validateString("Enter Password: ");
+        Boolean status = InputValidation.validateBoolean("Enter Status (true/false): ");
         int userTypeChoice = InputValidation.validateInt("Select User Type (1 for Manager, 2 for Employee, 3 for Client): ");
         User.UserType userType;
         switch (userTypeChoice) {
@@ -65,7 +66,7 @@ public class UserService {
                     throw new IllegalArgumentException("Invalid position choice");
             }
         } else if (userType == User.UserType.MANAGER) {
-            user = new Manager(userID, fullName, dateOfBirth, address, phoneNumber, email, status,password, username);
+            user = new Manager(userID, fullName, dateOfBirth, address, phoneNumber, email, status, password, username);
         } else {
             user = new Client(userID, fullName, dateOfBirth, address, phoneNumber, email, status, password, username, null, 1.0); // Adjust Client constructor
         }
@@ -87,7 +88,15 @@ public class UserService {
         Divider.printDivider();
         System.out.println("User Information:");
         if (loggedUser != null) {
-            System.out.println(loggedUser);
+            System.out.println("Full Name: " + loggedUser.getFullName());
+            System.out.println("Username: " + loggedUser.getUsername());
+            System.out.println("User ID: " + loggedUser.getUserID());
+            System.out.println("Email: " + loggedUser.getEmail());
+            System.out.println("Phone Number: " + loggedUser.getPhoneNumber());
+            System.out.println("Address: " + loggedUser.getAddress());
+            System.out.println("Date of Birth: " + loggedUser.getDateOfBirth());
+            System.out.println("Status: " + (loggedUser.isStatus() ? "Active" : "Inactive"));
+            System.out.println("User Type: " + loggedUser.getUserType());
         } else {
             System.out.println("No user is currently logged in.");
         }
@@ -117,10 +126,15 @@ public class UserService {
     public static void deleteUser() {
         System.out.println();
 
-        String usernameToDelete = InputValidation.validateString("Enter username to delete: ");
+        String usernameToDelete = InputValidation.validateUsername("Enter username to delete: ");
         System.out.println();
 
         User[] userList = userDAO.readAllUsers();  // Fetch users as an array
+        // Check if userList is null
+        if (userList == null) {
+            System.out.println("Error fetching user data. Please try again later.");
+            return; // Exit the method if there's an issue fetching users
+        }
 
         boolean isDeleted = false;
         User[] remainingUsers = new User[userList.length - 1];
@@ -141,6 +155,9 @@ public class UserService {
         } else {
             System.out.println("No user found with the given username.");
         }
+
+
     }
+
 
 }
