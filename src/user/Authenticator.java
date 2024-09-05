@@ -55,6 +55,9 @@ public class Authenticator {
             System.out.println("No user is currently logged in.");
         }
     }
+
+
+
     /**
      Checks if a user is currently logged in.
 

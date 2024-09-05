@@ -10,6 +10,7 @@ import user.Employee;
 import user.Mechanic;
 import user.Salesperson;
 import user.User;
+import user.Authenticator;
 import utils.Divider;
 import utils.InputValidation;
 import java.io.Serializable;
@@ -91,6 +92,11 @@ private static UserService userService = new UserService();
         );
     }
 
+    private void clearScreen() {
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
+    }
+
     // Method to display the role of the logged-in user
     public String displayUserRole() {
         if (loggedUser.getUserType() == User.UserType.EMPLOYEE) {
@@ -110,15 +116,17 @@ private static UserService userService = new UserService();
     public boolean run(){
         Scanner input = new Scanner(System.in);
         int choice;
-        while (true) {
+        boolean shouldContinue = true;
+        while (shouldContinue) {
             // Display menu options
-            System.out.println("Welcome " + loggedUser.getUsername());
+            System.out.println("Welcome back," + loggedUser.getUsername());
             System.out.println("0. View Profile");
             System.out.println("1. edit user");
             System.out.println("2. Go to " + displayUserRole() + " Main Menu");
-            System.out.println("3. Exit");
+            System.out.println("3. Log out");
+            System.out.println("4. Exit");
 
-            choice = getValidatedChoice(0, 3);
+            choice = getValidatedChoice(0, 4);
             // Handle menu options
             switch (choice) {
                 case 0:
@@ -148,9 +156,19 @@ private static UserService userService = new UserService();
                     }
                     break;
                 case 3:
+                    boolean confirmLogout = InputValidation.validateBoolean("Are you sure you want to log out? (yes/no): ");
+                    if (confirmLogout) {
+                        System.out.println("Logging out...");
+                        Authenticator.UserLogOut(); // Call the logout function
+                        shouldContinue = false;  // Exit the loop to return to the main menu
+                    }
+                    break;
+
+                case 4:
                     boolean confirmExit = InputValidation.validateBoolean("Are you sure you want to exit? (yes/no): ");
                     if (confirmExit) {
                         input.close();
+                        System.out.println("Exiting the application... Goodbye!");
                         System.exit(0);
 
                     }
@@ -164,5 +182,6 @@ private static UserService userService = new UserService();
 
             Divider.printDivider();
         }
+        return shouldContinue;
     }
 }
