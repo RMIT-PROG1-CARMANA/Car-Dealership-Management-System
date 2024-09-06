@@ -22,6 +22,9 @@ public class AutoPartMenu {
         Scanner scanner = new Scanner(System.in);
         boolean exit = false;
 
+        // Load parts from file at startup
+        AutoPartFileHandler.loadPartsFromFile();
+
         while (!exit) {
             displayMenu();
             int choice = 0;
@@ -59,6 +62,8 @@ public class AutoPartMenu {
                     listAllParts();
                     break;
                 case 6:
+                    // Save parts to file before exiting
+                    AutoPartFileHandler.savePartsToFile();
                     exit = true;
                     System.out.println("Exiting the AutoPart Management System. Goodbye!");
                     break;
@@ -67,6 +72,7 @@ public class AutoPartMenu {
 
         scanner.close();
     }
+
 
     private static void addPart(Scanner scanner) {
         String partID;
@@ -235,7 +241,6 @@ public class AutoPartMenu {
             System.out.println("No part found with ID: " + partID);
         }
     }
-
 
     private static void deletePart(Scanner scanner) {
         System.out.print("Enter Part ID to Delete: ");

@@ -1,5 +1,6 @@
 package part;
 
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,7 +40,11 @@ public class AutoPart {
         this.notes = notes;
     }
 
-    // Getters and Setters
+    // Getter and Setter methods
+    public static List<AutoPart> getAllParts() {
+        return new ArrayList<>(partsList);
+    }
+
     public String getPartID() {
         return partID;
     }
@@ -118,65 +123,77 @@ public class AutoPart {
                 '}';
     }
 
-    // CRUD Operations
-
-    // Create
+    // Static methods for managing parts
     public static void addPart(AutoPart part) {
         partsList.add(part);
-        System.out.println("Auto part added successfully: " + part.toString());
     }
 
-    // Read
     public static AutoPart getPartByID(String partID) {
         for (AutoPart part : partsList) {
             if (part.getPartID().equals(partID)) {
                 return part;
             }
         }
-        System.out.println("Auto part not found with ID: " + partID);
         return null;
     }
 
-    // Update
-    public static void updatePart(String partID, String partName, String manufacturer, String partNumber, String condition, String warranty, double cost, String notes) {
-        AutoPart part = getPartByID(partID);
-        if (part != null) {
-            if (partName != null) part.setPartName(partName);
-            if (manufacturer != null) part.setManufacturer(manufacturer);
-            if (partNumber != null) part.setPartNumber(partNumber);
-            if (condition != null) part.setCondition(condition);
-            if (warranty != null) part.setWarranty(warranty);
-            if (cost != 0) part.setCost(cost);
-            if (notes != null) part.setNotes(notes);
-            System.out.println("Auto part updated successfully: " + part.toString());
-        }
-    }
-
-    // Delete
     public static void deletePart(String partID) {
-        AutoPart part = getPartByID(partID);
-        if (part != null) {
-            partsList.remove(part);
-            System.out.println("Auto part deleted successfully with ID: " + partID);
-        }
+        partsList.removeIf(part -> part.getPartID().equals(partID));
     }
 
-    // List all parts
     public static void listAllParts() {
         if (partsList.isEmpty()) {
             System.out.println("No parts available.");
         } else {
             for (AutoPart part : partsList) {
                 System.out.println(part.toString());
-                System.out.println("---------------------------------");
             }
         }
     }
 
-    // Initialize with some hardcoded data
-    static {
-        addPart(new AutoPart("p-001", "Brake Pad", "Brembo", "BP1234", "new", "2 years", 1500.0, "Front brake pad"));
-        addPart(new AutoPart("p-002", "Oil Filter", "Bosch", "OF5678", "new", "1 year", 300.0, "For diesel engine"));
-        addPart(new AutoPart("p-003", "Air Filter", "K&N", "AF9101", "new", "1 year", 500.0, "High flow air filter"));
+    // Method to read parts from a file
+    public static void loadPartsFromFile(String filename) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] details = line.split(","); // Assuming CSV format
+                if (details.length == 8) {
+                    AutoPart part = new AutoPart(
+                            details[0], // partID
+                            details[1], // partName
+                            details[2], // manufacturer
+                            details[3], // partNumber
+                            details[4], // condition
+                            details[5], // warranty
+                            Double.parseDouble(details[6]), // cost
+                            details[7]  // notes
+                    );
+                    addPart(part);
+                }
+            }
+        } catch (IOException e) {
+            System.out.println("Error reading from file: " + e.getMessage());
+        }
+    }
+
+    // Method to save parts to a file
+    public static void savePartsToFile(String filename) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filename))) {
+            for (AutoPart part : partsList) {
+                writer.write(String.join(",",
+                        part.getPartID(),
+                        part.getPartName(),
+                        part.getManufacturer(),
+                        part.getPartNumber(),
+                        part.getCondition(),
+                        part.getWarranty(),
+                        String.valueOf(part.getCost()),
+                        part.getNotes()
+                ));
+                writer.newLine();
+            }
+        } catch (IOException e) {
+            System.out.println("Error writing to file: " + e.getMessage());
+        }
     }
 }
