@@ -1,5 +1,9 @@
 package part;
 
+import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
+
 public class AutoPart {
     private String partID;
     private String partName;
@@ -9,6 +13,8 @@ public class AutoPart {
     private String warranty;
     private double cost;
     private String notes;
+
+    private static List<AutoPart> partsList = new ArrayList<>();
 
     // Default Constructor
     public AutoPart() {
@@ -34,7 +40,11 @@ public class AutoPart {
         this.notes = notes;
     }
 
-    // Getters and Setters
+    // Getter and Setter methods
+    public static List<AutoPart> getAllParts() {
+        return new ArrayList<>(partsList);
+    }
+
     public String getPartID() {
         return partID;
     }
@@ -101,7 +111,7 @@ public class AutoPart {
 
     @Override
     public String toString() {
-        return "part.AutoPart{" +
+        return "AutoPart{" +
                 "partID='" + partID + '\'' +
                 ", partName='" + partName + '\'' +
                 ", manufacturer='" + manufacturer + '\'' +
@@ -113,18 +123,77 @@ public class AutoPart {
                 '}';
     }
 
-    public void addPart(AutoPart part) {
-        // Assuming you have a list of parts somewhere in your system
-        // You can add the part to that list
+    // Static methods for managing parts
+    public static void addPart(AutoPart part) {
+        partsList.add(part);
     }
 
-    public void updatePart(String partName, String manufacturer, String partNumber, String condition, String warranty, double cost, String notes) {
-        if (partName != null) this.partName = partName;
-        if (manufacturer != null) this.manufacturer = manufacturer;
-        if (partNumber != null) this.partNumber = partNumber;
-        if (condition != null) this.condition = condition;
-        if (warranty != null) this.warranty = warranty;
-        if (cost != 0) this.cost = cost;
-        if (notes != null) this.notes = notes;
+    public static AutoPart getPartByID(String partID) {
+        for (AutoPart part : partsList) {
+            if (part.getPartID().equals(partID)) {
+                return part;
+            }
+        }
+        return null;
+    }
+
+    public static void deletePart(String partID) {
+        partsList.removeIf(part -> part.getPartID().equals(partID));
+    }
+
+    public static void listAllParts() {
+        if (partsList.isEmpty()) {
+            System.out.println("No parts available.");
+        } else {
+            for (AutoPart part : partsList) {
+                System.out.println(part.toString());
+            }
+        }
+    }
+
+    // Method to read parts from a file
+    public static void loadPartsFromFile(String filename) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] details = line.split(","); // Assuming CSV format
+                if (details.length == 8) {
+                    AutoPart part = new AutoPart(
+                            details[0], // partID
+                            details[1], // partName
+                            details[2], // manufacturer
+                            details[3], // partNumber
+                            details[4], // condition
+                            details[5], // warranty
+                            Double.parseDouble(details[6]), // cost
+                            details[7]  // notes
+                    );
+                    addPart(part);
+                }
+            }
+        } catch (IOException e) {
+            System.out.println("Error reading from file: " + e.getMessage());
+        }
+    }
+
+    // Method to save parts to a file
+    public static void savePartsToFile(String filename) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filename))) {
+            for (AutoPart part : partsList) {
+                writer.write(String.join(",",
+                        part.getPartID(),
+                        part.getPartName(),
+                        part.getManufacturer(),
+                        part.getPartNumber(),
+                        part.getCondition(),
+                        part.getWarranty(),
+                        String.valueOf(part.getCost()),
+                        part.getNotes()
+                ));
+                writer.newLine();
+            }
+        } catch (IOException e) {
+            System.out.println("Error writing to file: " + e.getMessage());
+        }
     }
 }

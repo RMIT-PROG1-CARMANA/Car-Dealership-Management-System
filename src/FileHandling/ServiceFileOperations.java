@@ -133,7 +133,7 @@ public class ServiceFileOperations {
 
         Service service = new Service();
         service.setServiceID(fields[0]);
-        service.setServiceDate(fields[1]);
+//        service.setServiceDate(fields[1]);
         service.setClientID(fields[2]);
         service.setMechanicID(fields[3]);
         service.setServiceType(fields[4]);

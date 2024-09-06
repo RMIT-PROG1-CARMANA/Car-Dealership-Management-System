@@ -3,9 +3,12 @@ package menu.UserMenu;
 
 import menu.Menu;
 import operations.UserService;
+import part.AutoPart;
+import part.AutoPartFileHandler;
 import user.Authenticator;
 import utils.Divider;
 import utils.InputValidation;
+import part.AutoPartMenu;
 
 import java.util.Scanner;
 
@@ -114,47 +117,46 @@ public class ManagerMenu extends Menu {
                 System.out.println();
         }
     }
-    public void displayManagerAutoPartMenu(){
-        displayMenuHeader("MANAGER AUTO PARTS MENU", 53);
-        displayOption("0. Add Auto Parts");
-        displayOption("1. Update Auto Parts");
-        displayOption("2. Delete Auto Parts");
-        displayOption("3. Search Auto Parts");
-        displayOption("4. View All Auto Parts");
-        displayOption("5. Back");
-        Divider.printDivider();
+    public void displayManagerAutoPartMenu() {
+        AutoPartFileHandler.loadPartsFromFile(); // Load parts at the start of the menu
+        boolean exit = false;
+        while (!exit) {
+            displayMenuHeader("MANAGER AUTO PARTS MENU", 53);
+            displayOption("0. Add Auto Parts");
+            displayOption("1. Update Auto Parts");
+            displayOption("2. Delete Auto Parts");
+            displayOption("3. Search Auto Parts");
+            displayOption("4. View All Auto Parts");
+            displayOption("5. Back");
+            Divider.printDivider();
 
-        System.out.print("Enter Selection from 0-5: ");
-        System.out.println();
+            System.out.print("Enter Selection from 0-5: ");
+            int choice = getValidatedChoice(0, 5);
 
-        switch (choice) {
-            case 0:
-
-                break;
-
-            case 1:
-
-                break;
-            case 2:
-
-                break;
-            case 3:
-
-                break;
-            case 4:
-
-                break;
-            case 5:
-
-                break;
-            case 6:
-                System.exit(0);// terminates the program
-                Authenticator.UserLogOut();
-                break;
-            default:
-                System.err.println("\n**Please, Enter a Valid Input**");
-                System.out.println();
+            switch (choice) {
+                case 0:
+                    AutoPartMenu.addPart(input); // Ensure these methods are accessible
+                    break;
+                case 1:
+                    AutoPartMenu.updatePart(input);
+                    break;
+                case 2:
+                    AutoPartMenu.deletePart(input);
+                    break;
+                case 3:
+                    AutoPartMenu.viewPartDetails(input);
+                    break;
+                case 4:
+                    AutoPartMenu.listAllParts();
+                    break;
+                case 5:
+                    exit = true; // Exit the loop and return to the main manager menu
+                    break;
+                default:
+                    System.err.println("\n**Please, Enter a Valid Input**");
+            }
         }
+        AutoPartFileHandler.savePartsToFile(); // Save parts before exiting the menu
     }
 
     public void displayManagerSaleTransactionsMenu(){

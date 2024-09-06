@@ -1,0 +1,4 @@
+p-001,Brake Pad,Brembo,BP1234,new,2 years,1500.000000,Front brake pad
+p-002,Vasd,Bosch,OF5678,new,1 year,300.000000,For diesel engine
+p-003,Air Filter,K&N,AF9101,new,1 year,500.000000,High flow air filter
+p-004,asdzc ,FAsd,BA123,new,10 years,10000.000000,asd
