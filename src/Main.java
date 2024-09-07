@@ -10,7 +10,6 @@ public class Main {
     private static User loggedUser = null;
 
     public static void main(String[] args) {
-        User loggedUser = null;
         Menu appMenu = null;
 
         do {
@@ -22,12 +21,12 @@ public class Main {
                 Menu.setLoggedUser(loggedUser);  // Set the loggedUser for Menu
 
                 // Run the menu and check if the user should continue
-                if (appMenu.run()) {
-                    // User logged out; reinitialize the menu for next login
-                    appMenu = null;  // Optional: cleanup if needed
+                boolean shouldContinue = appMenu.run();
+                if (!shouldContinue) {
+                    loggedUser = null;  // Reset loggedUser to trigger the login screen
                 }
             }
-        }  while (loggedUser != null && appMenu.run());
+        }  while (true);
     }
 
     // Function to display the welcome screen

@@ -160,7 +160,7 @@ private static UserService userService = new UserService();
                     if (confirmLogout) {
                         System.out.println("Logging out...");
                         Authenticator.UserLogOut(); // Call the logout function
-                        shouldContinue = false;  // Exit the loop to return to the main menu
+                        shouldContinue = false;  // Exit the loop to return to the login menu
                     }
                     break;
 
