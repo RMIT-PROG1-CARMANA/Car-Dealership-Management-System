@@ -5,6 +5,7 @@ import user.Authenticator;
 import utils.*;
 import java.util.*;
 
+import static menu.MenuStyle.*;
 
 public class SalespersonMenu extends EmployeeBaseMenu {
     @Override
@@ -14,21 +15,24 @@ public class SalespersonMenu extends EmployeeBaseMenu {
 
         do {
             // Clear the screen
-            clearScreen();
+            ClearScreen.clear();
 
-            System.out.println("Welcome, Salesperson!");
+            System.out.println(CYAN_BOLD + "=====================================" + RESET);
+            System.out.println(CYAN_BOLD + "     Welcome, Salesperson!" + RESET);
+
 
             displayMenuHeader("Salesperson Menu", 53);
-            displayOption("0. Record Sales Transaction");
-            displayOption("1. View Sales Transactions");
-            displayOption("2. Calculate Revenue (Day/Week/Month)");
-            displayOption("3. List Number of Services (Day/Week/Month)");
-            displayOption("4. View Sales Report");
-            displayOption("5. Update Customer Information");
-            displayOption("6. Back to Main Menu");
-            displayOption("7. Exit");
+            displayOption(GREEN_BOLD + "0. " + RESET + "Record Sales Transaction");
+            displayOption(GREEN_BOLD + "1. " + RESET + "View Sales Transactions");
+            displayOption(GREEN_BOLD + "2. " + RESET + "Calculate Revenue (Day/Week/Month)");
+            displayOption(GREEN_BOLD + "3. " + RESET + "List Number of Services(Day/Week/Month)");
+            displayOption(GREEN_BOLD + "4. " + RESET + "View Sales Report");
+            displayOption(GREEN_BOLD + "5. " + RESET + "Update Customer Information");
+            displayOption(GREEN_BOLD + "6. " + RESET + "Back to Main Menu");
+            displayOption(GREEN_BOLD + "7. " + RESET + "Exit");
             Divider.printDivider();
 
+            System.out.print("Enter Selection (0-7): ");
             choice = getValidatedChoice(0, 7);
 
             switch (choice) {
@@ -51,11 +55,15 @@ public class SalespersonMenu extends EmployeeBaseMenu {
                     break;
 
                 case 6:
-                    returnToMainMenu();
-                    break;
+                    // Return to main menu
+                    boolean confirmBack = InputValidation.validateBoolean("Are you sure you want to back to Main Menu? (yes/no): ");
+                    if (confirmBack) {
+                        System.out.println("Returning to main menu...");
+                    }
+                    return; // Exits the current menu loop and returns to the Menu class
+
 
                 case 7:
-                    System.out.println("Are you sure you want to exit? (yes/no): ");
                     boolean confirmExit = InputValidation.validateBoolean("Are you sure you want to exit? (yes/no): ");
                     if (confirmExit) {
                         System.out.println("Exiting the application... Goodbye!");

@@ -4,10 +4,10 @@ package menu.UserMenu;
 import menu.Menu;
 import operations.UserService;
 import user.Authenticator;
-import utils.Divider;
-import utils.InputValidation;
+import utils.*;
+import java.util.*;
 
-import java.util.Scanner;
+import static menu.MenuStyle.*;
 
 
 public class ManagerMenu extends Menu {
@@ -16,25 +16,25 @@ public class ManagerMenu extends Menu {
     private operations.UserService UserService;
 
     public void displayManagerMenu(){
-//        uiUtils.clearScreen();
-        System.out.println("Welcome Manager!");
-        System.out.println();
+        ClearScreen.clear(); // Assuming ClearScreen is a utility class to clear console
 
-        displayMenuHeader("ADMIN MENU", 53);
-        displayOption("0. Manage Cars");
-        displayOption("1. Manage AutoPart");
-        displayOption("2. Manage Sale Transactions");
-        displayOption("3. Manage Users");
-        displayOption("4. Manage Service");
-        displayOption("5. Statistics");
-        displayOption("6. Go Back Profile");
-        displayOption("7. Logout");
+        System.out.println(CYAN_BOLD + "=====================================" + RESET);
+        System.out.println(CYAN_BOLD + "         Manager Main Menu" + RESET);
+        System.out.println(CYAN_BOLD + "=====================================" + RESET);
+
+        displayMenuHeader("MANAGER MENU", 53);
+        displayOption(GREEN_BOLD + "0. " + RESET + "Manage Cars");
+        displayOption(GREEN_BOLD + "1. " + RESET + "Manage Auto Parts");
+        displayOption(GREEN_BOLD + "2. " + RESET + "Manage Sale Transactions");
+        displayOption(GREEN_BOLD + "3. " + RESET + "Manage Users");
+        displayOption(GREEN_BOLD + "4. " + RESET + "Manage Services");
+        displayOption(GREEN_BOLD + "5. " + RESET + "Statistics");
+        displayOption(GREEN_BOLD + "6. " + RESET + "Go Main Menu");
+        displayOption(GREEN_BOLD + "7. " + RESET + "Exit");
         Divider.printDivider();
 
-        System.out.print("Enter Selection: ");
-        System.out.println();
-
-        choice = getValidatedChoice(0, 6);
+        System.out.print("Enter Selection (0-7): ");
+        choice = getValidatedChoice(0, 7);
 
         switch (choice) {
             case 0:
@@ -57,7 +57,11 @@ public class ManagerMenu extends Menu {
                 displayManagerStatisticsMenu();
                 break;
             case 6:
-
+                boolean confirmBack = InputValidation.validateBoolean("Are you sure you want to return to the Main Menu? (yes/no): ");
+                if (confirmBack) {
+                    System.out.println("Returning to Main Menu...");
+                    return; // Exits the current menu loop and returns to the Menu class
+                }
                 break;
             case 7:
                 boolean confirmExit = InputValidation.validateBoolean("Are you sure you want to exit? (yes/no): ");
@@ -73,18 +77,22 @@ public class ManagerMenu extends Menu {
     }
 
     public void displayManagerCarMenu(){
+        ClearScreen.clear();
+        System.out.println(CYAN_BOLD + "=====================================" + RESET);
+        System.out.println(CYAN_BOLD + "       Manager Car Menu" + RESET);
+        System.out.println(CYAN_BOLD + "=====================================" + RESET);
+
         displayMenuHeader("MANAGER CAR MENU", 53);
-        displayOption("0. Add Cars");
-        displayOption("1. Update Cars");
-        displayOption("2. Delete Cars");
-        displayOption("3. Search Cars");
-        displayOption("4. View All Cars");
-        displayOption("5. Back");
+        displayOption(GREEN_BOLD + "0. " + RESET + "Add Cars");
+        displayOption(GREEN_BOLD + "1. " + RESET + "Update Cars");
+        displayOption(GREEN_BOLD + "2. " + RESET + "Delete Cars");
+        displayOption(GREEN_BOLD + "3. " + RESET + "Search Cars");
+        displayOption(GREEN_BOLD + "4. " + RESET + "View All Cars");
+        displayOption(GREEN_BOLD + "5. " + RESET + "Back");
         Divider.printDivider();
 
-        System.out.print("Enter Selection from 0-5: ");
-        System.out.println();
-
+        System.out.print("Enter Selection (0-5): ");
+        choice = getValidatedChoice(0, 5);
         switch (choice) {
             case 0:
 
@@ -103,11 +111,7 @@ public class ManagerMenu extends Menu {
 
                 break;
             case 5:
-
-                break;
-            case 6:
-                System.exit(0);// terminates the program
-                Authenticator.UserLogOut();
+                displayManagerMenu(); // Go back to the main menu
                 break;
             default:
                 System.err.println("\n**Please, Enter a Valid Input**");
@@ -115,17 +119,22 @@ public class ManagerMenu extends Menu {
         }
     }
     public void displayManagerAutoPartMenu(){
+        ClearScreen.clear();
+        System.out.println(CYAN_BOLD + "=====================================" + RESET);
+        System.out.println(CYAN_BOLD + "    Manager Auto Parts Menu" + RESET);
+        System.out.println(CYAN_BOLD + "=====================================" + RESET);
+
         displayMenuHeader("MANAGER AUTO PARTS MENU", 53);
-        displayOption("0. Add Auto Parts");
-        displayOption("1. Update Auto Parts");
-        displayOption("2. Delete Auto Parts");
-        displayOption("3. Search Auto Parts");
-        displayOption("4. View All Auto Parts");
-        displayOption("5. Back");
+        displayOption(GREEN_BOLD + "0. " + RESET + "Add Auto Parts");
+        displayOption(GREEN_BOLD + "1. " + RESET + "Update Auto Parts");
+        displayOption(GREEN_BOLD + "2. " + RESET + "Delete Auto Parts");
+        displayOption(GREEN_BOLD + "3. " + RESET + "Search Auto Parts");
+        displayOption(GREEN_BOLD + "4. " + RESET + "View All Auto Parts");
+        displayOption(GREEN_BOLD + "5. " + RESET + "Back");
         Divider.printDivider();
 
-        System.out.print("Enter Selection from 0-5: ");
-        System.out.println();
+        System.out.print("Enter Selection (0-5): ");
+        choice = getValidatedChoice(0, 5);
 
         switch (choice) {
             case 0:
@@ -145,30 +154,30 @@ public class ManagerMenu extends Menu {
 
                 break;
             case 5:
-
-                break;
-            case 6:
-                System.exit(0);// terminates the program
-                Authenticator.UserLogOut();
+                displayManagerMenu(); // Go back to the main menu
                 break;
             default:
                 System.err.println("\n**Please, Enter a Valid Input**");
                 System.out.println();
         }
     }
-
     public void displayManagerSaleTransactionsMenu(){
+        ClearScreen.clear();
+        System.out.println(CYAN_BOLD + "=====================================" + RESET);
+        System.out.println(CYAN_BOLD + "Manager Sale Transactions Menu" + RESET);
+        System.out.println(CYAN_BOLD + "=====================================" + RESET);
+
         displayMenuHeader("MANAGER SALE TRANSACTION MENU", 53);
-        displayOption("0. Add Sale Transactions");
-        displayOption("1. Update Sale Transactions");
-        displayOption("2. Delete Sale Transactions");
-        displayOption("3. Search Sale Transactions");
-        displayOption("4. View All Sale Transactions");
-        displayOption("5. Back");
+        displayOption(GREEN_BOLD + "0. " + RESET + "Add Sale Transactions");
+        displayOption(GREEN_BOLD + "1. " + RESET + "Update Sale Transactions");
+        displayOption(GREEN_BOLD + "2. " + RESET + "Delete Sale Transactions");
+        displayOption(GREEN_BOLD + "3. " + RESET + "Search Sale Transactions");
+        displayOption(GREEN_BOLD + "4. " + RESET + "View All Sale Transactions");
+        displayOption(GREEN_BOLD + "5. " + RESET + "Back");
         Divider.printDivider();
 
-        System.out.print("Enter Selection from 0-5: ");
-        System.out.println();
+        System.out.print("Enter Selection (0-5): ");
+        choice = getValidatedChoice(0, 5);
 
         switch (choice) {
             case 0:
@@ -188,11 +197,7 @@ public class ManagerMenu extends Menu {
 
                 break;
             case 5:
-
-                break;
-            case 6:
-                System.exit(0);// terminates the program
-                Authenticator.UserLogOut();
+                displayManagerMenu(); // Go back to the main menu
                 break;
             default:
                 System.err.println("\n**Please, Enter a Valid Input**");
@@ -201,17 +206,22 @@ public class ManagerMenu extends Menu {
 
     }
     public void displayManagerUsersMenu(){
-        displayMenuHeader("ADMIN USERS MENU", 53);
-        displayOption("0. Add User");
-        displayOption("1. Update User");
-        displayOption("2. Delete User");
-        displayOption("3. Search User");
-        displayOption("4. View All User");
-        displayOption("5. Back");
+        ClearScreen.clear();
+        System.out.println(CYAN_BOLD + "=====================================" + RESET);
+        System.out.println(CYAN_BOLD + "       Manager Users Menu" + RESET);
+        System.out.println(CYAN_BOLD + "=====================================" + RESET);
+
+        displayMenuHeader("MANAGER USERS MENU", 53);
+        displayOption(GREEN_BOLD + "0. " + RESET + "Add User");
+        displayOption(GREEN_BOLD + "1. " + RESET + "Update User");
+        displayOption(GREEN_BOLD + "2. " + RESET + "Delete User");
+        displayOption(GREEN_BOLD + "3. " + RESET + "Search User");
+        displayOption(GREEN_BOLD + "4. " + RESET + "View All Users");
+        displayOption(GREEN_BOLD + "5. " + RESET + "Back");
         Divider.printDivider();
 
-        System.out.print("Enter Selection from 0-5: ");
-        System.out.println();
+        System.out.print("Enter Selection (0-5): ");
+        choice = getValidatedChoice(0, 5);
 
         switch (choice) {
             case 0:
@@ -231,7 +241,7 @@ public class ManagerMenu extends Menu {
 
                 break;
             case 5:
-
+                displayManagerMenu(); // Go back to the main menu
                 break;
             default:
                 System.err.println("\n**Please, Enter a Valid Input**");
@@ -239,17 +249,22 @@ public class ManagerMenu extends Menu {
         }
     }
     public void displayManagerServicesMenu(){
+        ClearScreen.clear();
+        System.out.println(CYAN_BOLD + "=====================================" + RESET);
+        System.out.println(CYAN_BOLD + "      Manager Services Menu" + RESET);
+        System.out.println(CYAN_BOLD + "=====================================" + RESET);
+
         displayMenuHeader("MANAGER SERVICE MENU", 53);
-        displayOption("0. Add Services");
-        displayOption("1. Update Services");
-        displayOption("2. Delete Services");
-        displayOption("3. Search Services");
-        displayOption("4. View All Services");
-        displayOption("5. Back");
+        displayOption(GREEN_BOLD + "0. " + RESET + "Add Services");
+        displayOption(GREEN_BOLD + "1. " + RESET + "Update Services");
+        displayOption(GREEN_BOLD + "2. " + RESET + "Delete Services");
+        displayOption(GREEN_BOLD + "3. " + RESET + "Search Services");
+        displayOption(GREEN_BOLD + "4. " + RESET + "View All Services");
+        displayOption(GREEN_BOLD + "5. " + RESET + "Back");
         Divider.printDivider();
 
-        System.out.print("Enter Selection from 0-5: ");
-        System.out.println();
+        System.out.print("Enter Selection (0-5): ");
+        choice = getValidatedChoice(0, 5);
 
         switch (choice) {
             case 0:
@@ -269,11 +284,7 @@ public class ManagerMenu extends Menu {
 
                 break;
             case 5:
-
-                break;
-            case 6:
-                System.exit(0);// terminates the program
-                Authenticator.UserLogOut();
+                displayManagerMenu(); // Go back to the main menu
                 break;
             default:
                 System.err.println("\n**Please, Enter a Valid Input**");
@@ -283,17 +294,22 @@ public class ManagerMenu extends Menu {
 
     }
     public void displayManagerStatisticsMenu(){
+        ClearScreen.clear();
+        System.out.println(CYAN_BOLD + "=====================================" + RESET);
+        System.out.println(CYAN_BOLD + "   Manager Statistics Menu" + RESET);
+        System.out.println(CYAN_BOLD + "=====================================" + RESET);
+
         displayMenuHeader("MANAGER STATISTICS MENU", 53);
-        displayOption("0. View Cars Statistics");
-        displayOption("1. View Auto Part Statistics");
-        displayOption("2. View Service Statistics");
-        displayOption("3. View Transaction Statistics");
-        displayOption("4. View Revenue");
-        displayOption("5. Back");
+        displayOption(GREEN_BOLD + "0. " + RESET + "View Cars Statistics");
+        displayOption(GREEN_BOLD + "1. " + RESET + "View Auto Part Statistics");
+        displayOption(GREEN_BOLD + "2. " + RESET + "View Service Statistics");
+        displayOption(GREEN_BOLD + "3. " + RESET + "View Transaction Statistics");
+        displayOption(GREEN_BOLD + "4. " + RESET + "View Revenue");
+        displayOption(GREEN_BOLD + "5. " + RESET + "Back");
         Divider.printDivider();
 
-        System.out.print("Enter Selection from 0-5: ");
-        System.out.println();
+        System.out.print("Enter Selection (0-5): ");
+        choice = getValidatedChoice(0, 5);
 
         switch (choice) {
             case 0:
@@ -313,11 +329,7 @@ public class ManagerMenu extends Menu {
 
                 break;
             case 5:
-
-                break;
-            case 6:
-                System.exit(0);// terminates the program
-                Authenticator.UserLogOut();
+                displayManagerMenu(); // Go back to the main menu
                 break;
             default:
                 System.err.println("\n**Please, Enter a Valid Input**");
