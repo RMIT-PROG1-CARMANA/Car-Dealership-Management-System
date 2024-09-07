@@ -7,7 +7,7 @@ import java.util.Objects;
 
 public class CarDatabaseLoader {
     private ArrayList<Car> cars = new ArrayList<>();
-    private String carDatabaseFile = "src\\vehicle\\CarDatabase.ser";
+    private String carDatabaseFile = "src/vehicle/CarDatabase.ser";
 
     // Constructor to set the default file path (optional)
     public CarDatabaseLoader() {
