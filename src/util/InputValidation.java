@@ -14,10 +14,16 @@ public class InputValidation {
         return str != null && !str.trim().isEmpty();
     }
 
-    // Add a method for validating warranty format, if needed
+    // Method for validating warranty format, if needed
     public static boolean isValidWarranty(String warranty) {
         // Example: "1 year", "6 months"
         return warranty.matches("\\d+\\s(year|years|month|months)");
+    }
+
+    // Method to validate the condition format
+    public static boolean isValidCondition(String condition) {
+        // Allows conditions like "new", "used", "refurbished"
+        return condition.matches("new|used|refurbished");
     }
 
     // Validate Service ID (should start with 's-')

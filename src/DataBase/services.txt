@@ -1,0 +1,4 @@
+s-001,2024-09-07,c-001,m-001,Oil Change,75.50,Performed at the client's location,p-001,p-002
+s-002,2024-09-08,c-002,m-002,Tire Replacement,150.00,Replaced all four tires,p-003
+s-003,2024-09-09,c-003,m-003,Brake Pad Replacement,120.00,Replaced front brake pads,p-004
+s-004,2024-09-10,c-004,m-004,Engine Tune-up,200.00,Engine optimization and cleaning,

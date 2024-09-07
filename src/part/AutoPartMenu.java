@@ -132,10 +132,10 @@ public class AutoPartMenu {
 
         // Loop until a valid condition is provided
         while (true) {
-            System.out.print("Enter Condition (e.g., new, refurbished): ");
+            System.out.print("Enter Condition (e.g., new, used, refurbished): ");
             condition = scanner.nextLine();
-            if (!InputValidation.isNonEmptyString(condition)) {
-                System.out.println("Condition cannot be empty!");
+            if (!InputValidation.isValidCondition(condition)) {
+                System.out.println("Invalid Condition! It must be one of the following: 'new', 'used', 'refurbished'.");
             } else {
                 break; // Valid condition, exit loop
             }
@@ -178,6 +178,7 @@ public class AutoPartMenu {
         AutoPart.addPart(part);
     }
 
+
     private static void viewPartDetails(Scanner scanner) {
         System.out.print("Enter Part ID to View Details: ");
         String partID = scanner.nextLine();
@@ -193,43 +194,62 @@ public class AutoPartMenu {
 
         AutoPart part = AutoPart.getPartByID(partID);
         if (part != null) {
+            // Update Part Name
             System.out.print("Enter New Part Name (or press Enter to skip): ");
             String partName = scanner.nextLine();
-            if (!partName.isEmpty()) {
+            if (!partName.isEmpty() && !InputValidation.isNonEmptyString(partName)) {
+                System.out.println("Invalid Part Name! It cannot be empty.");
+            } else if (!partName.isEmpty()) {
                 part.setPartName(partName);
             }
 
+            // Update Manufacturer
             System.out.print("Enter New Manufacturer (or press Enter to skip): ");
             String manufacturer = scanner.nextLine();
-            if (!manufacturer.isEmpty()) {
+            if (!manufacturer.isEmpty() && !InputValidation.isNonEmptyString(manufacturer)) {
+                System.out.println("Invalid Manufacturer! It cannot be empty.");
+            } else if (!manufacturer.isEmpty()) {
                 part.setManufacturer(manufacturer);
             }
 
+            // Update Part Number
             System.out.print("Enter New Part Number (or press Enter to skip): ");
             String partNumber = scanner.nextLine();
-            if (!partNumber.isEmpty()) {
+            if (!partNumber.isEmpty() && !InputValidation.isNonEmptyString(partNumber)) {
+                System.out.println("Invalid Part Number! It cannot be empty.");
+            } else if (!partNumber.isEmpty()) {
                 part.setPartNumber(partNumber);
             }
 
-            System.out.print("Enter New Condition (or press Enter to skip): ");
+            // Update Condition
+            System.out.print("Enter New Condition (or press Enter to skip, e.g., new, used, refurbished): ");
             String condition = scanner.nextLine();
-            if (!condition.isEmpty()) {
+            if (!condition.isEmpty() && !InputValidation.isValidCondition(condition)) {
+                System.out.println("Invalid Condition! It must be one of the following: 'new', 'used', 'refurbished'.");
+            } else if (!condition.isEmpty()) {
                 part.setCondition(condition);
             }
 
+            // Update Warranty
             System.out.print("Enter New Warranty (or press Enter to skip): ");
             String warranty = scanner.nextLine();
-            if (!warranty.isEmpty()) {
+            if (!warranty.isEmpty() && !InputValidation.isValidWarranty(warranty)) {
+                System.out.println("Invalid Warranty format! Use format like '1 year' or '6 months'.");
+            } else if (!warranty.isEmpty()) {
                 part.setWarranty(warranty);
             }
 
+            // Update Cost
             System.out.print("Enter New Cost (or enter 0 to skip): ");
             double cost = scanner.nextDouble();
             scanner.nextLine(); // Consume newline
-            if (cost != 0) {
+            if (cost != 0 && !InputValidation.isPositiveNumber(cost)) {
+                System.out.println("Invalid Cost! It must be a positive number.");
+            } else if (cost != 0) {
                 part.setCost(cost);
             }
 
+            // Update Notes
             System.out.print("Enter New Notes (or press Enter to skip): ");
             String notes = scanner.nextLine();
             if (!notes.isEmpty()) {
@@ -241,6 +261,7 @@ public class AutoPartMenu {
             System.out.println("No part found with ID: " + partID);
         }
     }
+
 
     private static void deletePart(Scanner scanner) {
         System.out.print("Enter Part ID to Delete: ");
