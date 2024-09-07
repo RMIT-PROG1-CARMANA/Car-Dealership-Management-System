@@ -10,6 +10,7 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
+import static menu.MenuStyle.*;
 import static user.Authenticator.loggedUser;
 
 
@@ -88,15 +89,20 @@ public class UserService {
         Divider.printDivider();
         System.out.println("User Information:");
         if (loggedUser != null) {
-            System.out.println("Full Name: " + loggedUser.getFullName());
-            System.out.println("Username: " + loggedUser.getUsername());
-            System.out.println("User ID: " + loggedUser.getUserID());
-            System.out.println("Email: " + loggedUser.getEmail());
-            System.out.println("Phone Number: " + loggedUser.getPhoneNumber());
-            System.out.println("Address: " + loggedUser.getAddress());
-            System.out.println("Date of Birth: " + loggedUser.getDateOfBirth());
-            System.out.println("Status: " + (loggedUser.isStatus() ? "Active" : "Inactive"));
-            System.out.println("User Type: " + loggedUser.getUserType());
+            // Print user profile details in a formatted way
+            System.out.println(CYAN_BOLD + "User Profile Details" + RESET);
+            System.out.println(CYAN_BOLD + "===================================" + RESET);
+            System.out.printf(GREEN_BOLD + "%-20s" + RESET + ": %s%n", "Full Name", loggedUser.getFullName());
+            System.out.printf(GREEN_BOLD + "%-20s" + RESET + ": %s%n", "Username", loggedUser.getUsername());
+            System.out.printf(GREEN_BOLD + "%-20s" + RESET + ": %s%n", "User ID", loggedUser.getUserID());
+            System.out.printf(GREEN_BOLD + "%-20s" + RESET + ": %s%n", "Email", loggedUser.getEmail());
+            System.out.printf(GREEN_BOLD + "%-20s" + RESET + ": %s%n", "Phone Number", loggedUser.getPhoneNumber());
+            System.out.printf(GREEN_BOLD + "%-20s" + RESET + ": %s%n", "Address", loggedUser.getAddress());
+            System.out.printf(GREEN_BOLD + "%-20s" + RESET + ": %s%n", "Date of Birth", loggedUser.getDateOfBirth());
+            System.out.printf(GREEN_BOLD + "%-20s" + RESET + ": %s%n", "Status", (loggedUser.isStatus() ? "Active" : "Inactive"));
+            System.out.printf(GREEN_BOLD + "%-20s" + RESET + ": %s%n", "User Type", loggedUser.getUserType());
+            System.out.println(CYAN_BOLD + "===================================" + RESET);
+
         } else {
             System.out.println("No user is currently logged in.");
         }

@@ -57,10 +57,13 @@ public class ClientMenu extends Menu {
                 case 5:
                     boolean confirmExit = InputValidation.validateBoolean("Are you sure you want to exit? (yes/no): ");
                     if (confirmExit) {
+                        scanner.close();
                         System.out.println("Exiting the application... Goodbye!");
                         System.exit(0);
+
                     }
-                    break;
+                    Divider.printDivider();
+                    continue;
 
                 default:
                     System.err.println("\n**Please, Enter a Valid Input**");

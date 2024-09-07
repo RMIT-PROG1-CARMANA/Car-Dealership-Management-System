@@ -101,5 +101,6 @@ public class Main {
                 System.out.println(RED + "Login failed! Please try again." + RESET);
             }
         }
+
     }
 }

@@ -67,6 +67,7 @@ public class ManagerMenu extends Menu {
                 boolean confirmExit = InputValidation.validateBoolean("Are you sure you want to exit? (yes/no): ");
                 if (confirmExit) {
                     input.close();
+                    System.exit(0);
                 }
                 Divider.printDivider(); // Print a divider for clarity
                 break;
