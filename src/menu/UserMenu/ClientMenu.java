@@ -17,7 +17,7 @@ public class ClientMenu extends Menu {
 
         do {
             // Clear the screen
-            clearScreen();
+            ClearScreen.clear();
 
             System.out.println(CYAN_BOLD + "=====================================" + RESET);
             System.out.println(CYAN_BOLD + "           Client Menu" + RESET);
@@ -69,4 +69,5 @@ public class ClientMenu extends Menu {
 
             System.out.println(CYAN_BOLD + "=====================================" + RESET);
         } while (choice != 6 && choice != 7);
+    }
 }
