@@ -38,8 +38,8 @@ public class UserDataHandler {
     // Find a user by username and password (for login)
     public Optional<User> findUserByCredentials(String username, String password) {
         for (User user : readAllUsers()) {
-            if (user.getUsername().equals(username) && user.getPassword().equals(password)) {
-                return Optional.of(user);
+            if (user != null && user.getUsername().equals(username) && user.getPassword().equals(password)) {
+                return Optional.of(user);  // Return the matched user
             }
         }
         return Optional.empty();

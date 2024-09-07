@@ -5,6 +5,7 @@ import menu.UserMenu.EmployeeBaseMenu;
 import menu.UserMenu.EmployeeRoles.MechanicMenu;
 import menu.UserMenu.EmployeeRoles.SalespersonMenu;
 import menu.UserMenu.ManagerMenu;
+import menu.MenuStyle;
 import operations.UserService;
 import user.Employee;
 import user.Mechanic;
@@ -17,6 +18,7 @@ import java.io.Serializable;
 import java.util.Scanner;
 
 
+import static menu.MenuStyle.*;
 import static operations.UserService.deleteUser;
 
 import static operations.UserService.displayInfoUsers;
@@ -119,12 +121,18 @@ private static UserService userService = new UserService();
         boolean shouldContinue = true;
         while (shouldContinue) {
             // Display menu options
-            System.out.println("Welcome back," + loggedUser.getUsername());
-            System.out.println("0. View Profile");
-            System.out.println("1. edit user");
-            System.out.println("2. Go to " + displayUserRole() + " Main Menu");
-            System.out.println("3. Log out");
-            System.out.println("4. Exit");
+            System.out.println();
+            System.out.println(CYAN_BOLD + "=====================================" + RESET);
+            System.out.println(CYAN_BOLD + "         Welcome back, " + loggedUser.getUsername() + "!" + RESET);
+            System.out.println(CYAN_BOLD + "=====================================" + RESET);
+            System.out.println(YELLOW_BOLD + "Please choose an option:" + RESET);
+            System.out.println();
+            System.out.println(GREEN_BOLD + "0. " + RESET + "View Profile");
+            System.out.println(GREEN_BOLD + "1. " + RESET + "Edit User");
+            System.out.println(GREEN_BOLD + "2. " + RESET + "Go to " + displayUserRole() + " Main Menu");
+            System.out.println(GREEN_BOLD + "3. " + RESET + "Log Out");
+            System.out.println(GREEN_BOLD + "4. " + RESET + "Exit");
+            System.out.println(CYAN_BOLD + "=====================================" + RESET);
 
             choice = getValidatedChoice(0, 4);
             // Handle menu options
