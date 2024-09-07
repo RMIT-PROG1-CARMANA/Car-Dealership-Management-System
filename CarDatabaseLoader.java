@@ -1,64 +1,66 @@
-package car;
+package vehicle;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.*;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Objects;
+
+
 public class CarDatabaseLoader {
-    public final ArrayList<Car> cars = new ArrayList<>();
-    private String carDatabase = "";
+    private ArrayList<Car> cars = new ArrayList<>();
+    private String carDatabaseFile = "src\\vehicle\\CarDatabase.ser";
 
-    public void loadCarDatabase(String carDatabase) {
+    // Constructor to set the default file path (optional)
+    public CarDatabaseLoader() {
+        this.carDatabaseFile = carDatabaseFile;
+    }
 
-        try (BufferedReader br = new BufferedReader(new FileReader(carDatabase))) {
-            this.carDatabase = carDatabase;
-            String line;
-            while ((line = br.readLine()) != null) {
-                String[] carData = line.split(",");
-                Car car = getCar(carData);
-                cars.add(car);
+    // Load the car database from the specified file
+    public void loadCarDatabase(String testDatabaseFile) {
+        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(carDatabaseFile))) {
+            cars = (ArrayList<Car>) ois.readObject();  // Deserialize the list of cars
+            if (cars.isEmpty()) {
+                System.out.println("The car database is empty.");
+            } else {
+                System.out.println("Car database loaded successfully from " + carDatabaseFile);
             }
-        } catch (IOException e) {
-            System.err.println("Loading: Error loading car database: " + e.getMessage());
+        } catch (FileNotFoundException e) {
+            System.err.println("File not found: " + carDatabaseFile);
+        } catch (IOException | ClassNotFoundException e) {
+            System.err.println("Error loading car database: " + e.getMessage());
             e.printStackTrace();
         }
     }
 
-    private static Car getCar(String[] carData) {
-        if (carData.length < 8) {
-            throw new IllegalArgumentException("Invalid car data: " + String.join(",", carData));
-        }
-        String carID = carData[0];
-        boolean isDeleted = Boolean.parseBoolean(carData[1]);
-        String make = carData[2];
-        String model = carData[3];
-        int year = Integer.parseInt(carData[4]);
-        int mileage = Integer.parseInt(carData[5]);
-        String color = carData[6];
-        boolean status = Boolean.parseBoolean(carData[7]);
-        double price = Double.parseDouble(carData[8]);
-        int i = 9;
-        StringBuilder notes = new StringBuilder();
-        while (i < carData.length) {
-            notes.append(carData[i]);
-            if (i++ < carData.length - 1) {
-                notes.append(",");
-            }
-        }
-
-        return new Car(carID, make, model, year, mileage, color, status, price, notes.toString(), isDeleted);
+    // Get the list of cars
+    public ArrayList<Car> getCars() {
+        return cars;
     }
 
-    public void overwriteDatabase(List<Car> cars) {
-        try (PrintWriter pr = new PrintWriter(carDatabase)) {
-            for (Car c : cars) {
-                pr.println(String.format("%s,%s,%s,%s,%d,%d,%s,%s,%.2f,%s",c.getCarID(), c.isDeleted(), c.getMake(), c.getModel(), c.getYear(), c.getMileage(), c.getColor(), c.getStatus(), c.getPrice(), c.getNotes()));
-            }
-            pr.flush();
+    // Save the car database to the specified file
+    public void saveCarDatabase(String testDatabaseFile) {
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(carDatabaseFile))) {
+            oos.writeObject(cars);  // Serialize the list of cars
+            oos.flush();
+            System.out.println("Car database saved successfully to " + carDatabaseFile);
         } catch (IOException e) {
-            System.err.println("Overwriting: Error loading car database: " + e.getMessage());
+            System.err.println("Error saving car database: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    // Set a new list of cars
+    public void setCars(ArrayList<Car> cars) {
+        this.cars = cars;
+    }
+
+    // Overwrite the car database with a new list of cars
+    public void overwriteDatabase(ArrayList<Car> newCars) {
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(carDatabaseFile))) {
+            oos.writeObject(newCars);  // Serialize the new list of cars
+            oos.flush();
+            System.out.println("Car database overwritten successfully in " + carDatabaseFile);
+        } catch (IOException e) {
+            System.err.println("Error overwriting car database: " + e.getMessage());
             e.printStackTrace();
         }
     }
