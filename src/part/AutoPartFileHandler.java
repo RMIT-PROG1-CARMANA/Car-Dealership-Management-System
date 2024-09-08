@@ -25,7 +25,7 @@ public class AutoPartFileHandler {
     }
 
     public static void savePartsToFile() {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_PATH))) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_PATH, true))) {
             for (AutoPart part : AutoPart.getAllParts()) {
                 writer.write(String.format("%s,%s,%s,%s,%s,%s,%f,%s%n", part.getPartID(), part.getPartName(), part.getManufacturer(), part.getPartNumber(), part.getCondition(), part.getWarranty(), part.getCost(), part.getNotes()));
             }
