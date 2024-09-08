@@ -1,22 +1,18 @@
 package part;
 
 import java.util.Scanner;
-import java.util.InputMismatchException;
 
 import menu.UserMenu.ManagerMenu;
 
 public class AutoPartMenu {
+    private static final String SERIALIZE_FILE_PATH = "src/DataBase/parts.ser"; // Path to the serialized file
 
-
-
-
-
-    {
+    public AutoPartMenu() {
         Scanner scanner = new Scanner(System.in);
         boolean exit = false;
 
-        // Load parts from file at startup
-        AutoPartFileHandler.loadPartsFromFile();
+        // Load parts from serialized file at startup
+        AutoPartFileHandler.deserializeParts();
 
         // Create an instance of ManagerMenu
         ManagerMenu managerMenu = new ManagerMenu();
@@ -29,14 +25,11 @@ public class AutoPartMenu {
             exit = true; // Assume we want to exit after displaying the menu
         }
 
-        // Save parts to file before exiting
-        AutoPartFileHandler.savePartsToFile();
+        // Save parts to serialized file before exiting
+        AutoPartFileHandler.serializeParts();
         scanner.close();
         System.out.println("Exiting the AutoPart Management System. Goodbye!");
     }
-
-
-
 
     public static void addPart(Scanner scanner) {
         String partID;
@@ -52,10 +45,6 @@ public class AutoPartMenu {
         while (true) {
             System.out.print("Enter Part ID: ");
             partID = scanner.nextLine();
-            // Commented out InputValidation
-            // if (!InputValidation.isValidPartID(partID)) {
-            //     System.out.println("Invalid Part ID! It must start with 'p-' followed by digits.");
-            // } else if (AutoPart.getPartByID(partID) != null) {
             if (AutoPart.getPartByID(partID) != null) {
                 System.out.println("Part ID already exists! Please enter a different Part ID.");
             } else {
@@ -64,64 +53,24 @@ public class AutoPartMenu {
         }
 
         // Loop until a valid part name is provided
-        while (true) {
-            System.out.print("Enter Part Name: ");
-            partName = scanner.nextLine();
-            // Commented out InputValidation
-            // if (!InputValidation.isNonEmptyString(partName)) {
-            //     System.out.println("Part Name cannot be empty!");
-            // } else {
-            break; // Valid part name, exit loop
-            // }
-        }
+        System.out.print("Enter Part Name: ");
+        partName = scanner.nextLine();
 
         // Loop until a valid manufacturer is provided
-        while (true) {
-            System.out.print("Enter Manufacturer: ");
-            manufacturer = scanner.nextLine();
-            // Commented out InputValidation
-            // if (!InputValidation.isNonEmptyString(manufacturer)) {
-            //     System.out.println("Manufacturer cannot be empty!");
-            // } else {
-            break; // Valid manufacturer, exit loop
-            // }
-        }
+        System.out.print("Enter Manufacturer: ");
+        manufacturer = scanner.nextLine();
 
         // Loop until a valid part number is provided
-        while (true) {
-            System.out.print("Enter Part Number: ");
-            partNumber = scanner.nextLine();
-            // Commented out InputValidation
-            // if (!InputValidation.isNonEmptyString(partNumber)) {
-            //     System.out.println("Part Number cannot be empty!");
-            // } else {
-            break; // Valid part number, exit loop
-            // }
-        }
+        System.out.print("Enter Part Number: ");
+        partNumber = scanner.nextLine();
 
         // Loop until a valid condition is provided
-        while (true) {
-            System.out.print("Enter Condition (e.g., new, refurbished): ");
-            condition = scanner.nextLine();
-            // Commented out InputValidation
-            // if (!InputValidation.isNonEmptyString(condition)) {
-            //     System.out.println("Condition cannot be empty!");
-            // } else {
-            break; // Valid condition, exit loop
-            // }
-        }
+        System.out.print("Enter Condition (e.g., new, refurbished): ");
+        condition = scanner.nextLine();
 
         // Loop until a valid warranty is provided
-        while (true) {
-            System.out.print("Enter Warranty (e.g., 1 year, 6 months): ");
-            warranty = scanner.nextLine();
-            // Commented out InputValidation
-            // if (!InputValidation.isValidWarranty(warranty)) {
-            //     System.out.println("Invalid Warranty format! Use format like '1 year' or '6 months'.");
-            // } else {
-            break; // Valid warranty, exit loop
-            // }
-        }
+        System.out.print("Enter Warranty (e.g., 1 year, 6 months): ");
+        warranty = scanner.nextLine();
 
         // Loop until a valid cost is provided
         while (true) {
@@ -129,8 +78,6 @@ public class AutoPartMenu {
             if (scanner.hasNextDouble()) {
                 cost = scanner.nextDouble();
                 scanner.nextLine(); // Consume newline
-                // Commented out InputValidation
-                // if (InputValidation.isPositiveNumber(cost)) {
                 if (cost > 0) {
                     break; // Valid cost, exit loop
                 } else {

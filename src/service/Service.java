@@ -1,11 +1,14 @@
 package service;
 
 import part.AutoPart;
+import java.io.Serializable;
 import java.util.Date;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Service {
+public class Service implements Serializable {
+    private static final long serialVersionUID = 1L;
+
     private String serviceID;
     private Date serviceDate;
     private String clientID;
@@ -98,7 +101,6 @@ public class Service {
         }
         return false;
     }
-
 
     @Override
     public String toString() {

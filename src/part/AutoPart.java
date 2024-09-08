@@ -4,7 +4,9 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AutoPart {
+public class AutoPart implements Serializable {
+    private static final long serialVersionUID = 1L;  // Adding serialVersionUID for serialization compatibility
+
     private String partID;
     private String partName;
     private String manufacturer;
@@ -146,54 +148,28 @@ public class AutoPart {
             System.out.println("No parts available.");
         } else {
             for (AutoPart part : partsList) {
-                System.out.println(part.toString());
+                System.out.println(part);
             }
         }
     }
 
-    // Method to read parts from a file
-    public static void loadPartsFromFile(String filename) {
-        try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                String[] details = line.split(","); // Assuming CSV format
-                if (details.length == 8) {
-                    AutoPart part = new AutoPart(
-                            details[0], // partID
-                            details[1], // partName
-                            details[2], // manufacturer
-                            details[3], // partNumber
-                            details[4], // condition
-                            details[5], // warranty
-                            Double.parseDouble(details[6]), // cost
-                            details[7]  // notes
-                    );
-                    addPart(part);
-                }
-            }
-        } catch (IOException e) {
-            System.out.println("Error reading from file: " + e.getMessage());
-        }
-    }
-
-    // Method to save parts to a file
+    // Serialization method to save parts to a file
     public static void savePartsToFile(String filename) {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filename))) {
-            for (AutoPart part : partsList) {
-                writer.write(String.join(",",
-                        part.getPartID(),
-                        part.getPartName(),
-                        part.getManufacturer(),
-                        part.getPartNumber(),
-                        part.getCondition(),
-                        part.getWarranty(),
-                        String.valueOf(part.getCost()),
-                        part.getNotes()
-                ));
-                writer.newLine();
-            }
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(filename))) {
+            oos.writeObject(partsList);
+            System.out.println("Parts saved successfully to " + filename);
         } catch (IOException e) {
-            System.out.println("Error writing to file: " + e.getMessage());
+            System.out.println("Error saving parts to file: " + e.getMessage());
+        }
+    }
+
+    // Deserialization method to load parts from a file
+    public static void loadPartsFromFile(String filename) {
+        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(filename))) {
+            partsList = (List<AutoPart>) ois.readObject();
+            System.out.println("Parts loaded successfully from " + filename);
+        } catch (IOException | ClassNotFoundException e) {
+            System.out.println("Error loading parts from file: " + e.getMessage());
         }
     }
 }

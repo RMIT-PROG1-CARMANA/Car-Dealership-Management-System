@@ -2,9 +2,9 @@ package menu.UserMenu;
 
 
 import menu.Menu;
-import operations.UserService;
 import part.AutoPart;
 import part.AutoPartFileHandler;
+import service.Service;
 import service.ServiceFileHandler;
 import user.Authenticator;
 import utils.Divider;
@@ -12,7 +12,8 @@ import utils.InputValidation;
 import part.AutoPartMenu;
 import service.ServiceMenu;
 
-import java.util.InputMismatchException;
+import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 
 
@@ -121,7 +122,7 @@ public class ManagerMenu extends Menu {
         }
     }
     public void displayManagerAutoPartMenu() {
-        AutoPartFileHandler.loadPartsFromFile(); // Load parts at the start of the menu
+        AutoPartFileHandler.deserializeParts(); // Load parts at the start of the menu
         boolean exit = false;
         while (!exit) {
             displayMenuHeader("MANAGER AUTO PARTS MENU", 53);
@@ -159,7 +160,7 @@ public class ManagerMenu extends Menu {
                     System.err.println("\n**Please, Enter a Valid Input**");
             }
         }
-        AutoPartFileHandler.savePartsToFile(); // Save parts before exiting the menu
+        AutoPartFileHandler.serializeParts(); // Save parts before exiting the menu
     }
 
     public void displayManagerSaleTransactionsMenu(){
@@ -244,59 +245,68 @@ public class ManagerMenu extends Menu {
         }
     }
     public void displayManagerServicesMenu() {
-        // Ensure services are loaded before interacting
-        ServiceFileHandler.loadServices(); // Assuming loadServices initializes serviceList
+        try {
+            List<Service> services = ServiceFileHandler.loadServices();
+            Map<String, AutoPart> partsMap = ServiceFileHandler.loadParts();
+            // Ensure services and parts are loaded
 
-        Scanner scanner = new Scanner(System.in); // Ensure scanner is initialized
-        while (true) {
-            displayMenuHeader("MANAGER SERVICE MENU", 53);
-            displayOption("0. Add Service");
-            displayOption("1. Get Service by ID");
-            displayOption("2. Update Service");
-            displayOption("3. Delete Service");
-            displayOption("4. Add Part to Service");
-            displayOption("5. Remove Part from Service");
-            displayOption("6. List All Services");
-            displayOption("7. Exit");
-            Divider.printDivider();
+            Scanner scanner = new Scanner(System.in); // Initialize scanner
+            while (true) {
+                displayMenuHeader("MANAGER SERVICE MENU", 53);
+                displayOption("0. Add Service");
+                displayOption("1. Get Service by ID");
+                displayOption("2. Update Service");
+                displayOption("3. Delete Service");
+                displayOption("4. Add Part to Service");
+                displayOption("5. Remove Part from Service");
+                displayOption("6. List All Services");
+                displayOption("7. Exit");
+                Divider.printDivider();
 
-            System.out.print("Enter Selection from 0-7: ");
-            int choice = getValidatedChoice(0, 7);
+                System.out.print("Enter Selection from 0-7: ");
+                int choice = getValidatedChoice(0, 7);
 
-            switch (choice) {
-                case 0:
-                    ServiceMenu.addService();
-                    break;
-                case 1:
-                    ServiceMenu.getServiceByID();
-                    break;
-                case 2:
-                    ServiceMenu.updateService();
-                    break;
-                case 3:
-                    ServiceMenu.deleteService();
-                    break;
-                case 4:
-                    System.out.print("Enter Service ID: ");
-                    String serviceID = scanner.nextLine();
-                    System.out.print("Enter Part ID: ");
-                    String partID = scanner.nextLine();
-                    ServiceMenu.addPartToService(serviceID, partID);
-                    break;
-                case 5:
-                    ServiceMenu.removePartFromService();
-                    break;
-                case 6:
-                    ServiceMenu.listAllServices();
-                    break;
-                case 7:
-                    System.out.println("Exiting...");
-                    return;
-                default:
-                    System.err.println("\n**Please, Enter a Valid Input**");
+                switch (choice) {
+                    case 0:
+                        ServiceMenu.addService();
+                        break;
+                    case 1:
+                        ServiceMenu.getServiceByID();
+                        break;
+                    case 2:
+                        ServiceMenu.updateService();
+                        break;
+                    case 3:
+                        ServiceMenu.deleteService();
+                        break;
+                    case 4:
+                        System.out.print("Enter Service ID: ");
+                        String serviceID = scanner.nextLine();
+                        System.out.print("Enter Part ID: ");
+                        String partID = scanner.nextLine();
+                        ServiceMenu.addPartToService(serviceID, partID);
+                        break;
+                    case 5:
+                        System.out.print("Enter Service ID: ");
+                        String serviceIDToRemove = scanner.nextLine();
+                        ServiceMenu.removePartFromService(serviceIDToRemove);
+                        break;
+                    case 6:
+                        ServiceMenu.listAllServices();
+                        break;
+                    case 7:
+                        System.out.println("Exiting...");
+                        return;
+                    default:
+                        System.err.println("\n**Please, Enter a Valid Input**");
+                }
             }
+        } catch (Exception e) {
+            System.err.println("Error initializing ServiceMenu: " + e.getMessage());
         }
     }
+
+
 
 
 
