@@ -2,7 +2,6 @@
 import menu.Menu;
 import user.*;
 import utils.Divider;
-
 import java.io.Console;
 import java.util.Scanner;
 

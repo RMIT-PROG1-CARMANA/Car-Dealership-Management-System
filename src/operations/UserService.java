@@ -17,7 +17,7 @@ import static user.Authenticator.loggedUser;
 public class UserService {
 
     public static void addUser(User newUserManager) {
-        List<User> managersList = userDAO.fetchManagersFromDatabase();
+        List<User> managersList = userDAO.fetchManagerFromDatabase();
         managersList.add(newUserManager);
         userDAO.writeUsersToFile(managersList.toArray(new User[0]));
     }

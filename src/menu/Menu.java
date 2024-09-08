@@ -32,7 +32,6 @@ public class Menu  {
 private static UserService userService = new UserService();
 
 
-
     public Menu() {
     }
 

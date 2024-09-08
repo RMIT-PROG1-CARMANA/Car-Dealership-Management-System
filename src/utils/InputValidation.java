@@ -174,11 +174,11 @@ public class InputValidation {
             return "Invalid User ID format. It should be 'uXXXX', where 'XXXX' is a number.";
         }
         // Check if the User ID already exists in the database
-        for (User user : userDAO.readAllUsers()) {
-            if (user.getUserID().equals(userID)) {
-                return "User ID already exists. Please choose a different one.";
-            }
-        }
+//        for (User user : userDAO.readAllUsers()) {
+//            if (user.getUserID().equals(userID)) {
+//                return "User ID already exists. Please choose a different one.";
+//            }
+//        }
         // If all validations pass, return the valid User ID
         return userID;
     }
@@ -191,11 +191,11 @@ public class InputValidation {
             return "Invalid Username format. Please ensure it follows the correct format.";
         }
         // Check if the username already exists
-        for (User user : userDAO.readAllUsers()) {
-            if (user.getUsername().equals(username)) {
-                return "Username already exists. Please choose a different one.";
-            }
-        }
+//        for (User user : userDAO.readAllUsers()) {
+//            if (user.getUsername().equals(username)) {
+//                return "Username already exists. Please choose a different one.";
+//            }
+//        }
         // If all validations pass, return the valid Username
         return username;
     }
