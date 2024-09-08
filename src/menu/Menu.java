@@ -5,17 +5,20 @@ import menu.UserMenu.EmployeeBaseMenu;
 import menu.UserMenu.EmployeeRoles.MechanicMenu;
 import menu.UserMenu.EmployeeRoles.SalespersonMenu;
 import menu.UserMenu.ManagerMenu;
+import menu.MenuStyle;
 import operations.UserService;
 import user.Employee;
 import user.Mechanic;
 import user.Salesperson;
 import user.User;
+import user.Authenticator;
 import utils.Divider;
 import utils.InputValidation;
 import java.io.Serializable;
 import java.util.Scanner;
 
 
+import static menu.MenuStyle.*;
 import static operations.UserService.deleteUser;
 
 import static operations.UserService.displayInfoUsers;
@@ -91,6 +94,11 @@ private static UserService userService = new UserService();
         );
     }
 
+    private void clearScreen() {
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
+    }
+
     // Method to display the role of the logged-in user
     public String displayUserRole() {
         if (loggedUser.getUserType() == User.UserType.EMPLOYEE) {
@@ -110,15 +118,23 @@ private static UserService userService = new UserService();
     public boolean run(){
         Scanner input = new Scanner(System.in);
         int choice;
-        while (true) {
+        boolean shouldContinue = true;
+        while (shouldContinue) {
             // Display menu options
-            System.out.println("Welcome " + loggedUser.getUsername());
-            System.out.println("0. View Profile");
-            System.out.println("1. edit user");
-            System.out.println("2. Go to " + displayUserRole() + " Main Menu");
-            System.out.println("3. Exit");
+            System.out.println();
+            System.out.println(CYAN_BOLD + "=====================================" + RESET);
+            System.out.println(CYAN_BOLD + "         Welcome back, " + loggedUser.getUsername() + "!" + RESET);
+            System.out.println(CYAN_BOLD + "=====================================" + RESET);
+            System.out.println(YELLOW_BOLD + "Please choose an option:" + RESET);
+            System.out.println();
+            System.out.println(GREEN_BOLD + "0. " + RESET + "View Profile");
+            System.out.println(GREEN_BOLD + "1. " + RESET + "Edit User");
+            System.out.println(GREEN_BOLD + "2. " + RESET + "Go to " + displayUserRole() + " Main Menu");
+            System.out.println(GREEN_BOLD + "3. " + RESET + "Log Out");
+            System.out.println(GREEN_BOLD + "4. " + RESET + "Exit");
+            System.out.println(CYAN_BOLD + "=====================================" + RESET);
 
-            choice = getValidatedChoice(0, 3);
+            choice = getValidatedChoice(0, 4);
             // Handle menu options
             switch (choice) {
                 case 0:
@@ -148,9 +164,19 @@ private static UserService userService = new UserService();
                     }
                     break;
                 case 3:
+                    boolean confirmLogout = InputValidation.validateBoolean("Are you sure you want to log out? (yes/no): ");
+                    if (confirmLogout) {
+                        System.out.println("Logging out...");
+                        Authenticator.UserLogOut(); // Call the logout function
+                        shouldContinue = false;  // Exit the loop to return to the login menu
+                    }
+                    break;
+
+                case 4:
                     boolean confirmExit = InputValidation.validateBoolean("Are you sure you want to exit? (yes/no): ");
                     if (confirmExit) {
                         input.close();
+                        System.out.println("Exiting the application... Goodbye!");
                         System.exit(0);
 
                     }
@@ -164,5 +190,6 @@ private static UserService userService = new UserService();
 
             Divider.printDivider();
         }
+        return shouldContinue;
     }
 }

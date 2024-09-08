@@ -34,6 +34,7 @@ public class Authenticator {
                 return user.isStatus();
             } else {
                 System.out.println("User " + username + " is inactive. Authentication failed.");
+                return false;
             }
         } else {
             System.out.println("Invalid username or password.");
@@ -55,6 +56,9 @@ public class Authenticator {
             System.out.println("No user is currently logged in.");
         }
     }
+
+
+
     /**
      Checks if a user is currently logged in.
 

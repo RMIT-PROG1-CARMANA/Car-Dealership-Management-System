@@ -4,59 +4,79 @@ package menu.UserMenu.EmployeeRoles;
 import menu.UserMenu.EmployeeBaseMenu;
 import user.Authenticator;
 import utils.Divider;
+import utils.*;
+import java.util.*;
+
+import static menu.MenuStyle.*;
 
 public class MechanicMenu extends EmployeeBaseMenu {
     @Override
     public void displayEmployeeMenu() {
         int choice;
-//        uiUtils.clearScreen();
-            System.out.println("Welcome Mechanic!");
-            System.out.println();
+        Scanner scanner = new Scanner(System.in);
 
-            displayMenuHeader("MECHANIC MENU ", 53);
-            displayOption("0. Add Service");
-            displayOption("1. Update Service");
-            displayOption("2. Calculate Revenue (Day/Week/Month)");
-            displayOption("3. List Number of Services (Day/Week/Month)");
-            displayOption("4. Update Service");
-            displayOption("5. Go Back Profile");
-            displayOption("6. Logout");
+        do {
+            // Clear the screen
+            ClearScreen.clear();
+
+            System.out.println(CYAN_BOLD + "=====================================" + RESET);
+            System.out.println(CYAN_BOLD + "       Welcome, Mechanic!" + RESET);
+            System.out.println(CYAN_BOLD + "=====================================" + RESET);
+
+            displayMenuHeader("Mechanic Menu", 53);
+            displayOption(GREEN_BOLD + "0. " + RESET + "Record Service Transaction");
+            displayOption(GREEN_BOLD + "1. " + RESET + "View Service Transactions");
+            displayOption(GREEN_BOLD + "2. " + RESET + "Check Service Schedule");
+            displayOption(GREEN_BOLD + "3. " + RESET + "Update Vehicle Information");
+            displayOption(GREEN_BOLD + "4. " + RESET + "Generate Service Report");
+            displayOption(GREEN_BOLD + "5. " + RESET + "Manage Parts Inventory");
+            displayOption(GREEN_BOLD + "6. " + RESET + "Back to Main Menu");
+            displayOption(GREEN_BOLD + "7. " + RESET + "Exit");
             Divider.printDivider();
 
-            System.out.print("Enter Selection: ");
-            System.out.println();
-
-            choice = getValidatedChoice(0, 6);
+            System.out.print("Enter Selection (0-7): ");
+            choice = getValidatedChoice(0, 7);
 
             switch (choice) {
                 case 0:
-
                     break;
 
                 case 1:
-
                     break;
+
                 case 2:
-                    calculateRevenue();
                     break;
+
                 case 3:
-
                     break;
+
                 case 4:
-
                     break;
+
                 case 5:
+                    break;
 
-                    break;
                 case 6:
-                    System.exit(0);// terminates the program
-                    Authenticator.UserLogOut();
+                    // Return to main menu
+                    boolean confirmBack = InputValidation.validateBoolean("Are you sure you want to back to Main Menu? (yes/no): ");
+                    if (confirmBack) {
+                        System.out.println("Returning to main menu...");
+                    }
+                    return; // Exits the current menu loop and returns to the Menu class
+
+                case 7:
+                    boolean confirmExit = InputValidation.validateBoolean("Are you sure you want to exit? (yes/no): ");
+                    if (confirmExit) {
+                        System.out.println("Exiting the application... Goodbye!");
+                        Authenticator.UserLogOut(); // Log out the user
+                        System.exit(0);
+                    }
                     break;
+
                 default:
                     System.err.println("\n**Please, Enter a Valid Input**");
-                    System.out.println();
+                    break;
             }
-
+        } while (choice != 6 && choice != 7);
     }
-
 }

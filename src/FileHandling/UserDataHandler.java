@@ -50,7 +50,7 @@ public class UserDataHandler {
             }
         } catch (Exception e) {
             // Handle exceptions such as file not found or deserialization errors
-            System.err.println("Error reading users or no users exist.");
+            System.err.println("Error reading users or no users exist: " + e.getMessage());
         }
 
         // If no matching user is found or an error occurs, return Optional.empty()
@@ -58,16 +58,16 @@ public class UserDataHandler {
     }
 
 
-    // Fetches managers from the database
-    public List<User> fetchManagersFromDatabase() {
-        try {
-            User[] managersArray = readAllUsers();
-            return new ArrayList<>(Arrays.asList(managersArray));
-        } catch (Exception e) {
-            return new ArrayList<>();
+        // Fetches manager from the database
+        public List<User> fetchManagerFromDatabase () {
+            try {
+                User[] managersArray = readAllUsers();
+                return new ArrayList<>(Arrays.asList(managersArray));
+            } catch (Exception e) {
+                return new ArrayList<>();
+            }
         }
+
+
     }
 
-
-
-}
