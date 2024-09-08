@@ -1,64 +1,48 @@
 package sales;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class SalesTransactionDatabaseLoader {
-    public final ArrayList<SalesTransaction> transactions = new ArrayList<>();
-    private String transactionDatabase = "";
+    List<SalesTransaction> transactions = new ArrayList<>();
+    private String transactionDatabaseFile = "src/sales/SalesTransactionDatabase.ser";
 
-    public void loadTransactionDatabase(String transactionDatabase) {
-        try (BufferedReader br = new BufferedReader(new FileReader(transactionDatabase))) {
-            this.transactionDatabase = transactionDatabase;
-            String line;
-            while ((line = br.readLine()) != null) {
-                String[] transactionData = line.split(",");
-                SalesTransaction transaction = getSalesTransaction(transactionData);
-                transactions.add(transaction);
+    public SalesTransactionDatabaseLoader() {
+        this.transactionDatabaseFile = transactionDatabaseFile;
+    }
+
+    // Load the transactions from the .ser file using deserialization
+    public void loadTransactionDatabase(String transactionDB) {
+        File file = new File(transactionDatabaseFile);
+
+        // Check if the file exists before trying to read it
+        if (file.exists()) {
+            try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(file))) {
+                transactions = (List<SalesTransaction>) ois.readObject();
+                System.out.println("Transaction database loaded successfully.");
+            } catch (FileNotFoundException e) {
+                System.out.println("Database file not found: " + e.getMessage());
+            } catch (IOException e) {
+                System.out.println("Error reading from the database file: " + e.getMessage());
+            } catch (ClassNotFoundException e) {
+                System.out.println("Class not found during deserialization: " + e.getMessage());
             }
-        } catch (IOException e) {
-            System.err.println("Error loading transaction database: " + e.getMessage());
-            e.printStackTrace();
+        } else {
+            System.out.println("Database file does not exist. Starting with an empty transaction list.");
+            transactions = new ArrayList<>();
         }
     }
 
-    public static SalesTransaction getSalesTransaction(String[] transactionData) {
-        if (transactionData.length < 8) {
-            throw new IllegalArgumentException("Invalid transaction data: " + String.join(",", transactionData));
-        }
-
-        String transactionID = transactionData[0];
-        String transactionDate = transactionData[1];
-        String clientID = transactionData[2];
-        String salespersonID = transactionData[3];
-
-        List<String> purchasedItems = List.of(transactionData[4].split("\\|"));
-        double discount = Double.parseDouble(transactionData[5]);
-        double totalAmount = Double.parseDouble(transactionData[6]);
-        String notes = transactionData[7];
-
-        return new SalesTransaction(transactionID, transactionDate, clientID, salespersonID, purchasedItems, discount, totalAmount, notes);
-    }
-
-    public void overwriteDatabase(ArrayList<SalesTransaction> transactions) {
-        try (PrintWriter pw = new PrintWriter(transactionDatabase)) {
-            for (SalesTransaction transaction : transactions) {
-                pw.println(transaction.getTransactionID() + "," +
-                        transaction.getTransactionDate() + "," +
-                        transaction.getClientID() + "," +
-                        transaction.getSalespersonID() + "," +
-                        transaction.getSerializedPurchasedItemID() + "," + // Serialize purchased items
-                        transaction.getDiscount() + "," +
-                        transaction.getTotalAmount() + "," +
-                        transaction.getNotes());
-            }
+    // Overwrite the transactions to the .ser file using serialization
+    public void overwriteDatabase(List<SalesTransaction> transactions) {
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(transactionDatabaseFile))) {
+            oos.writeObject(transactions);
+            System.out.println("Transaction database saved successfully.");
+        } catch (FileNotFoundException e) {
+            System.out.println("Database file not found: " + e.getMessage());
         } catch (IOException e) {
-            System.err.println("Error writing to transaction database: " + e.getMessage());
-            e.printStackTrace();
+            System.out.println("Error writing to the database file: " + e.getMessage());
         }
     }
 }
