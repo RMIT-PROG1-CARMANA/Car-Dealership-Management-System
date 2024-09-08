@@ -5,13 +5,11 @@ import user.*;
 import utils.Divider;
 import utils.InputValidation;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
-
 import static menu.MenuStyle.*;
 import static user.Authenticator.loggedUser;
+import static user.Membership.MembershipType.REGULAR;
 
 
 public class UserService {
@@ -50,7 +48,7 @@ public class UserService {
             default:
                 throw new IllegalArgumentException("Invalid user type choice");
         }
-        User user = null;
+        User user;
         if (userType == User.UserType.EMPLOYEE) {
             int positionChoice = InputValidation.validateInt("Select Position (1 for Salesperson, 2 for Mechanic): ");
             Employee.Position position;
@@ -69,7 +67,7 @@ public class UserService {
         } else if (userType == User.UserType.MANAGER) {
             user = new Manager(userID, fullName, dateOfBirth, address, phoneNumber, email, status, password, username);
         } else {
-            user = new Client(userID, fullName, dateOfBirth, address, phoneNumber, email, status, password, username, null, 1.0); // Adjust Client constructor
+            user = new Client(userID, fullName, dateOfBirth, address, phoneNumber, email, status, password, username, null); // Adjust Client constructor
         }
 
         addUser(user);

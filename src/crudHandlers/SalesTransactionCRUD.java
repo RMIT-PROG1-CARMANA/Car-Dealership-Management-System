@@ -1,12 +1,16 @@
 
-package sales;
+package crudHandlers;
+
+import FileHandling.SalesTransactionDataHandler;
+import sales.SalesTransaction;
+import user.Membership;
 
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
 public class SalesTransactionCRUD {
-    private final SalesTransactionDatabaseLoader stdl = new SalesTransactionDatabaseLoader();
+    private final SalesTransactionDataHandler stdl = new SalesTransactionDataHandler();
 
     public enum OrderType {
         transactionID,
@@ -86,8 +90,12 @@ public class SalesTransactionCRUD {
         }
 
         //calculate the total amount
-        public void totalAmountCalculation() {
-
+        public void totalAmountCalculation(Membership membership) {
+            double sum = purchaseItems.stream()
+                    .mapToDouble(PurchasedItem::getItemPrice)
+                    .sum();
+            this.discount = membership.getDiscount();
+            this.totalAmount = sum * (1 - discount);  // Apply discount
         }
     }
 

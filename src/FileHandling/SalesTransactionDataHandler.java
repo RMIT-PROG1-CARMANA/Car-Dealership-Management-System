@@ -1,15 +1,17 @@
 
-package sales;
+package FileHandling;
+
+import sales.SalesTransaction;
 
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SalesTransactionDatabaseLoader {
-    List<SalesTransaction> transactions = new ArrayList<>();
-    private String transactionDatabaseFile = "src/sales/SalesTransactionDatabase.ser";
+public class SalesTransactionDataHandler {
+    public List<SalesTransaction> transactions = new ArrayList<>();
+    private String transactionDatabaseFile = "src/DataBase/SalesTransactionDatabase.txt";
 
-    public SalesTransactionDatabaseLoader() {
+    public SalesTransactionDataHandler() {
         this.transactionDatabaseFile = transactionDatabaseFile;
     }
 

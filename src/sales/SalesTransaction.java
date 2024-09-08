@@ -12,8 +12,8 @@ public class SalesTransaction  implements Serializable {
     private String transactionDate;
     private String clientID;
     private String salespersonID;
-//    private List<Object> purchasedItems;
     private List<PurchasedItem> purchaseItems;
+    // discount will base on the client membership type
     private double discount;
     private double totalAmount;
     private String notes;
@@ -32,7 +32,7 @@ public class SalesTransaction  implements Serializable {
     }
 
     public SalesTransaction(String transactionID, String transactionDate, String clientID,
-                            String salespersonID, List<Object> purchasedItems,
+                            String salespersonID,List<PurchasedItem> purchaseItems,
                             double discount, double totalAmount, String notes) {
         this.transactionID = transactionID;
         this.transactionDate = transactionDate;

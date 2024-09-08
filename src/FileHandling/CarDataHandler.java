@@ -38,18 +38,6 @@ public class CarDataHandler {
         return cars;
     }
 
-    // Save the car database to the specified file
-    public void saveCarDatabase(String testDatabaseFile) {
-        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(carDatabaseFile))) {
-            oos.writeObject(cars);  // Serialize the list of cars
-            oos.flush();
-            System.out.println("Car database saved successfully to " + carDatabaseFile);
-        } catch (IOException e) {
-            System.err.println("Error saving car database: " + e.getMessage());
-            e.printStackTrace();
-        }
-    }
-
     // Set a new list of cars
     public void setCars(ArrayList<Car> cars) {
         this.cars = cars;

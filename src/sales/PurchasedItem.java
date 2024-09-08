@@ -30,6 +30,12 @@ public class PurchasedItem {
         this.part = part;
     }
 
+    public double getItemPrice() {
+        double carPrice = (car != null) ? car.getPrice() : 0.0;
+        double partPrice = (part != null) ? part.getCost() : 0.0;
+        return carPrice + partPrice;
+    }
+
     @Override
     public String toString() {
         return "PurchasedItem {" +
