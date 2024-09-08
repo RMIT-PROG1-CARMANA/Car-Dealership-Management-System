@@ -1,4 +1,7 @@
+
 package sales;
+import part.AutoPart;
+import vehicle.Car;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -9,32 +12,39 @@ public class SalesTransaction  implements Serializable {
     private String transactionDate;
     private String clientID;
     private String salespersonID;
-    private List<Object> purchasedItems;
+//    private List<Object> purchasedItems;
+    private List<PurchasedItem> purchaseItems;
     private double discount;
     private double totalAmount;
     private String notes;
+    private boolean deleted;
 
     public SalesTransaction() {
-        this.transactionID = "t-000";
+        this.transactionID = "t-000";//t-XXX formatted
         this.transactionDate = "1970-01-01";
-        this.clientID = "c-000";
-        this.salespersonID = "s-000";
-        this.purchasedItems = new ArrayList<>();
+        this.clientID = "cl-000"; //cl-XXX formatted
+        this.salespersonID = "sp-000";
+        this.purchaseItems = new ArrayList<>();
         this.discount = 0.0;
         this.totalAmount = 0.0;
         this.notes = "No additional notes";
+        this.deleted = true;
     }
 
-    public SalesTransaction(String transactionID, String transactionDate, String clientID, String salespersonID, List<Object> purchasedItems, double discount, double totalAmount, String notes) {
+    public SalesTransaction(String transactionID, String transactionDate, String clientID,
+                            String salespersonID, List<Object> purchasedItems,
+                            double discount, double totalAmount, String notes) {
         this.transactionID = transactionID;
         this.transactionDate = transactionDate;
         this.clientID = clientID;
         this.salespersonID = salespersonID;
-        this.purchasedItems = purchasedItems;
+        this.purchaseItems = purchaseItems != null ? new ArrayList<>(purchaseItems) : new ArrayList<>();
         this.discount = discount;
         this.totalAmount = totalAmount;
-        this.notes = notes;
+        this.notes = notes != null ? notes : "";
+        this.deleted = false;
     }
+
 
     // Getters and Setters
     public String getTransactionID() {
@@ -69,12 +79,12 @@ public class SalesTransaction  implements Serializable {
         this.salespersonID = salespersonID;
     }
 
-    public List<Object> getPurchasedItems() {
-        return purchasedItems;
+    public List<PurchasedItem> getPurchaseItems() {
+        return purchaseItems;
     }
 
-    public void setPurchasedItems(List<Object> purchasedItems) {
-        this.purchasedItems = purchasedItems;
+    public void setPurchaseItems(List<PurchasedItem> purchaseItems) {
+        this.purchaseItems = purchaseItems;
     }
 
     public double getDiscount() {
@@ -103,7 +113,15 @@ public class SalesTransaction  implements Serializable {
 
     // Additional Methods
     public void addPurchasedItem(Object item) {
-        this.purchasedItems.add(item);
+        this.purchaseItems.add((PurchasedItem) item);
+    }
+
+    public boolean isDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
     }
 
     public void displayTransactionDetails() {
@@ -111,22 +129,25 @@ public class SalesTransaction  implements Serializable {
         System.out.println("Transaction Date: " + transactionDate);
         System.out.println("Client ID: " + clientID);
         System.out.println("Salesperson ID: " + salespersonID);
-        System.out.println("Purchased Items: " + purchasedItems.size() + " items");
+        System.out.println("Purchased Items: " + purchaseItems.size() + " items");
         System.out.println("Discount: " + discount);
         System.out.println("Total Amount: " + totalAmount);
         System.out.println("Notes: " + notes);
+        System.out.println("Deleted Status: " + deleted);
     }
+
     @Override
     public String toString() {
-        return "sales.SalesTransaction{" +
-                "carID='" + transactionID + '\'' +
-                ", make='" + transactionDate + '\'' +
-                ", model='" + clientID + '\'' +
-                ", year=" + salespersonID +
-                ", mileage=" + purchasedItems +
-                ", color='" + discount + '\'' +
-                ", price=" + totalAmount +
-                ", notes='" + notes + '\'';
-
+        return "SalesTransaction{" +
+                "transactionID='" + transactionID + '\'' +
+                ", transactionDate='" + transactionDate + '\'' +
+                ", clientID='" + clientID + '\'' +
+                ", salespersonID='" + salespersonID + '\'' +
+                ", purchasedItems=" + purchaseItems +
+                ", discount=" + discount +
+                ", totalAmount=" + totalAmount +
+                ", notes='" + notes + '\'' +
+                ", deleted=" + deleted +
+                '}';
     }
 }
