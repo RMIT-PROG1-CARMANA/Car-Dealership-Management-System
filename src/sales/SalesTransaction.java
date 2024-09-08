@@ -1,6 +1,7 @@
 
 package sales;
 import part.AutoPart;
+import user.Membership;
 import vehicle.Car;
 
 import java.io.Serializable;
@@ -134,6 +135,15 @@ public class SalesTransaction  implements Serializable {
         System.out.println("Total Amount: " + totalAmount);
         System.out.println("Notes: " + notes);
         System.out.println("Deleted Status: " + deleted);
+    }
+
+    private double totalAmountCalculation(Membership membership) {
+        double sum = purchaseItems.stream()
+                .mapToDouble(PurchasedItem::getItemPrice)
+                .sum();
+        this.discount = membership.getDiscount();
+        this.totalAmount = sum * (1 - discount);  // Apply discount and set totalAmount
+        return totalAmount;  // Return the calculated total amount
     }
 
     @Override

@@ -4,6 +4,10 @@ import crudHandlers.SalesTransactionCRUD;
 
 import java.util.List;
 import java.util.Scanner;
+import vehicle.Car;
+import part.AutoPart;
+import java.util.ArrayList;
+import java.util.List;
 
 
 
@@ -51,13 +55,31 @@ public class SalesTransactionCRUDTest {
                     String clientID = scanner.nextLine();
                     System.out.print("Salesperson ID: ");
                     String salespersonID = scanner.nextLine();
+
+                    // Collect PurchasedItem details
+                    List<PurchasedItem> purchaseItems = new ArrayList<>();
+                    boolean addMoreItems = true;
+                    while (addMoreItems) {
+                        System.out.print("Enter car details (or leave blank if none): ");
+                        String carID = scanner.nextLine();  // You can enhance this part to input full car details
+                        Car car = carID.isEmpty() ? null : new Car(carID);  // Placeholder
+
+                        System.out.print("Enter part details (or leave blank if none): ");
+                        String partID = scanner.nextLine();  // You can enhance this part to input full part details
+                        AutoPart part = partID.isEmpty() ? null : new AutoPart(partID);  // Placeholder
+
+                        PurchasedItem purchasedItem = new PurchasedItem(car, part);
+                        purchaseItems.add(purchasedItem);
+
+                        System.out.print("Do you want to add another item? (yes/no): ");
+                        addMoreItems = scanner.nextLine().equalsIgnoreCase("yes");
+                    }
                     System.out.print("Total Amount: ");
-                    double totalAmount = scanner.nextDouble();
-                    scanner.nextLine();  // Consume the newline character
+
                     System.out.print("Notes: ");
                     String notes = scanner.nextLine();
 
-                    SalesTransaction newTransaction = new SalesTransaction(transactionID, transactionDate, clientID, , totalAmount, notes);
+                    SalesTransaction newTransaction = new SalesTransaction(transactionID, transactionDate, clientID,salespersonID, , totalAmount, notes);
                     salesTransactionCRUD.addTransaction(newTransaction);
                     System.out.println("New transaction added successfully.");
                     break;

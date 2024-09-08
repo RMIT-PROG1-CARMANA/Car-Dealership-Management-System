@@ -4,7 +4,7 @@ import vehicle.Car;
 
 import java.io.*;
 import java.util.ArrayList;
-
+import java.util.Optional;
 
 
 public class CarDataHandler {
@@ -53,5 +53,14 @@ public class CarDataHandler {
             System.err.println("Error overwriting car database: " + e.getMessage());
             e.printStackTrace();
         }
+    }
+    // Find a car by its ID
+    public Car findCarByID(String carID) {
+        // Search for the car with the given ID
+        Optional<Car> carOptional = cars.stream()
+                .filter(car -> car.getCarID().equals(carID))
+                .findFirst();
+
+        return carOptional.orElse(null);  // Return null if not found
     }
 }

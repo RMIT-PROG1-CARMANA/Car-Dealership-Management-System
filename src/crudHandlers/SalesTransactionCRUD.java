@@ -89,14 +89,7 @@ public class SalesTransactionCRUD {
             }
         }
 
-        //calculate the total amount
-        public void totalAmountCalculation(Membership membership) {
-            double sum = purchaseItems.stream()
-                    .mapToDouble(PurchasedItem::getItemPrice)
-                    .sum();
-            this.discount = membership.getDiscount();
-            this.totalAmount = sum * (1 - discount);  // Apply discount
-        }
+
     }
 
 
