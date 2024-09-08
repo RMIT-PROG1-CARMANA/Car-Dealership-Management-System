@@ -37,13 +37,26 @@ public class UserDataHandler {
 
     // Find a user by username and password (for login)
     public Optional<User> findUserByCredentials(String username, String password) {
-        for (User user : readAllUsers()) {
-            if (user.getUsername().equals(username) && user.getPassword().equals(password)) {
-                return Optional.of(user);
+        try {
+            // Read all users from the file
+            User[] usersArray = readAllUsers();  // No need for FILE_USER_NAME as a parameter here
+            List<User> usersList = new ArrayList<>(Arrays.asList(usersArray));
+
+            // Check for matching credentials in the list of users
+            for (User user : usersList) {
+                if (user != null && username.equals(user.getUsername()) && password.equals(user.getPassword())) {
+                    return Optional.of(user);  // Return the matched user wrapped in an Optional
+                }
             }
+        } catch (Exception e) {
+            // Handle exceptions such as file not found or deserialization errors
+            System.err.println("Error reading users or no users exist.");
         }
+
+        // If no matching user is found or an error occurs, return Optional.empty()
         return Optional.empty();
     }
+
 
     // Fetches managers from the database
     public List<User> fetchManagersFromDatabase() {

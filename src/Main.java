@@ -3,7 +3,7 @@ import menu.Menu;
 import user.*;
 import utils.Divider;
 
-        import java.util.Scanner;
+import java.util.Scanner;
 
 public class Main {
     private static Menu appMenu;
