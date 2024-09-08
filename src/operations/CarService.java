@@ -2,9 +2,9 @@ package operations;
 
 import vehicle.Car;
 import crudHandlers.CarCRUD;
+import utils.InputValidation;
 
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class CarService {
     static CarCRUD carCRUD = new CarCRUD("");
@@ -21,27 +21,16 @@ public class CarService {
     }
     public static void createCar() {
         // Add a new car
-        System.out.println("Enter details of the new car:");
-        System.out.print("Car ID: ");
-        String carID = scanner.nextLine();
-        System.out.print("Make: ");
-        String make = scanner.nextLine();
-        System.out.print("Model: ");
-        String model = scanner.nextLine();
-        System.out.print("Year: ");
-        int year = scanner.nextInt();
-        System.out.print("Mileage: ");
-        int mileage = scanner.nextInt();
-        scanner.nextLine();  // Consume the newline character
-        System.out.print("Color: ");
-        String color = scanner.nextLine();
-        System.out.print("Status (true for available, false for sold): ");
-        boolean status = scanner.nextBoolean();
-        System.out.print("Price: ");
-        double price = scanner.nextDouble();
-        scanner.nextLine();  // Consume the newline character
-        System.out.print("Notes: ");
-        String notes = scanner.nextLine();
+        String carID = InputValidation.validateCarID("Car ID (format: C-XXXX where XXXX is a number): ");
+        String make = InputValidation.validateString("Make: ");
+        String model = InputValidation.validateString("Model: ");
+        int year = InputValidation.validateInt("Year: ");
+        int mileage = InputValidation.validateInt("Mileage: ");
+        String color = InputValidation.validateString("Color: ");
+        boolean status = InputValidation.validateBoolean("Status (true for available, false for sold): ");
+        double price = InputValidation.validateDouble("Price: ");
+        String notes = InputValidation.validateString("Notes: ");
+
 
         Car newCar = new Car(carID, make, model, year, mileage, color, status, price, notes);
         carCRUD.addCar(newCar);
@@ -49,27 +38,16 @@ public class CarService {
     }
 
     public static void updateCar(){
-        System.out.print("Enter the Car ID to update: ");
-        String updateCarID = scanner.nextLine();
         System.out.println("Enter new details for the car:");
-        System.out.print("Make: ");
-        String updateMake = scanner.nextLine();
-        System.out.print("Model: ");
-        String updateModel = scanner.nextLine();
-        System.out.print("Year: ");
-        int updateYear = scanner.nextInt();
-        System.out.print("Mileage: ");
-        int updateMileage = scanner.nextInt();
-        scanner.nextLine();  // Consume the newline character
-        System.out.print("Color: ");
-        String updateColor = scanner.nextLine();
-        System.out.print("Status (true for available, false for sold): ");
-        boolean updateStatus = scanner.nextBoolean();
-        System.out.print("Price: ");
-        double updatePrice = scanner.nextDouble();
-        scanner.nextLine();  // Consume the newline character
-        System.out.print("Notes: ");
-        String updateNotes = scanner.nextLine();
+        String updateCarID = InputValidation.validateCarID("Enter the Car ID to update: ");
+        String updateMake = InputValidation.validateString("Make: ");
+        String updateModel = InputValidation.validateString("Model: ");
+        int updateYear = InputValidation.validateInt("Year: ");
+        int updateMileage = InputValidation.validateInt("Mileage: ");
+        String updateColor = InputValidation.validateString("Color: ");
+        boolean updateStatus = InputValidation.validateBoolean("Status (true for available, false for sold): ");
+        double updatePrice = InputValidation.validateDouble("Price: ");
+        String updateNotes = InputValidation.validateString("Notes: ");
 
         Car updateCar = new Car(updateCarID, updateMake, updateModel, updateYear, updateMileage, updateColor, updateStatus, updatePrice, updateNotes);
         carCRUD.updateCar(updateCarID, updateCar);

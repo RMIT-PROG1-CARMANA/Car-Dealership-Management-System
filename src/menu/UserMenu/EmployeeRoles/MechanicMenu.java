@@ -23,7 +23,7 @@ public class MechanicMenu extends EmployeeBaseMenu {
             System.out.println(CYAN_BOLD + "       Welcome, Mechanic!" + RESET);
             System.out.println(CYAN_BOLD + "=====================================" + RESET);
 
-            displayMenuHeader("Mechanic Menu", 53);
+            displayMenuHeader("Mechanic Menu", 42);
             displayOption(GREEN_BOLD + "0. " + RESET + "Record Service Transaction");
             displayOption(GREEN_BOLD + "1. " + RESET + "View Service Transactions");
             displayOption(GREEN_BOLD + "2. " + RESET + "Check Service Schedule");
@@ -32,7 +32,7 @@ public class MechanicMenu extends EmployeeBaseMenu {
             displayOption(GREEN_BOLD + "5. " + RESET + "Manage Parts Inventory");
             displayOption(GREEN_BOLD + "6. " + RESET + "Back to Main Menu");
             displayOption(GREEN_BOLD + "7. " + RESET + "Exit");
-            Divider.printDivider();
+            Divider.printDivider(47);
 
             System.out.print("Enter Selection (0-7): ");
             choice = getValidatedChoice(0, 7);

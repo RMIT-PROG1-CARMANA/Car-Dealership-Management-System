@@ -1,14 +1,13 @@
 package utils;
 
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.InputMismatchException;
-import java.util.Scanner;
+import java.util.*;
 import java.util.function.Function;
 
+import FileHandling.CarDataHandler;
 import FileHandling.UserDataHandler;
 import user.*;
+import vehicle.*;
 import service.*;
 import part.*;
 import sales.*;
@@ -16,6 +15,7 @@ import sales.*;
 
 public class InputValidation {
     private static final UserDataHandler userDAO = new UserDataHandler();
+    private static final CarDataHandler carDAO = new CarDataHandler();
 
     public static long validateLong(String question) {
         return validateLong((v) -> true, question, "Invalid input, please try again.");
@@ -167,44 +167,98 @@ public class InputValidation {
     }
 
     // Validate User ID format (uXXXX) and check if it exists in one method
-    public static String validateUserID(String question) {
-        String userID = InputValidation.validateString(question); // Retrieve user input
-        // Validate User ID format (uXXXX)
-        if (!userID.matches("u\\d{4}")) {
-            return "Invalid User ID format. It should be 'uXXXX', where 'XXXX' is a number.";
+    public static String validateUserID(String promptMessage) {
+        Scanner input = new Scanner(System.in);
+        String userID;
+
+        while (true) {
+            System.out.print(promptMessage);
+            userID = input.nextLine().trim();
+
+            // Validate the format of the userID (should be in the form u-xxxx, where xxxx is a number)
+            if (!userID.matches("u-\\d{4}")) {
+                System.out.println("Invalid User ID format. It should be 'u-XXXX', where 'XXXX' is a number.");
+                continue;  // Re-prompt for user input
+            }
+
+            // Check if the userID already exists in the database using the existing userDAO
+            User[] existingUsers = userDAO.readAllUsers();
+
+            // Check for null or empty user list
+            if (existingUsers == null) {
+                System.out.println("Error: No users found in the system.");
+                break; // Exit loop if no users found (or handle this case appropriately)
+            }
+
+            boolean userExists = false;
+
+            // Loop through the existing users and check if any have the same userID
+            for (User user : existingUsers) {
+                if (user != null && user.getUserID().equals(userID)) {  // Null check before accessing userID
+                    System.out.println("User ID already exists. Please enter a different User ID.");
+                    userExists = true;
+                    break;  // Exit the loop if we find a match
+                }
+            }
+
+            // If the userID is unique and valid, return it
+            if (!userExists) {
+                return userID;
+            }
         }
-        // Check if the User ID already exists in the database
-//        for (User user : userDAO.readAllUsers()) {
-//            if (user.getUserID().equals(userID)) {
-//                return "User ID already exists. Please choose a different one.";
-//            }
-//        }
-        // If all validations pass, return the valid User ID
-        return userID;
+
+        return null; // Default return in case of errors
     }
 
     // Validate username format and check if it exists in one method
     public static String validateUsername(String question) {
-        String username = InputValidation.validateString(question); // Retrieve user input
-        // Check if the username format is correct
-        if (!username.matches("[a-zA-Z0-9_]{5,15}")) {  // Example format: alphanumeric, 5 to 15 characters
-            return "Invalid Username format. Please ensure it follows the correct format.";
+        Scanner input = new Scanner(System.in);
+        String username;
+
+        while (true) {
+            username = InputValidation.validateString(question); // Retrieve user input
+
+            // Check if the username format is correct
+            if (!username.matches("[a-zA-Z0-9_]{5,15}")) {  // Example format: alphanumeric, 5 to 15 characters
+                System.out.println("Invalid Username format. Please ensure it follows the correct format.");
+                continue;  // Re-prompt the user
+            }
+
+            // Check if the username already exists in the database
+            User[] existingUsers = userDAO.readAllUsers();
+            boolean usernameExists = false;
+
+            for (User user : existingUsers) {
+                if (user != null && user.getUsername() != null && user.getUsername().equals(username)) {
+                    System.out.println("Username already exists. Please choose a different one.");
+                    usernameExists = true;
+                    break;
+                }
+            }
+
+            // If the username is valid and doesn't exist, return it
+            if (!usernameExists) {
+                return username;
+            }
         }
-        // Check if the username already exists
-//        for (User user : userDAO.readAllUsers()) {
-//            if (user.getUsername().equals(username)) {
-//                return "Username already exists. Please choose a different one.";
-//            }
-//        }
-        // If all validations pass, return the valid Username
-        return username;
     }
+
 
 
     // Validate User ID format (uXXXX)
     public static String validateUserIDFormat(String question) {
-        return validateString((userID) -> userID.matches("u\\d{4}"),
-                question, "Invalid User ID format. It should be 'uXXXX', where 'XXXX' is a number.");
+        Scanner input = new Scanner(System.in);
+        String userID;
+
+        while (true) {
+            System.out.print(question);
+            userID = input.nextLine().trim();
+            // Validate the format of the userID (should be in the form u-xxxx, where xxxx is a number)
+            if (!userID.matches("u-\\d{4}")) {
+                System.out.println("Invalid User ID format. It should be 'u-XXXX', where 'XXXX' is a number.");
+                continue;  // Re-prompt for user input
+            }
+        }
     }
 
     // Check if the user ID already exists in the database
@@ -219,9 +273,19 @@ public class InputValidation {
     }
 
     // Method to check the username format (you can define your own format or use a regex)
-    private static boolean validateUsernameFormat(String username) {
-        // Example: Username should be alphanumeric and 3-15 characters long
-        return username.matches("[a-zA-Z0-9]{3,15}");
+    private static boolean validateUsernameFormat(String question) {
+        Scanner input = new Scanner(System.in);
+        String username;
+
+        while (true) {
+            username = InputValidation.validateString(question); // Retrieve user input
+
+            // Check if the username format is correct
+            if (!username.matches("[a-zA-Z0-9_]{5,15}")) {  // Example format: alphanumeric, 5 to 15 characters
+                System.out.println("Invalid Username format. Please ensure it follows the correct format.");
+                continue;  // Re-prompt the user
+            }
+        }
     }
 
     // Check if the username already exists in the database
@@ -233,6 +297,59 @@ public class InputValidation {
             }
         }
         return false;
+    }
+
+    public static String validateCarID(String question) {
+        Scanner input = new Scanner(System.in);
+        String carID;
+
+        // Load the car database before checking for existing car IDs
+        carDAO.loadCarDatabase("src/DataBase/CarDatabase.txt");
+
+        while (true) {
+            carID = InputValidation.validateString(question); // Retrieve user input
+
+            // Check if the Car ID format is correct
+            if (!carID.matches("C-\\d{4}")) {  // Example format: C-XXXX
+                System.out.println("Invalid Car ID format. It should be 'C-XXXX', where 'XXXX' is a number.");
+                continue;  // Re-prompt the user
+            }
+
+            // Check if the Car ID already exists in the database
+            if (isCarIDExists(carID)) {
+                System.out.println("Car ID already exists. Please enter a different Car ID.");
+                continue;  // Re-prompt the user
+            }
+
+            // If the Car ID is valid and doesn't exist, return it
+            return carID;
+        }
+    }
+
+    // Method to check if the Car ID already exists
+    public static boolean isCarIDExists(String carID) {
+        ArrayList<Car> cars = carDAO.getCars();
+        for (Car car : cars) {
+            if (car.getCarID().equals(carID)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static String validateCarIDFormat(String question) {
+        Scanner input = new Scanner(System.in);
+        String carID;
+
+        while (true) {
+            carID = InputValidation.validateString(question); // Retrieve user input
+
+            // Check if the Car ID format is correct
+            if (!carID.matches("C-\\d{4}")) {  // Example format: C-XXXX
+                System.out.println("Invalid Car ID format. It should be 'C-XXXX', where 'XXXX' is a number.");
+                continue;  // Re-prompt the user
+            }
+        }
     }
 
 }

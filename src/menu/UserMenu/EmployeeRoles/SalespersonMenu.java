@@ -21,7 +21,7 @@ public class SalespersonMenu extends EmployeeBaseMenu {
             System.out.println(CYAN_BOLD + "     Welcome, Salesperson!" + RESET);
 
 
-            displayMenuHeader("Salesperson Menu", 53);
+            displayMenuHeader("Salesperson Menu", 36);
             displayOption(GREEN_BOLD + "0. " + RESET + "Record Sales Transaction");
             displayOption(GREEN_BOLD + "1. " + RESET + "View Sales Transactions");
             displayOption(GREEN_BOLD + "2. " + RESET + "Calculate Revenue (Day/Week/Month)");
@@ -30,7 +30,7 @@ public class SalespersonMenu extends EmployeeBaseMenu {
             displayOption(GREEN_BOLD + "5. " + RESET + "Update Customer Information");
             displayOption(GREEN_BOLD + "6. " + RESET + "Back to Main Menu");
             displayOption(GREEN_BOLD + "7. " + RESET + "Exit");
-            Divider.printDivider();
+            Divider.printDivider(46);
 
             System.out.print("Enter Selection (0-7): ");
             choice = getValidatedChoice(0, 7);
