@@ -5,11 +5,14 @@ import menu.Menu;
 import operations.UserService;
 import part.AutoPart;
 import part.AutoPartFileHandler;
+import service.ServiceFileHandler;
 import user.Authenticator;
 import utils.Divider;
 import utils.InputValidation;
 import part.AutoPartMenu;
+import service.ServiceMenu;
 
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 
@@ -240,50 +243,64 @@ public class ManagerMenu extends Menu {
                 System.out.println();
         }
     }
-    public void displayManagerServicesMenu(){
-        displayMenuHeader("MANAGER SERVICE MENU", 53);
-        displayOption("0. Add Services");
-        displayOption("1. Update Services");
-        displayOption("2. Delete Services");
-        displayOption("3. Search Services");
-        displayOption("4. View All Services");
-        displayOption("5. Back");
-        Divider.printDivider();
+    public void displayManagerServicesMenu() {
+        // Ensure services are loaded before interacting
+        ServiceFileHandler.loadServices(); // Assuming loadServices initializes serviceList
 
-        System.out.print("Enter Selection from 0-5: ");
-        System.out.println();
+        Scanner scanner = new Scanner(System.in); // Ensure scanner is initialized
+        while (true) {
+            displayMenuHeader("MANAGER SERVICE MENU", 53);
+            displayOption("0. Add Service");
+            displayOption("1. Get Service by ID");
+            displayOption("2. Update Service");
+            displayOption("3. Delete Service");
+            displayOption("4. Add Part to Service");
+            displayOption("5. Remove Part from Service");
+            displayOption("6. List All Services");
+            displayOption("7. Exit");
+            Divider.printDivider();
 
-        switch (choice) {
-            case 0:
+            System.out.print("Enter Selection from 0-7: ");
+            int choice = getValidatedChoice(0, 7);
 
-                break;
-
-            case 1:
-
-                break;
-            case 2:
-
-                break;
-            case 3:
-
-                break;
-            case 4:
-
-                break;
-            case 5:
-
-                break;
-            case 6:
-                System.exit(0);// terminates the program
-                Authenticator.UserLogOut();
-                break;
-            default:
-                System.err.println("\n**Please, Enter a Valid Input**");
-                System.out.println();
+            switch (choice) {
+                case 0:
+                    ServiceMenu.addService();
+                    break;
+                case 1:
+                    ServiceMenu.getServiceByID();
+                    break;
+                case 2:
+                    ServiceMenu.updateService();
+                    break;
+                case 3:
+                    ServiceMenu.deleteService();
+                    break;
+                case 4:
+                    System.out.print("Enter Service ID: ");
+                    String serviceID = scanner.nextLine();
+                    System.out.print("Enter Part ID: ");
+                    String partID = scanner.nextLine();
+                    ServiceMenu.addPartToService(serviceID, partID);
+                    break;
+                case 5:
+                    ServiceMenu.removePartFromService();
+                    break;
+                case 6:
+                    ServiceMenu.listAllServices();
+                    break;
+                case 7:
+                    System.out.println("Exiting...");
+                    return;
+                default:
+                    System.err.println("\n**Please, Enter a Valid Input**");
+            }
         }
-
-
     }
+
+
+
+
     public void displayManagerStatisticsMenu(){
         displayMenuHeader("MANAGER STATISTICS MENU", 53);
         displayOption("0. View Cars Statistics");
