@@ -16,20 +16,18 @@ public class SalesTransactionCRUD {
         totalAmount,
         notes
     }
-
+    //Constructor
     public SalesTransactionCRUD(String transactionDB) {
         stdl.loadTransactionDatabase(transactionDB);
     }
-
-    // Creation
+    //Creation
     public void addTransaction(SalesTransaction transaction) {
         stdl.transactions.add(transaction);
         stdl.transactions.sort(Comparator.comparing(SalesTransaction::getTransactionID));
         stdl.overwriteDatabase(stdl.transactions);
     }
-
-    // Read
-    public List<SalesTransaction> getTransactionsOrderedBy(OrderType type, boolean ascending) {
+    //Read
+    public List<SalesTransaction> getTransactionsOrderedByID(OrderType type, boolean ascending) {
         ArrayList<SalesTransaction> sortedTransactions = new ArrayList<>(stdl.transactions);
         Comparator<SalesTransaction> comparator;
         switch (type) {
@@ -49,26 +47,47 @@ public class SalesTransactionCRUD {
         return new ArrayList<>(sortedTransactions);
     }
 
-    public SalesTransaction readTransactionByID(String id) {
-        for (SalesTransaction transaction : stdl.transactions) {
-            if (transaction.getTransactionID().equals(id)) {
-                return transaction;
-            }
-        }
-        return null; // Return null if not found
-    }
+    //Sales Transaction cannot be updated
 
-    // Sales Transaction cannot be updated
-
-    // Delete
+    //Soft Delete
     public void deleteTransaction(String transactionID) {
-        for (SalesTransaction t : stdl.transactions) {
-            if (t.getTransactionID().equals(transactionID)) {
-                stdl.transactions.remove(t);
-                stdl.overwriteDatabase(stdl.transactions);
-                return;
+        boolean transactionFound = false;
+        for (SalesTransaction transaction : stdl.transactions) {
+            if (transaction.getTransactionID().equals(transactionID)) {
+                transaction.setDeleted(true);
+                transactionFound = true;
+                break;
             }
         }
-        System.out.println("Unable to find transaction with ID " + transactionID);
+        if (transactionFound) {
+            System.out.println("Transaction deleted successfully.");
+        }
+        else {
+            System.out.println("Unable to find transaction with that ID.");
+        }
     }
-}
+
+
+    //Display transaction by transaction ID
+    public void displayTransactionByID(String id) {
+            boolean transactionFound = false;
+
+            for (SalesTransaction transaction : stdl.transactions) {
+                if (transaction.getTransactionID().equals(id)) {
+                 transaction.displayTransactionDetails();
+                 transactionFound = true;
+                 break;
+                }
+            }
+            if (!transactionFound) {
+                System.out.println("Unable to find transaction with ID " + id);
+            }
+        }
+
+        //calculate the total amount
+        public void totalAmountCalculation() {
+
+        }
+    }
+
+
