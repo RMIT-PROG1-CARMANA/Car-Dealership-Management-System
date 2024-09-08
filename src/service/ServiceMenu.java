@@ -2,7 +2,6 @@ package service;
 
 import part.AutoPart;
 import part.AutoPartFileHandler;
-// import utils.InputValidation; // Commented out the InputValidation import
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -14,82 +13,22 @@ import java.util.*;
 public class ServiceMenu {
     private static Scanner scanner = new Scanner(System.in);
     private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd/MM/yyyy");
-    private static List<Service> serviceList;
-    private static List<AutoPart> autoPartsList;
+    private static List<Service> serviceList = new ArrayList<>();
+    private static List<AutoPart> autoPartsList = new ArrayList<>();
 
-    {
+    static {
         // Load services and parts from files
-        serviceList = ServiceFileHandler.loadServices();
-        loadAutoParts(); // Load auto parts
-
-        if (serviceList == null) {
+        try {
+            serviceList = ServiceFileHandler.loadServices();
+            if (serviceList == null) {
+                serviceList = new ArrayList<>();
+            }
+            loadAutoParts(); // Load auto parts
+        } catch (Exception e) {
+            System.out.println("Error initializing ServiceMenu: " + e.getMessage());
             serviceList = new ArrayList<>();
-        }
-        if (autoPartsList == null) {
             autoPartsList = new ArrayList<>();
         }
-
-//        while (true) {
-//            System.out.println("\n--- Service Management System ---");
-//            System.out.println("1. Add Service");
-//            System.out.println("2. Get Service by ID");
-//            System.out.println("3. Update Service");
-//            System.out.println("4. Delete Service");
-//            System.out.println("5. Add Part to Service");
-//            System.out.println("6. Remove Part from Service");
-//            System.out.println("7. List All Services");
-//            System.out.println("8. Exit");
-//            System.out.print("Select an option: ");
-//
-//            int choice = getValidInteger("Choose a valid option (1-8): ");
-//            switch (choice) {
-//                case 1:
-//                    addService();
-//                    break;
-//                case 2:
-//                    getServiceByID();
-//                    break;
-//                case 3:
-//                    updateService();
-//                    break;
-//                case 4:
-//                    deleteService();
-//                    break;
-//                case 5:
-//                    // You need to get the serviceID and partID before calling the method
-//                    System.out.print("Enter Service ID: ");
-//                    String serviceID = scanner.nextLine();  // Assuming you're using a Scanner for input
-//
-//                    System.out.print("Enter Part ID: ");
-//                    String partID = scanner.nextLine();
-//
-//                    addPartToService(serviceID, partID);
-//                    break;
-//                case 6:
-//                    removePartFromService();
-//                    break;
-//                case 7:
-//                    listAllServices();
-//                    break;
-//                case 8:
-//                    try {
-//                        // Save services
-//                        ServiceFileHandler.saveServices(serviceList);
-//
-//                        // If AutoPartFileHandler is not modifying the file, call this
-//                        AutoPartFileHandler.savePartsToFile(); // Ensure this method doesn't overwrite
-//
-//                        System.out.println("Exiting...");
-//                        return;
-//                    } catch (Exception e) {
-//                        System.out.println("Unexpected error occurred: " + e.getMessage());
-//                    }
-//                    break;
-//
-//                default:
-//                    System.out.println("Invalid option. Please try again.");
-//            }
-//        }
     }
 
     private static int getValidInteger(String prompt) {
@@ -113,12 +52,8 @@ public class ServiceMenu {
             try {
                 System.out.print(prompt);
                 String input = scanner.nextLine();
-                // if (InputValidation.isValidDouble(input)) { // Commented out validation check
                 value = Double.parseDouble(input);
                 return value;
-                // } else {
-                //     System.out.println("Invalid input. Please enter a valid number.");
-                // }
             } catch (NumberFormatException e) {
                 System.out.println("Invalid input. Please enter a valid number.");
             }
@@ -142,7 +77,8 @@ public class ServiceMenu {
     public static void addService() {
         System.out.print("Enter Service ID: ");
         String serviceID = scanner.nextLine();
-        // while (!InputValidation.isValidServiceID(serviceID)) { // Commented out validation check
+        // Uncomment validation check if needed
+        // while (!InputValidation.isValidServiceID(serviceID)) {
         //     System.out.println("Invalid Service ID. It should start with 's-'. Please try again.");
         //     serviceID = scanner.nextLine();
         // }
@@ -151,14 +87,16 @@ public class ServiceMenu {
 
         System.out.print("Enter Client ID: ");
         String clientID = scanner.nextLine();
-        // while (!InputValidation.isValidClientID(clientID)) { // Commented out validation check
+        // Uncomment validation check if needed
+        // while (!InputValidation.isValidClientID(clientID)) {
         //     System.out.println("Invalid Client ID. It should start with 'c-'. Please try again.");
         //     clientID = scanner.nextLine();
         // }
 
         System.out.print("Enter Mechanic ID: ");
         String mechanicID = scanner.nextLine();
-        // while (!InputValidation.isValidMechanicID(mechanicID)) { // Commented out validation check
+        // Uncomment validation check if needed
+        // while (!InputValidation.isValidMechanicID(mechanicID)) {
         //     System.out.println("Invalid Mechanic ID. It should start with 'm-'. Please try again.");
         //     mechanicID = scanner.nextLine();
         // }
@@ -187,7 +125,8 @@ public class ServiceMenu {
     public static void getServiceByID() {
         System.out.print("Enter Service ID: ");
         String serviceID = scanner.nextLine();
-        // while (!InputValidation.isValidServiceID(serviceID)) { // Commented out validation check
+        // Uncomment validation check if needed
+        // while (!InputValidation.isValidServiceID(serviceID)) {
         //     System.out.println("Invalid Service ID. It should start with 's-'. Please try again.");
         //     serviceID = scanner.nextLine();
         // }
@@ -203,7 +142,8 @@ public class ServiceMenu {
     public static void updateService() {
         System.out.print("Enter Service ID to Update: ");
         String serviceID = scanner.nextLine();
-        // while (!InputValidation.isValidServiceID(serviceID)) { // Commented out validation check
+        // Uncomment validation check if needed
+        // while (!InputValidation.isValidServiceID(serviceID)) {
         //     System.out.println("Invalid Service ID. It should start with 's-'. Please try again.");
         //     serviceID = scanner.nextLine();
         // }
@@ -227,13 +167,15 @@ public class ServiceMenu {
 
         System.out.print("Enter New Client ID or press Enter to keep current: ");
         String clientID = scanner.nextLine();
-        // if (!clientID.trim().isEmpty() && InputValidation.isValidClientID(clientID)) { // Commented out validation check
+        // Uncomment validation check if needed
+        // if (!clientID.trim().isEmpty() && InputValidation.isValidClientID(clientID)) {
         service.setClientID(clientID);
         // }
 
         System.out.print("Enter New Mechanic ID or press Enter to keep current: ");
         String mechanicID = scanner.nextLine();
-        // if (!mechanicID.trim().isEmpty() && InputValidation.isValidMechanicID(mechanicID)) { // Commented out validation check
+        // Uncomment validation check if needed
+        // if (!mechanicID.trim().isEmpty() && InputValidation.isValidMechanicID(mechanicID)) {
         service.setMechanicID(mechanicID);
         // }
 
@@ -246,11 +188,11 @@ public class ServiceMenu {
         System.out.print("Enter New Service Cost or press Enter to keep current: ");
         String serviceCostInput = scanner.nextLine();
         if (!serviceCostInput.trim().isEmpty()) {
-            // if (InputValidation.isValidDouble(serviceCostInput)) { // Commented out validation check
-            service.setServiceCost(Double.parseDouble(serviceCostInput));
-            // } else {
-            //     System.out.println("Invalid cost input. Keeping current cost.");
-            // }
+            try {
+                service.setServiceCost(Double.parseDouble(serviceCostInput));
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid cost input. Keeping current cost.");
+            }
         }
 
         System.out.print("Enter New Notes or press Enter to keep current: ");
@@ -265,7 +207,8 @@ public class ServiceMenu {
     public static void deleteService() {
         System.out.print("Enter Service ID to Delete: ");
         String serviceID = scanner.nextLine();
-        // while (!InputValidation.isValidServiceID(serviceID)) { // Commented out validation check
+        // Uncomment validation check if needed
+        // while (!InputValidation.isValidServiceID(serviceID)) {
         //     System.out.println("Invalid Service ID. It should start with 's-'. Please try again.");
         //     serviceID = scanner.nextLine();
         // }
@@ -300,42 +243,50 @@ public class ServiceMenu {
         ServiceFileHandler.saveServices(serviceList);
     }
 
-
-
-
     public static void removePartFromService() {
         System.out.print("Enter Service ID to Remove Part: ");
         String serviceID = scanner.nextLine();
-//        while (!InputValidation.isValidServiceID(serviceID)) {
-//            System.out.println("Invalid Service ID. It should start with 's-'. Please try again.");
-//            serviceID = scanner.nextLine();
-//        }
+        // Uncomment validation check if needed
+        // while (!InputValidation.isValidServiceID(serviceID)) {
+        //     System.out.println("Invalid Service ID. It should start with 's-'. Please try again.");
+        //     serviceID = scanner.nextLine();
+        // }
 
         Service service = findServiceByID(serviceID);
         if (service == null) {
-            System.out.println("Service not found with ID: " + serviceID);
+            System.out.println("Service not found.");
             return;
         }
 
         System.out.print("Enter Part ID to Remove: ");
         String partID = scanner.nextLine();
+        // Uncomment validation check if needed
+        // while (!InputValidation.isValidPartID(partID)) {
+        //     System.out.println("Invalid Part ID. It should start with 'p-'. Please try again.");
+        //     partID = scanner.nextLine();
+        // }
 
-        if (service.removePart(partID)) {
-            System.out.println("Part removed from service successfully.");
-        } else {
-            System.out.println("Part not found in the service with ID: " + partID);
+        AutoPart part = findPartByID(partID);
+        if (part == null) {
+            System.out.println("Part not found.");
+            return;
         }
-    }
 
+        // Remove part from the service
+        service.removePart(String.valueOf(part));
+        System.out.println("Part " + partID + " removed from service " + serviceID);
+
+        // Save the updated service list to the file
+        ServiceFileHandler.saveServices(serviceList);
+    }
 
     public static void listAllServices() {
         if (serviceList.isEmpty()) {
             System.out.println("No services available.");
-            return;
-        }
-
-        for (Service service : serviceList) {
-            System.out.println(service.toString());
+        } else {
+            for (Service service : serviceList) {
+                System.out.println(service.toString());
+            }
         }
     }
 
@@ -357,27 +308,16 @@ public class ServiceMenu {
         return null;
     }
 
-    private static void loadAutoParts() {
+    private static void loadAutoParts() throws IOException {
         try (BufferedReader reader = new BufferedReader(new FileReader("src/DataBase/parts.txt"))) {
-            autoPartsList = new ArrayList<>();
             String line;
             while ((line = reader.readLine()) != null) {
-                String[] data = line.split(",");
-                if (data.length == 8) {
-                    AutoPart part = new AutoPart();
-                    part.setPartID(data[0]);
-                    part.setPartName(data[1]);
-                    part.setManufacturer(data[2]);
-                    part.setPartNumber(data[3]);
-                    part.setCondition(data[4]);
-                    part.setWarranty(data[5]);
-                    part.setCost(Double.parseDouble(data[6]));
-                    part.setNotes(data[7]);
+                String[] parts = line.split(",");
+                if (parts.length == 8) {
+                    AutoPart part = new AutoPart(parts[0], parts[1], parts[2], parts[3], parts[4], parts[5], Double.parseDouble(parts[6]), parts[7]);
                     autoPartsList.add(part);
                 }
             }
-        } catch (IOException e) {
-            System.out.println("Error loading auto parts: " + e.getMessage());
         }
     }
 }
