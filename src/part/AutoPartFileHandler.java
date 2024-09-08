@@ -15,7 +15,16 @@ public class AutoPartFileHandler {
             while ((line = reader.readLine()) != null) {
                 String[] parts = line.split(",");
                 if (parts.length == 8) {
-                    AutoPart part = new AutoPart(parts[0], parts[1], parts[2], parts[3], parts[4], parts[5], Double.parseDouble(parts[6]), parts[7]);
+                    AutoPart part = new AutoPart(
+                            parts[0],  // partID
+                            parts[1],  // partName
+                            parts[2],  // manufacturer
+                            parts[3],  // partNumber
+                            parts[4],  // condition
+                            parts[5],  // warranty
+                            Double.parseDouble(parts[6]),  // cost
+                            parts[7]   // notes
+                    );
                     AutoPart.addPart(part);
                 }
             }
@@ -25,9 +34,17 @@ public class AutoPartFileHandler {
     }
 
     public static void savePartsToFile() {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_PATH, true))) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_PATH, false))) {  // Set to 'false' to overwrite
             for (AutoPart part : AutoPart.getAllParts()) {
-                writer.write(String.format("%s,%s,%s,%s,%s,%s,%f,%s%n", part.getPartID(), part.getPartName(), part.getManufacturer(), part.getPartNumber(), part.getCondition(), part.getWarranty(), part.getCost(), part.getNotes()));
+                writer.write(String.format("%s,%s,%s,%s,%s,%s,%f,%s%n",
+                        part.getPartID(),
+                        part.getPartName(),
+                        part.getManufacturer(),
+                        part.getPartNumber(),
+                        part.getCondition(),
+                        part.getWarranty(),
+                        part.getCost(),
+                        part.getNotes()));
             }
         } catch (IOException e) {
             System.out.println("Error writing to file: " + e.getMessage());
