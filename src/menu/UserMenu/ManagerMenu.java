@@ -1,17 +1,36 @@
 package menu.UserMenu;
 
 
+import FileHandling.*;
+import crudHandlers.CarCRUD;
 import menu.Menu;
+import operations.CarService;
+import operations.UserService;
+import service.Service;
+import user.Authenticator;
+import user.*;
+import crudHandlers.*;
+import vehicle.*;
 import utils.*;
 import java.util.*;
 
 import static menu.MenuStyle.*;
+import static utils.InputValidation.isCarIDExists;
 
 
 public class ManagerMenu extends Menu {
     int choice;
-    Scanner input = new Scanner(System.in);
+    private static final UserDataHandler userDAO = new UserDataHandler();
+    private static final CarDataHandler carDAO = new CarDataHandler();
+    private static final AutoPartFileHandler partDAO = new AutoPartFileHandler();
+    private static final ServiceFileHandler serviceDAO = new ServiceFileHandler();
+    private static final SalesTransactionDataHandler transDAO = new SalesTransactionDataHandler();
     private operations.UserService UserService;
+    private operations.CarService CarService;
+    private operations.PartService PartService;
+    private operations.ServiceService ServiceService;
+
+    Scanner input = new Scanner(System.in);
 
     public void displayManagerMenu(){
         ClearScreen.clear(); // Assuming ClearScreen is a utility class to clear console
@@ -74,7 +93,6 @@ public class ManagerMenu extends Menu {
                 System.out.println();
         }
     }
-
     public void displayManagerCarMenu(){
         ClearScreen.clear();
         System.out.println(CYAN_BOLD + "=====================================" + RESET);
@@ -94,21 +112,28 @@ public class ManagerMenu extends Menu {
         choice = getValidatedChoice(0, 5);
         switch (choice) {
             case 0:
-
+                CarService.createCar(); // Add a new car
                 break;
 
             case 1:
-
+                CarService.updateCar(); // Update an existing car
                 break;
+
             case 2:
-
+                CarService.deleteCar(); // Delete a car
                 break;
+
             case 3:
-
+                String carID = InputValidation.validateCarIDFormat("Enter Car ID to search (format: C-XXXX where XXXX is a number): ");
+                if (isCarIDExists(carID)) {
+                    System.out.println("Car ID: " + carID);
+                }
                 break;
+
             case 4:
-
+                CarService.displayAllCar(); // View all available cars
                 break;
+
             case 5:
                 displayManagerMenu(); // Go back to the main menu
                 break;
