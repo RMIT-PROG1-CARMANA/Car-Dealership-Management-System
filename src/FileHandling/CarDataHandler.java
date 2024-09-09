@@ -54,13 +54,5 @@ public class CarDataHandler {
             e.printStackTrace();
         }
     }
-    // Find a car by its ID
-    public Car findCarByID(String carID) {
-        // Search for the car with the given ID
-        Optional<Car> carOptional = cars.stream()
-                .filter(car -> car.getCarID().equals(carID))
-                .findFirst();
 
-        return carOptional.orElse(null);  // Return null if not found
-    }
 }

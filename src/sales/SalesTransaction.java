@@ -1,8 +1,6 @@
 
 package sales;
-import part.AutoPart;
-import user.Membership;
-import vehicle.Car;
+import crudHandlers.SalesTransactionCRUD;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -20,7 +18,7 @@ public class SalesTransaction  implements Serializable {
     private String notes;
     private boolean deleted;
 
-    public SalesTransaction() {
+    public SalesTransaction(String transactionID, String transactionDate, String clientID, String salespersonID, List<PurchasedItem> purchaseItems, SalesTransactionCRUD.OrderType discount, double totalAmount, String notes) {
         this.transactionID = "t-000";//t-XXX formatted
         this.transactionDate = "1970-01-01";
         this.clientID = "cl-000"; //cl-XXX formatted
@@ -137,14 +135,6 @@ public class SalesTransaction  implements Serializable {
         System.out.println("Deleted Status: " + deleted);
     }
 
-    private double totalAmountCalculation(Membership membership) {
-        double sum = purchaseItems.stream()
-                .mapToDouble(PurchasedItem::getItemPrice)
-                .sum();
-        this.discount = membership.getDiscount();
-        this.totalAmount = sum * (1 - discount);  // Apply discount and set totalAmount
-        return totalAmount;  // Return the calculated total amount
-    }
 
     @Override
     public String toString() {

@@ -3,6 +3,7 @@ package user;
 import sales.SalesTransaction;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -12,7 +13,7 @@ public class Client extends User implements Serializable {
 
     public Client(String userID, String fullName, Date dateOfBirth, String address, long phoneNumber, String email, boolean status, String password, String username, List<SalesTransaction> transactions) {
         super(userID, fullName, dateOfBirth, address, phoneNumber, email, UserType.CLIENT, status, password, username);
-        this.transactions = transactions;
+        this.transactions = (transactions != null) ? transactions : new ArrayList<>();
         updateMembership();  // Initialize membership based on existing transactions
     }
 

@@ -1,9 +1,9 @@
 package sales;
-
+import java.io.Serializable;
 import part.AutoPart;
 import vehicle.Car;
 
-public class PurchasedItem {
+public class PurchasedItem implements Serializable {
     private Car car;
     private AutoPart part;
 
@@ -13,8 +13,6 @@ public class PurchasedItem {
         this.car = car;
         this.part = part;
     }
-
-
 
     public Car getCar() {
         return car;

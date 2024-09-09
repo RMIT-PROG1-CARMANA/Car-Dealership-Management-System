@@ -115,4 +115,14 @@ public class CarCRUDMethodHandler {
             System.out.println("Car not found or has been deleted.");
         }
     }
+
+    // Find a car by its ID
+    public Car findCarByID(String carID) {
+        for (Car c : cdl.getCars()) {
+            if (Objects.equals(c.getCarID(), carID) && !c.isDeleted()) {
+                return c;  // Return the car if found and not deleted
+            }
+        }
+        return null;  // Return null if the car is not found or is deleted
+    }
 }

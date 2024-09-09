@@ -1,10 +1,12 @@
 package operations;
 
 import FileHandling.UserDataHandler;
+import sales.SalesTransaction;
 import user.*;
 import utils.Divider;
 import utils.InputValidation;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import static menu.MenuStyle.*;
@@ -67,7 +69,8 @@ public class UserService {
         } else if (userType == User.UserType.MANAGER) {
             user = new Manager(userID, fullName, dateOfBirth, address, phoneNumber, email, status, password, username);
         } else {
-            user = new Client(userID, fullName, dateOfBirth, address, phoneNumber, email, status, password, username, null); // Adjust Client constructor
+            List<SalesTransaction> transactions = new ArrayList<>();  // Use empty list if no transactions
+            user = new Client(userID, fullName, dateOfBirth, address, phoneNumber, email, status, password, username,transactions ); // Adjust Client constructor
         }
 
         addUser(user);

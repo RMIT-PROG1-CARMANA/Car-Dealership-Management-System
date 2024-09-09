@@ -1,19 +1,49 @@
 package sales;
 
+
+import FileHandling.CarDataHandler;
+import FileHandling.UserDataHandler;
+import crudHandlers.CarCRUDMethodHandler;
 import crudHandlers.SalesTransactionCRUD;
 
 import java.util.List;
 import java.util.Scanner;
+
+import user.Client;
 import vehicle.Car;
 import part.AutoPart;
 import java.util.ArrayList;
-import java.util.List;
+
+import user.Membership;
+
 
 
 
 public class SalesTransactionCRUDTest {
 
+    static UserDataHandler userDataHandler = new UserDataHandler();
+    private static CarCRUDMethodHandler methodHandler;
+
+    private static double totalAmountCalculation(List<PurchasedItem> purchaseItems, Membership membership) {
+        double sum = purchaseItems.stream()
+                .mapToDouble(PurchasedItem::getItemPrice)
+                .sum();
+
+        // Apply membership discount
+        double discount = membership.getDiscount();
+        double totalAmount = sum * (1 - discount);  // Apply discount
+
+        return totalAmount;
+    }
+
+
     public static void main(String[] args) {
+
+        // Initialize CarDataHandler and CarCRUDMethodHandler
+        CarDataHandler carDataHandler = new CarDataHandler();
+        carDataHandler.loadCarDatabase("src/DataBase/SalesTransactionDatabase.txt"); // Adjust the file path as needed
+        methodHandler = new CarCRUDMethodHandler(carDataHandler);
+
         SalesTransactionCRUD salesTransactionCRUD = new SalesTransactionCRUD("");
         Scanner scanner = new Scanner(System.in);
         boolean exit = false;
@@ -59,27 +89,49 @@ public class SalesTransactionCRUDTest {
                     // Collect PurchasedItem details
                     List<PurchasedItem> purchaseItems = new ArrayList<>();
                     boolean addMoreItems = true;
+
                     while (addMoreItems) {
-                        System.out.print("Enter car details (or leave blank if none): ");
-                        String carID = scanner.nextLine();  // You can enhance this part to input full car details
-                        Car car = carID.isEmpty() ? null : new Car(carID);  // Placeholder
+                        System.out.print("Enter car ID (or leave blank if none): ");
+                        String carID = scanner.nextLine();
 
-                        System.out.print("Enter part details (or leave blank if none): ");
-                        String partID = scanner.nextLine();  // You can enhance this part to input full part details
-                        AutoPart part = partID.isEmpty() ? null : new AutoPart(partID);  // Placeholder
+                        Car car = null;
+                        if (!carID.isEmpty()) {
+                            // Retrieve the car from the database
+                            car = methodHandler.findCarByID(carID);
+                            if (car == null) {
+                                System.out.println("Car with ID " + carID + " not found.");
+                            }
+                        }
 
+                        // Since AutoPart is optional, we'll ask for part details similarly
+                        System.out.print("Enter part ID (or leave blank if none): ");
+                        String partID = scanner.nextLine();
+
+                        AutoPart part = null;
+//                        if (!partID.isEmpty()) {
+//                            // Retrieve the part from the database (assuming you have a similar handler for AutoPart)
+//                            // AutoPart part = autoPartDataHandler.findPartByID(partID);
+//                            // You need to implement AutoPartDataHandler similar to CarDataHandler for this
+//                        }
+
+                        // Create a PurchasedItem object and add it to the list
                         PurchasedItem purchasedItem = new PurchasedItem(car, part);
                         purchaseItems.add(purchasedItem);
 
+                        // Ask the user if they want to add more items
                         System.out.print("Do you want to add another item? (yes/no): ");
                         addMoreItems = scanner.nextLine().equalsIgnoreCase("yes");
                     }
                     System.out.print("Total Amount: ");
-
+                    // Calculate total amount based on client's membership
+                    Client client = userDataHandler.findClientByID(clientID);
+                    Membership membership = client.getMembership();  // Retrieve the Membership object
+                    Membership.MembershipType membershipType = membership.getMembershipType();  // Retrieve the MembershipType
+                    double totalAmount = totalAmountCalculation(purchaseItems, membership);
                     System.out.print("Notes: ");
                     String notes = scanner.nextLine();
 
-                    SalesTransaction newTransaction = new SalesTransaction(transactionID, transactionDate, clientID,salespersonID, , totalAmount, notes);
+                    SalesTransaction newTransaction = new SalesTransaction(transactionID, transactionDate, clientID, salespersonID, purchaseItems, membership.getDiscount(), totalAmount, notes);
                     salesTransactionCRUD.addTransaction(newTransaction);
                     System.out.println("New transaction added successfully.");
                     break;
@@ -93,12 +145,12 @@ public class SalesTransactionCRUDTest {
                     break;
 
                 case 4:
-                    // Display all transactions sorted by Total Amount
-                    List<SalesTransaction> transactionsByAmount = salesTransactionCRUD.getTransactionsOrderedByID(SalesTransactionCRUD.OrderType.TotalAmount, true);
-                    for (SalesTransaction transaction : transactionsByAmount) {
-                        transaction.displayTransactionDetails();
-                        System.out.println();  // Add blank line between transactions
-                    }
+//                    // Display all transactions sorted by Total Amount
+//                    List<SalesTransaction> transactionsByAmount = salesTransactionCRUD.getTransactionsOrderedByID(SalesTransactionCRUD.OrderType.TotalAmount, true);
+//                    for (SalesTransaction transaction : transactionsByAmount) {
+//                        transaction.displayTransactionDetails();
+//                        System.out.println();  // Add blank line between transactions
+//                    }
                     break;
 
 //                case 5:

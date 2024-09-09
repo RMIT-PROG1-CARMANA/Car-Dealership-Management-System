@@ -58,7 +58,6 @@ public class Authenticator {
     }
 
 
-
     /**
      Checks if a user is currently logged in.
 

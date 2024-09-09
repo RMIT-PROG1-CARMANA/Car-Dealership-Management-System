@@ -51,5 +51,10 @@ public class CarCRUD {
         methodHandler.displayCarByID(carID);
     }
 
+    //find ID
+    public String findCarByID(String carID) {
+        methodHandler.findCarByID(carID);
+        return carID;
+    }
 
 }

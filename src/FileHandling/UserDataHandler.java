@@ -1,5 +1,6 @@
 package FileHandling;
 
+import user.Client;
 import user.User;
 
 import java.io.*;
@@ -67,8 +68,20 @@ public class UserDataHandler {
                 return new ArrayList<>();
             }
         }
+    public Client findClientByID(String clientID) {
+        // Read all users from the file
+        User[] usersArray = readAllUsers();
 
+        // Loop through the users and find the client with the given ID
+        for (User user : usersArray) {
+            if (user instanceof Client && user.getUserID().equals(clientID)) {
+                return (Client) user;  // Cast to Client and return
+            }
+        }
 
+        System.out.println("Client with ID " + clientID + " not found.");
+        return null;  // Return null if the client is not found
+    }
 
     }
 
