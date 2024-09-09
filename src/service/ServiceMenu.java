@@ -202,7 +202,7 @@ public class ServiceMenu {
         }
 
         // Add part to the service
-        service.addPart(part);
+        service.addPartService(part);
         System.out.println("Part " + partID + " added to service " + serviceID);
 
         // Save the updated service list to the file
@@ -226,7 +226,7 @@ public class ServiceMenu {
         }
 
         // Remove part from the service
-        boolean removed = service.removePart(partID);
+        boolean removed = service.removePartService(partID);
         if (removed) {
             System.out.println("Part " + partID + " removed from service " + serviceID);
         } else {
@@ -278,7 +278,7 @@ public class ServiceMenu {
         } else {
             System.out.println("Replaced Parts for Service ID " + serviceID + ":");
             for (AutoPart part : replacedParts) {
-                System.out.println(part);
+                System.out.println("Part Name: " + part.getPartName());
             }
         }
     }

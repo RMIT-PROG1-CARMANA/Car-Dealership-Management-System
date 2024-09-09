@@ -83,14 +83,14 @@ public class Service implements Serializable {
         this.notes = notes;
     }
 
-    public void addPart(AutoPart part) {
+    public void addPartService(AutoPart part) {
         if (this.replacedParts == null) {
             this.replacedParts = new ArrayList<>();
         }
         this.replacedParts.add(part);
     }
 
-    public boolean removePart(String partID) {
+    public boolean removePartService(String partID) {
         if (this.replacedParts != null) {
             for (AutoPart part : this.replacedParts) {
                 if (part.getPartID().equals(partID)) {
