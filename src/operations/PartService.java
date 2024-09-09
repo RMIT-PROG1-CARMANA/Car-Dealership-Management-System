@@ -17,6 +17,7 @@ public class PartService {
         String notes = InputValidation.validateString("Enter Notes: "); // Notes can be empty
 
         // Create and add the part
+
         AutoPart part = new AutoPart(partID, partName, manufacturer, partNumber, condition, warranty, price, notes);
         addPart(part);
         System.out.println("Part added successfully.");

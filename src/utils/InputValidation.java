@@ -1,6 +1,7 @@
 package utils;
 
 import FileHandling.*;
+import operations.ActivityLogService;
 import part.AutoPart;
 import user.User;
 import service.*;
@@ -20,6 +21,7 @@ import vehicle.Car;
 public class InputValidation {
     private static final UserDataHandler userDAO = new UserDataHandler();
     private static final CarDataHandler carDAO = new CarDataHandler();
+    private static final ActivityLogService logService = new ActivityLogService();
 
     public static long validateLong(String question) {
         return validateLong((v) -> true, question, "Invalid input, please try again.");
@@ -277,20 +279,23 @@ public class InputValidation {
     }
 
     // Method to check the username format (you can define your own format or use a regex)
-    private static boolean validateUsernameFormat(String question) {
+    public static String validateUsernameFormat(String question) {
         Scanner input = new Scanner(System.in);
         String username;
 
         while (true) {
-            username = InputValidation.validateString(question); // Retrieve user input
+            System.out.print(question);  // Prompt user for input
+            username = input.nextLine(); // Retrieve user input
 
             // Check if the username format is correct
-            if (!username.matches("[a-zA-Z0-9_]{5,15}")) {  // Example format: alphanumeric, 5 to 15 characters
+            if (username.matches("[a-zA-Z0-9_]{5,15}")) {
+                return username;  // Return valid username
+            } else {
                 System.out.println("Invalid Username format. Please ensure it follows the correct format.");
-                continue;  // Re-prompt the user
             }
         }
     }
+
 
     // Check if the username already exists in the database
     private static boolean isUsernameExist(String username) {
@@ -373,9 +378,8 @@ public class InputValidation {
             // Check if the partID already exists in the parts list
             List<AutoPart> existingParts = AutoPart.getAllParts();  // Retrieve all parts
 
-            // Check for null or empty parts list
-            if (existingParts == null || existingParts.isEmpty()) {
-                System.out.println("Error: No parts found in the system.");
+            // Allow if the list is empty
+            if (existingParts.isEmpty()) {
                 return partID;  // If no parts exist, return the entered partID
             }
 
@@ -390,6 +394,7 @@ public class InputValidation {
             }
         }
     }
+
 
     public static boolean validatePartIDFormat(String question) {
         Scanner input = new Scanner(System.in);
@@ -460,7 +465,30 @@ public class InputValidation {
                 .anyMatch(service -> service.getServiceID().equals(serviceID));
     }
 
+    public static String validateLogID(String promptMessage) {
+        Scanner input = new Scanner(System.in);
+        String logID;
 
+        while (true) {
+            System.out.print(promptMessage);
+            logID = input.nextLine().trim();
+
+            // Validate the format of the logID (should be in the form log-xxxx, where xxxx is a number)
+            if (!logID.matches("log-\\d{4}")) {
+                System.out.println("Invalid Log ID format. It should be 'log-XXXX', where 'XXXX' is a number.");
+                continue;  // Re-prompt the user
+            }
+
+            // Check if the Log ID exists
+            if (logService.viewLogById(logID).isEmpty()) {
+                System.out.println("Log ID does not exist. Please enter a valid Log ID.");
+                continue;  // Re-prompt the user
+            }
+
+            // If the Log ID is valid and exists, return it
+            return logID;
+        }
+    }
 
 
 }

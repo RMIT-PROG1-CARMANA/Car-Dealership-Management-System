@@ -4,6 +4,7 @@ import menu.UserMenu.EmployeeBaseMenu;
 import menu.UserMenu.EmployeeRolesMenu.MechanicMenu;
 import menu.UserMenu.EmployeeRolesMenu.SalespersonMenu;
 import menu.UserMenu.ManagerMenu;
+import operations.ActivityLogService;
 import operations.UserService;
 import user.Mechanic;
 import user.Salesperson;
@@ -25,7 +26,8 @@ public class Menu  {
 
     private static User loggedUser;  // Static variable
 //    private final UserService userRepository = new UserService();
-private static UserService userService = new UserService();
+    private static UserService userService = new UserService();
+    private ActivityLogService activityLogService;
 
 
     public Menu() {

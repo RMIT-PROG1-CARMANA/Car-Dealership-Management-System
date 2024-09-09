@@ -1,11 +1,15 @@
 package menu.UserMenu;
 
-
 import FileHandling.*;
+import logsystem.*;
 import crudHandlers.CarCRUD;
 import menu.Menu;
 import operations.CarService;
 import operations.UserService;
+import operations.PartService;
+import operations.ServiceService;
+import operations.ActivityLogService;
+import part.AutoPart;
 import service.Service;
 import user.Authenticator;
 import user.*;
@@ -15,8 +19,8 @@ import utils.*;
 import java.util.*;
 
 import static menu.MenuStyle.*;
+import static operations.ActivityLogService.*;
 import static utils.InputValidation.isCarIDExists;
-
 
 public class ManagerMenu extends Menu {
     int choice;
@@ -25,12 +29,24 @@ public class ManagerMenu extends Menu {
     private static final AutoPartFileHandler partDAO = new AutoPartFileHandler();
     private static final ServiceFileHandler serviceDAO = new ServiceFileHandler();
     private static final SalesTransactionDataHandler transDAO = new SalesTransactionDataHandler();
-    private operations.UserService UserService;
-    private operations.CarService CarService;
-    private operations.PartService PartService;
-    private operations.ServiceService ServiceService;
+    private static final ActivityLogDataHandler logDAO = new ActivityLogDataHandler();
+
+    private final UserService userService;
+    private final CarService carService;
+    private final PartService partService;
+    private final ServiceService serviceService;
+    private final ActivityLogService activityLogService;
 
     Scanner input = new Scanner(System.in);
+
+    public ManagerMenu() {
+        this.userService = new UserService();
+        this.carService = new CarService();
+        this.partService = new PartService();
+        this.serviceService = new ServiceService();
+        this.activityLogService = new ActivityLogService();
+    }
+
 
     public void displayManagerMenu(){
         ClearScreen.clear(); // Assuming ClearScreen is a utility class to clear console
@@ -45,12 +61,13 @@ public class ManagerMenu extends Menu {
         displayOption(GREEN_BOLD + "2. " + RESET + "Manage Sale Transactions");
         displayOption(GREEN_BOLD + "3. " + RESET + "Manage Users");
         displayOption(GREEN_BOLD + "4. " + RESET + "Manage Services");
-        displayOption(GREEN_BOLD + "5. " + RESET + "Statistics");
-        displayOption(GREEN_BOLD + "6. " + RESET + "Go Main Menu");
-        displayOption(GREEN_BOLD + "7. " + RESET + "Exit");
+        displayOption(GREEN_BOLD + "5. " + RESET + "Manage Activity Log");
+        displayOption(GREEN_BOLD + "6. " + RESET + "Statistics");
+        displayOption(GREEN_BOLD + "7. " + RESET + "Go Main Menu");
+        displayOption(GREEN_BOLD + "8. " + RESET + "Exit");
         Divider.printDivider();
 
-        System.out.print("Enter Selection (0-7): ");
+        System.out.print("Enter Selection (0-8): ");
         choice = getValidatedChoice(0, 7);
 
         switch (choice) {
@@ -71,16 +88,19 @@ public class ManagerMenu extends Menu {
                 displayManagerServicesMenu();
                 break;
             case 5:
-                displayManagerStatisticsMenu();
+                displayManagerActivityLog();
                 break;
             case 6:
+                displayManagerStatisticsMenu();
+                break;
+            case 7:
                 boolean confirmBack = InputValidation.validateBoolean("Are you sure you want to return to the Main Menu? (yes/no): ");
                 if (confirmBack) {
                     System.out.println("Returning to Main Menu...");
                     return; // Exits the current menu loop and returns to the Menu class
                 }
                 break;
-            case 7:
+            case 8:
                 boolean confirmExit = InputValidation.validateBoolean("Are you sure you want to exit? (yes/no): ");
                 if (confirmExit) {
                     input.close();
@@ -144,6 +164,7 @@ public class ManagerMenu extends Menu {
     }
     public void displayManagerAutoPartMenu(){
         ClearScreen.clear();
+        partDAO.deserializeParts();
         System.out.println(CYAN_BOLD + "=====================================" + RESET);
         System.out.println(CYAN_BOLD + "    Manager Auto Parts Menu" + RESET);
         System.out.println(CYAN_BOLD + "=====================================" + RESET);
@@ -162,20 +183,24 @@ public class ManagerMenu extends Menu {
 
         switch (choice) {
             case 0:
-
+                PartService.addPart();
+                partDAO.serializeParts();
                 break;
-
             case 1:
-
+                PartService.updatePart(input);
+                partDAO.serializeParts();
                 break;
             case 2:
-
+                PartService.deletePart(input);
+                partDAO.serializeParts();
                 break;
             case 3:
-
+                PartService.viewPartDetails(input);
+                partDAO.serializeParts();
                 break;
             case 4:
-
+                PartService.listAllParts();
+                partDAO.serializeParts();
                 break;
             case 5:
                 displayManagerMenu(); // Go back to the main menu
@@ -256,13 +281,13 @@ public class ManagerMenu extends Menu {
 
                 break;
             case 2:
-
+                UserService.deleteUser();
                 break;
             case 3:
 
                 break;
             case 4:
-
+                UserService.displayAllUsers();
                 break;
             case 5:
                 displayManagerMenu(); // Go back to the main menu
@@ -280,34 +305,47 @@ public class ManagerMenu extends Menu {
 
         displayMenuHeader("MANAGER SERVICE MENU", 53);
         displayOption(GREEN_BOLD + "0. " + RESET + "Add Services");
-        displayOption(GREEN_BOLD + "1. " + RESET + "Update Services");
-        displayOption(GREEN_BOLD + "2. " + RESET + "Delete Services");
-        displayOption(GREEN_BOLD + "3. " + RESET + "Search Services");
-        displayOption(GREEN_BOLD + "4. " + RESET + "View All Services");
-        displayOption(GREEN_BOLD + "5. " + RESET + "Back");
+        displayOption(GREEN_BOLD + "1. " + RESET + "Get Service by ID");
+        displayOption(GREEN_BOLD + "2. " + RESET + "Update Service");
+        displayOption(GREEN_BOLD + "3. " + RESET + "Delete Service");
+        displayOption(GREEN_BOLD + "4. " + RESET + "Add Part to Service");
+        displayOption(GREEN_BOLD + "5. " + RESET + "Remove Part from Service");
+        displayOption(GREEN_BOLD + "6. " + RESET + "List All Services");
+        displayOption(GREEN_BOLD + "7. " + RESET + "Back");
         Divider.printDivider();
 
-        System.out.print("Enter Selection (0-5): ");
-        choice = getValidatedChoice(0, 5);
+        System.out.print("Enter Selection (0-7): ");
+        choice = getValidatedChoice(0, 7);
 
         switch (choice) {
             case 0:
-
+                ServiceService.addService();
                 break;
-
             case 1:
-
+                ServiceService.getServiceByID();
                 break;
             case 2:
-
+                ServiceService.updateService();
                 break;
             case 3:
-
+                ServiceService.deleteService();
                 break;
             case 4:
-
+                System.out.print("Enter Service ID: ");
+                String serviceID = scanner.nextLine();
+                System.out.print("Enter Part ID: ");
+                String partID = scanner.nextLine();
+                ServiceService.addPartToService(serviceID, partID);
                 break;
             case 5:
+                System.out.print("Enter Service ID: ");
+                String serviceIDToRemove = scanner.nextLine();
+                ServiceService.removePartFromService(serviceIDToRemove);
+                break;
+            case 6:
+                ServiceService.listAllServices();
+                break;
+            case 7:
                 displayManagerMenu(); // Go back to the main menu
                 break;
             default:
@@ -316,6 +354,61 @@ public class ManagerMenu extends Menu {
         }
 
 
+    }
+    public void displayManagerActivityLog(){
+        ClearScreen.clear();
+        System.out.println(CYAN_BOLD + "=====================================" + RESET);
+        System.out.println(CYAN_BOLD + "       Manager Activity log" + RESET);
+        System.out.println(CYAN_BOLD + "=====================================" + RESET);
+
+        displayMenuHeader("ACTIVITY LOG MENU", 53);
+        displayOption(GREEN_BOLD + "0. " + RESET + "View All Logs");
+        displayOption(GREEN_BOLD + "1. " + RESET + "Search by Log ID");
+        displayOption(GREEN_BOLD + "2. " + RESET + "Search by Username");
+        displayOption(GREEN_BOLD + "3. " + RESET + "Search by User ID");
+        displayOption(GREEN_BOLD + "4. " + RESET + "Search by Date");
+        displayOption(GREEN_BOLD + "5. " + RESET + "Back");
+        Divider.printDivider();
+
+        System.out.print("Enter Selection (0-5): ");
+        choice = getValidatedChoice(0, 5);
+        switch (choice) {
+            case 0:
+                List<ActivityLog> allLogs = activityLogService.viewAllLogs();
+                activityLogService.displayLogs(allLogs);
+                break;
+
+            case 1:
+                String logID = InputValidation.validateString("Enter Log ID: ");
+                List<ActivityLog> logById = activityLogService.viewLogById(logID);
+                activityLogService.displayLogs(logById);
+                break;
+
+            case 2:
+                String username = InputValidation.validateUsernameFormat("Enter Username: ");
+                List<ActivityLog> logsByUsername = activityLogService.viewLogsByUsername(username);
+                activityLogService.displayLogs(logsByUsername);
+                break;
+
+            case 3:
+                String userID = InputValidation.validateUserIDFormat("Enter User ID: ");
+                List<ActivityLog> logsByUserID = activityLogService.viewLogsByUserID(userID);
+                activityLogService.displayLogs(logsByUserID);
+                break;
+
+            case 4:
+                Date date = InputValidation.validateDate("Enter Date (dd/MM/yyyy): ");
+                List<ActivityLog> logsByDate = activityLogService.viewLogsByDate(date);
+                activityLogService.displayLogs(logsByDate);
+                break;
+
+            case 5:
+                displayManagerMenu(); // Go back to the main menu
+                break;
+            default:
+                System.err.println("\n**Please, Enter a Valid Input**");
+                System.out.println();
+        }
     }
     public void displayManagerStatisticsMenu(){
         ClearScreen.clear();

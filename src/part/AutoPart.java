@@ -44,7 +44,11 @@ public class AutoPart implements Serializable {
 
     // Getter and Setter methods
     public static List<AutoPart> getAllParts() {
-        return new ArrayList<>(partsList);
+        return partsList;
+    }
+
+    public static void setPartsList(List<AutoPart> newPartsList) {
+        partsList = newPartsList;
     }
 
     public String getPartID() {

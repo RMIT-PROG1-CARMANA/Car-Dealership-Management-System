@@ -26,10 +26,10 @@ public class AutoPartFileHandler {
     @SuppressWarnings("unchecked")
     public static void deserializeParts() {
         try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(FILE_PATH))) {
+            // Replace the existing parts list with the deserialized one
             List<AutoPart> deserializedParts = (List<AutoPart>) ois.readObject();
-            for (AutoPart part : deserializedParts) {
-                PartService.addPart(part);
-            }
+            AutoPart.setPartsList(deserializedParts);  // Replace the parts list with deserialized data
+
             System.out.println("Parts deserialized from file successfully.");
         } catch (IOException | ClassNotFoundException e) {
             System.out.println("Error deserializing parts: " + e.getMessage());

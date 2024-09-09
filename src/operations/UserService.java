@@ -1,12 +1,14 @@
 package operations;
 
 import FileHandling.UserDataHandler;
+import logsystem.*;
 import sales.SalesTransaction;
 import user.*;
 import utils.Divider;
 import utils.InputValidation;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import static menu.MenuStyle.*;
@@ -73,6 +75,15 @@ public class UserService {
             user = new Client(userID, fullName, dateOfBirth, address, phoneNumber, email, status, password, username,transactions ); // Adjust Client constructor
         }
 
+
+        String logID = ActivityLog.generateLogID();
+        ActivityLogService.logActivity(
+                logID,
+                new Date(),
+                loggedUser.getUsername(),
+                loggedUser.getUserID(),
+                "Created User with ID: " + userID + " Username :" + username
+        );
         addUser(user);
         System.out.println("User created successfully.");
     }
@@ -133,36 +144,52 @@ public class UserService {
     public static void deleteUser() {
         System.out.println();
 
-        String usernameToDelete = InputValidation.validateUsername("Enter username to delete: ");
-        System.out.println();
-
-        User[] userList = userDAO.readAllUsers();  // Fetch users as an array
-        // Check if userList is null
+        // Fetch users as an array
+        User[] userList = userDAO.readAllUsers();
         if (userList == null) {
             System.out.println("Error fetching user data. Please try again later.");
-            return; // Exit the method if there's an issue fetching users
+            return; // Exit if there's an issue fetching users
         }
-
-        boolean isDeleted = false;
-        User[] remainingUsers = new User[userList.length - 1];
-        int index = 0;
-
+        // Print user information in a single line
+        System.out.println("User Information:");
         for (User user : userList) {
-            if (!user.getUsername().equals(usernameToDelete)) {
-                if (index < remainingUsers.length) {
-                    remainingUsers[index++] = user;
-                }
-            } else {
-                isDeleted = true;
+            if (user != null) {
+                System.out.printf("Role: %-10s | UserID: %-10s | Username: %-15s%n",
+                        user.getUserType(), user.getUserID(), user.getUsername());
+                System.out.println("--------------");
             }
         }
-        if (isDeleted) {
-            userDAO.writeUsersToFile(remainingUsers);  // Write the updated array back to the file
+        // Validate and retrieve the username to delete
+        String usernameToDelete = InputValidation.validateUsernameFormat("Enter username to delete: ");
+        System.out.println();
+
+
+
+        List<User> usersList = new ArrayList<>(Arrays.asList(userList));
+        boolean isDeleted = false;
+
+        // Remove the user from the list
+        usersList.removeIf(user -> user != null && user.getUsername().equals(usernameToDelete));
+
+        if (usersList.size() < userList.length) {  // Check if a user was removed
+            userDAO.writeUsersToFile(usersList.toArray(new User[0]));  // Write the updated list back to the file
             System.out.println("User with username " + usernameToDelete + " deleted successfully.");
-        } else {
+            isDeleted = true;
+        }
+
+        if (!isDeleted) {
             System.out.println("No user found with the given username.");
         }
 
+        // Log the deletion
+        String logID = ActivityLog.generateLogID();
+        ActivityLogService.logActivity(
+                logID,
+                new Date(),
+                loggedUser.getUsername(),
+                loggedUser.getUserID(),
+                "Deleted User with username: " + usernameToDelete
+        );
     }
 
 }
