@@ -38,7 +38,7 @@ public class AutoPartMenu {
         String partNumber;
         String condition;
         String warranty;
-        double cost;
+        double price;
         String notes;
 
         // Loop until a valid, unique part ID is provided
@@ -76,9 +76,9 @@ public class AutoPartMenu {
         while (true) {
             System.out.print("Enter Cost: ");
             if (scanner.hasNextDouble()) {
-                cost = scanner.nextDouble();
+                price = scanner.nextDouble();
                 scanner.nextLine(); // Consume newline
-                if (cost > 0) {
+                if (price > 0) {
                     break; // Valid cost, exit loop
                 } else {
                     System.out.println("Cost must be a positive number!");
@@ -94,7 +94,7 @@ public class AutoPartMenu {
         notes = scanner.nextLine();
 
         // Create and add the part
-        AutoPart part = new AutoPart(partID, partName, manufacturer, partNumber, condition, warranty, cost, notes);
+        AutoPart part = new AutoPart(partID, partName, manufacturer, partNumber, condition, warranty, price, notes);
         AutoPart.addPart(part);
     }
 
@@ -144,10 +144,10 @@ public class AutoPartMenu {
             }
 
             System.out.print("Enter New Cost (or enter 0 to skip): ");
-            double cost = scanner.nextDouble();
+            double price = scanner.nextDouble();
             scanner.nextLine(); // Consume newline
-            if (cost != 0) {
-                part.setCost(cost);
+            if (price != 0) {
+                part.setPrice(price);
             }
 
             System.out.print("Enter New Notes (or press Enter to skip): ");

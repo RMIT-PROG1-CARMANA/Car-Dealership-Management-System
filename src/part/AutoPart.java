@@ -13,7 +13,7 @@ public class AutoPart implements Serializable {
     private String partNumber;
     private String condition;
     private String warranty;
-    private double cost;
+    private double price;
     private String notes;
 
     private static List<AutoPart> partsList = new ArrayList<>();
@@ -26,19 +26,19 @@ public class AutoPart implements Serializable {
         this.partNumber = "0000";
         this.condition = "new";
         this.warranty = "1 year";
-        this.cost = 0.0;
+        this.price = 0.0;
         this.notes = "No additional notes.";
     }
 
     // Parameterized Constructor
-    public AutoPart(String partID, String partName, String manufacturer, String partNumber, String condition, String warranty, double cost, String notes) {
+    public AutoPart(String partID, String partName, String manufacturer, String partNumber, String condition, String warranty, double price, String notes) {
         this.partID = partID;
         this.partName = partName;
         this.manufacturer = manufacturer;
         this.partNumber = partNumber;
         this.condition = condition;
         this.warranty = warranty;
-        this.cost = cost;
+        this.price = price;
         this.notes = notes;
     }
 
@@ -95,12 +95,12 @@ public class AutoPart implements Serializable {
         this.warranty = warranty;
     }
 
-    public double getCost() {
-        return cost;
+    public double getPrice() {
+        return price;
     }
 
-    public void setCost(double cost) {
-        this.cost = cost;
+    public void setPrice(double price) {
+        this.price = price;
     }
 
     public String getNotes() {
@@ -120,7 +120,7 @@ public class AutoPart implements Serializable {
                 ", partNumber='" + partNumber + '\'' +
                 ", condition='" + condition + '\'' +
                 ", warranty='" + warranty + '\'' +
-                ", cost=" + cost +
+                ", price=" + price +
                 ", notes='" + notes + '\'' +
                 '}';
     }
@@ -153,23 +153,5 @@ public class AutoPart implements Serializable {
         }
     }
 
-    // Serialization method to save parts to a file
-    public static void savePartsToFile(String filename) {
-        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(filename))) {
-            oos.writeObject(partsList);
-            System.out.println("Parts saved successfully to " + filename);
-        } catch (IOException e) {
-            System.out.println("Error saving parts to file: " + e.getMessage());
-        }
-    }
 
-    // Deserialization method to load parts from a file
-    public static void loadPartsFromFile(String filename) {
-        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(filename))) {
-            partsList = (List<AutoPart>) ois.readObject();
-            System.out.println("Parts loaded successfully from " + filename);
-        } catch (IOException | ClassNotFoundException e) {
-            System.out.println("Error loading parts from file: " + e.getMessage());
-        }
-    }
 }
