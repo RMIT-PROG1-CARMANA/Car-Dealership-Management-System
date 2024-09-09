@@ -25,7 +25,7 @@ public class AutoPartFileHandler {
         try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(FILE_PATH))) {
             List<AutoPart> deserializedParts = (List<AutoPart>) ois.readObject();
             for (AutoPart part : deserializedParts) {
-                AutoPart.addPart(part);
+                AutoPartMenu.addPart(part);
             }
             System.out.println("Parts deserialized from file successfully.");
         } catch (IOException | ClassNotFoundException e) {

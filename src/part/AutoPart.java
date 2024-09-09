@@ -16,7 +16,7 @@ public class AutoPart implements Serializable {
     private double price;
     private String notes;
 
-    private static List<AutoPart> partsList = new ArrayList<>();
+    static List<AutoPart> partsList = new ArrayList<>();
 
     // Default Constructor
     public AutoPart() {
@@ -123,34 +123,6 @@ public class AutoPart implements Serializable {
                 ", price=" + price +
                 ", notes='" + notes + '\'' +
                 '}';
-    }
-
-    // Static methods for managing parts
-    public static void addPart(AutoPart part) {
-        partsList.add(part);
-    }
-
-    public static AutoPart getPartByID(String partID) {
-        for (AutoPart part : partsList) {
-            if (part.getPartID().equals(partID)) {
-                return part;
-            }
-        }
-        return null;
-    }
-
-    public static void deletePart(String partID) {
-        partsList.removeIf(part -> part.getPartID().equals(partID));
-    }
-
-    public static void listAllParts() {
-        if (partsList.isEmpty()) {
-            System.out.println("No parts available.");
-        } else {
-            for (AutoPart part : partsList) {
-                System.out.println(part);
-            }
-        }
     }
 
 

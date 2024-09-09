@@ -45,7 +45,7 @@ public class AutoPartMenu {
         while (true) {
             System.out.print("Enter Part ID: ");
             partID = scanner.nextLine();
-            if (AutoPart.getPartByID(partID) != null) {
+            if (getPartByID(partID) != null) {
                 System.out.println("Part ID already exists! Please enter a different Part ID.");
             } else {
                 break; // Valid and unique part ID, exit loop
@@ -95,13 +95,13 @@ public class AutoPartMenu {
 
         // Create and add the part
         AutoPart part = new AutoPart(partID, partName, manufacturer, partNumber, condition, warranty, price, notes);
-        AutoPart.addPart(part);
+        addPart(part);
     }
 
     public static void viewPartDetails(Scanner scanner) {
         System.out.print("Enter Part ID to View Details: ");
         String partID = scanner.nextLine();
-        AutoPart part = AutoPart.getPartByID(partID);
+        AutoPart part = getPartByID(partID);
         if (part != null) {
             System.out.println(part.toString());
         }
@@ -111,7 +111,7 @@ public class AutoPartMenu {
         System.out.print("Enter Part ID to Update: ");
         String partID = scanner.nextLine();
 
-        AutoPart part = AutoPart.getPartByID(partID);
+        AutoPart part = getPartByID(partID);
         if (part != null) {
             System.out.print("Enter New Part Name (or press Enter to skip): ");
             String partName = scanner.nextLine();
@@ -165,10 +165,39 @@ public class AutoPartMenu {
     public static void deletePart(Scanner scanner) {
         System.out.print("Enter Part ID to Delete: ");
         String partID = scanner.nextLine();
-        AutoPart.deletePart(partID);
+        deletePart(partID);
+    }
+
+
+
+
+    // Static methods for managing parts
+    public static void addPart(AutoPart part) {
+        AutoPart.partsList.add(part);
+    }
+
+    public static AutoPart getPartByID(String partID) {
+        for (AutoPart part : AutoPart.partsList) {
+            if (part.getPartID().equals(partID)) {
+                return part;
+            }
+        }
+        return null;
+    }
+
+    public static void deletePart(String partID) {
+        AutoPart.partsList.removeIf(part -> part.getPartID().equals(partID));
     }
 
     public static void listAllParts() {
-        AutoPart.listAllParts();
+        if (AutoPart.partsList.isEmpty()) {
+            System.out.println("No parts available.");
+        } else {
+            for (AutoPart part : AutoPart.partsList) {
+                System.out.println(part);
+            }
+        }
     }
+
+
 }
