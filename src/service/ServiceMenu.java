@@ -7,7 +7,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class ServiceMenu {
-    private static Scanner scanner = new Scanner(System.in);
+    static Scanner scanner = new Scanner(System.in);
     private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd/MM/yyyy");
     private static List<Service> serviceList = new ArrayList<>();
     private static List<AutoPart> autoPartsList = new ArrayList<>();
@@ -264,4 +264,23 @@ public class ServiceMenu {
         }
         return null;
     }
+
+    public static void listAllReplacedParts(String serviceID) {
+        Service service = findServiceByID(serviceID);
+        if (service == null) {
+            System.out.println("Service not found with ID: " + serviceID);
+            return;
+        }
+
+        List<AutoPart> replacedParts = service.getReplacedParts();
+        if (replacedParts.isEmpty()) {
+            System.out.println("No parts replaced in this service.");
+        } else {
+            System.out.println("Replaced Parts for Service ID " + serviceID + ":");
+            for (AutoPart part : replacedParts) {
+                System.out.println(part);
+            }
+        }
+    }
+
 }
