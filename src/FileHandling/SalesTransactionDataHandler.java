@@ -13,12 +13,8 @@ public class SalesTransactionDataHandler {
     public List<SalesTransaction> transactions = new ArrayList<>();
     private String transactionDatabaseFile = "src/DataBase/SalesTransactionDatabase.txt";
 
-    public SalesTransactionDataHandler() {
-        this.transactionDatabaseFile = transactionDatabaseFile;
-    }
-
     // Load the transactions from the .ser file using deserialization
-    public void loadTransactionDatabase(String transactionDB) {
+    public void loadTransactionDatabase() {
         File file = new File(transactionDatabaseFile);
 
         // Check if the file exists before trying to read it

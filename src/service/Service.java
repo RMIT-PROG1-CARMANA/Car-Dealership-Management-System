@@ -1,44 +1,22 @@
 package service;
 
 import part.AutoPart;
-
 import java.io.Serializable;
+import java.util.Date;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Service  implements Serializable {
+public class Service implements Serializable {
+    private static final long serialVersionUID = 1L;
+
     private String serviceID;
-    private String serviceDate;
+    private Date serviceDate;
     private String clientID;
     private String mechanicID;
     private String serviceType;
-    private List<AutoPart> replacedParts;
+    private List<AutoPart> replacedParts = new ArrayList<>();
     private double serviceCost;
     private String notes;
-
-    // Default Constructor
-    public Service() {
-        this.serviceID = "s-default";
-        this.serviceDate = "01/01/2024";
-        this.clientID = "c-default";
-        this.mechanicID = "m-default";
-        this.serviceType = "General Maintenance";
-        this.replacedParts = new ArrayList<>();
-        this.serviceCost = 0.0;
-        this.notes = "No additional notes.";
-    }
-
-    // Parameterized Constructor
-    public Service(String serviceID, String serviceDate, String clientID, String mechanicID, String serviceType, double serviceCost, String notes) {
-        this.serviceID = serviceID;
-        this.serviceDate = serviceDate;
-        this.clientID = clientID;
-        this.mechanicID = mechanicID;
-        this.serviceType = serviceType;
-        this.replacedParts = new ArrayList<>();
-        this.serviceCost = serviceCost;
-        this.notes = notes;
-    }
 
     // Getters and Setters
     public String getServiceID() {
@@ -49,11 +27,11 @@ public class Service  implements Serializable {
         this.serviceID = serviceID;
     }
 
-    public String getServiceDate() {
+    public Date getServiceDate() {
         return serviceDate;
     }
 
-    public void setServiceDate(String serviceDate) {
+    public void setServiceDate(Date serviceDate) {
         this.serviceDate = serviceDate;
     }
 
@@ -105,11 +83,30 @@ public class Service  implements Serializable {
         this.notes = notes;
     }
 
+    public void addPartService(AutoPart part) {
+        if (this.replacedParts == null) {
+            this.replacedParts = new ArrayList<>();
+        }
+        this.replacedParts.add(part);
+    }
+
+    public boolean removePartService(String partID) {
+        if (this.replacedParts != null) {
+            for (AutoPart part : this.replacedParts) {
+                if (part.getPartID().equals(partID)) {
+                    this.replacedParts.remove(part);
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
     @Override
     public String toString() {
-        return "service.Service{" +
+        return "Service{" +
                 "serviceID='" + serviceID + '\'' +
-                ", serviceDate='" + serviceDate + '\'' +
+                ", serviceDate=" + serviceDate +
                 ", clientID='" + clientID + '\'' +
                 ", mechanicID='" + mechanicID + '\'' +
                 ", serviceType='" + serviceType + '\'' +

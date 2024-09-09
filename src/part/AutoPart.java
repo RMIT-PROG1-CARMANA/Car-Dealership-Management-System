@@ -1,14 +1,22 @@
 package part;
 
-public class AutoPart {
+import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
+
+public class AutoPart implements Serializable {
+    private static final long serialVersionUID = 1L;  // Adding serialVersionUID for serialization compatibility
+
     private String partID;
     private String partName;
     private String manufacturer;
     private String partNumber;
     private String condition;
     private String warranty;
-    private double cost;
+    private double price;
     private String notes;
+
+    static public List<AutoPart> partsList = new ArrayList<>();
 
     // Default Constructor
     public AutoPart() {
@@ -18,23 +26,27 @@ public class AutoPart {
         this.partNumber = "0000";
         this.condition = "new";
         this.warranty = "1 year";
-        this.cost = 0.0;
+        this.price = 0.0;
         this.notes = "No additional notes.";
     }
 
     // Parameterized Constructor
-    public AutoPart(String partID, String partName, String manufacturer, String partNumber, String condition, String warranty, double cost, String notes) {
+    public AutoPart(String partID, String partName, String manufacturer, String partNumber, String condition, String warranty, double price, String notes) {
         this.partID = partID;
         this.partName = partName;
         this.manufacturer = manufacturer;
         this.partNumber = partNumber;
         this.condition = condition;
         this.warranty = warranty;
-        this.cost = cost;
+        this.price = price;
         this.notes = notes;
     }
 
-    // Getters and Setters
+    // Getter and Setter methods
+    public static List<AutoPart> getAllParts() {
+        return new ArrayList<>(partsList);
+    }
+
     public String getPartID() {
         return partID;
     }
@@ -83,12 +95,12 @@ public class AutoPart {
         this.warranty = warranty;
     }
 
-    public double getCost() {
-        return cost;
+    public double getPrice() {
+        return price;
     }
 
-    public void setCost(double cost) {
-        this.cost = cost;
+    public void setPrice(double price) {
+        this.price = price;
     }
 
     public String getNotes() {
@@ -101,30 +113,17 @@ public class AutoPart {
 
     @Override
     public String toString() {
-        return "part.AutoPart{" +
+        return "AutoPart{" +
                 "partID='" + partID + '\'' +
                 ", partName='" + partName + '\'' +
                 ", manufacturer='" + manufacturer + '\'' +
                 ", partNumber='" + partNumber + '\'' +
                 ", condition='" + condition + '\'' +
                 ", warranty='" + warranty + '\'' +
-                ", cost=" + cost +
+                ", price=" + price +
                 ", notes='" + notes + '\'' +
                 '}';
     }
 
-    public void addPart(AutoPart part) {
-        // Assuming you have a list of parts somewhere in your system
-        // You can add the part to that list
-    }
 
-    public void updatePart(String partName, String manufacturer, String partNumber, String condition, String warranty, double cost, String notes) {
-        if (partName != null) this.partName = partName;
-        if (manufacturer != null) this.manufacturer = manufacturer;
-        if (partNumber != null) this.partNumber = partNumber;
-        if (condition != null) this.condition = condition;
-        if (warranty != null) this.warranty = warranty;
-        if (cost != 0) this.cost = cost;
-        if (notes != null) this.notes = notes;
-    }
 }

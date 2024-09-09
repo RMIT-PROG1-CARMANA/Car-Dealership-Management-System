@@ -2,8 +2,6 @@ package menu.UserMenu;
 
 
 import menu.Menu;
-import operations.UserService;
-import user.Authenticator;
 import utils.*;
 import java.util.*;
 

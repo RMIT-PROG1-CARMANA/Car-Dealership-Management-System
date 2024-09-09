@@ -3,7 +3,6 @@ package crudHandlers;
 
 import FileHandling.SalesTransactionDataHandler;
 import sales.SalesTransaction;
-import user.Membership;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -19,11 +18,12 @@ public class SalesTransactionCRUD {
         salespersonID,
         discount,
         totalAmount,
+
         notes
     }
     //Constructor
-    public SalesTransactionCRUD(String transactionDB) {
-        stdl.loadTransactionDatabase(transactionDB);
+    public SalesTransactionCRUD() {
+        stdl.loadTransactionDatabase();
     }
     //Creation
     public void addTransaction(SalesTransaction transaction) {

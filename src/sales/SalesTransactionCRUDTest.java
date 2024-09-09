@@ -1,6 +1,5 @@
 package sales;
 
-
 import FileHandling.CarDataHandler;
 import FileHandling.UserDataHandler;
 import crudHandlers.CarCRUDMethodHandler;
@@ -9,15 +8,13 @@ import crudHandlers.SalesTransactionCRUD;
 import java.util.List;
 import java.util.Scanner;
 
+import operations.PartService;
 import user.Client;
 import vehicle.Car;
 import part.AutoPart;
 import java.util.ArrayList;
 
 import user.Membership;
-
-
-
 
 public class SalesTransactionCRUDTest {
 
@@ -36,7 +33,6 @@ public class SalesTransactionCRUDTest {
         return totalAmount;
     }
 
-
     public static void main(String[] args) {
 
         // Initialize CarDataHandler and CarCRUDMethodHandler
@@ -44,7 +40,7 @@ public class SalesTransactionCRUDTest {
         carDataHandler.loadCarDatabase("src/DataBase/SalesTransactionDatabase.txt"); // Adjust the file path as needed
         methodHandler = new CarCRUDMethodHandler(carDataHandler);
 
-        SalesTransactionCRUD salesTransactionCRUD = new SalesTransactionCRUD("");
+        SalesTransactionCRUD salesTransactionCRUD = new SalesTransactionCRUD();
         Scanner scanner = new Scanner(System.in);
         boolean exit = false;
 
@@ -108,11 +104,12 @@ public class SalesTransactionCRUDTest {
                         String partID = scanner.nextLine();
 
                         AutoPart part = null;
-//                        if (!partID.isEmpty()) {
-//                            // Retrieve the part from the database (assuming you have a similar handler for AutoPart)
-//                            // AutoPart part = autoPartDataHandler.findPartByID(partID);
-//                            // You need to implement AutoPartDataHandler similar to CarDataHandler for this
-//                        }
+                        if (!partID.isEmpty()) {
+                            part = PartService.findAutoPartByID(partID);
+                            if (part == null) {
+                                System.out.println("Part with ID " + partID + " not found.");
+                            }
+                        }
 
                         // Create a PurchasedItem object and add it to the list
                         PurchasedItem purchasedItem = new PurchasedItem(car, part);
@@ -122,12 +119,12 @@ public class SalesTransactionCRUDTest {
                         System.out.print("Do you want to add another item? (yes/no): ");
                         addMoreItems = scanner.nextLine().equalsIgnoreCase("yes");
                     }
-                    System.out.print("Total Amount: ");
+
                     // Calculate total amount based on client's membership
                     Client client = userDataHandler.findClientByID(clientID);
                     Membership membership = client.getMembership();  // Retrieve the Membership object
-                    Membership.MembershipType membershipType = membership.getMembershipType();  // Retrieve the MembershipType
                     double totalAmount = totalAmountCalculation(purchaseItems, membership);
+
                     System.out.print("Notes: ");
                     String notes = scanner.nextLine();
 
@@ -136,42 +133,48 @@ public class SalesTransactionCRUDTest {
                     System.out.println("New transaction added successfully.");
                     break;
 
-
                 case 3:
+                    // Update an existing transaction (Implement the update logic here)
+                    // For now, this case does nothing and requires implementation.
+                    System.out.println("Updating a transaction functionality is not implemented yet.");
+                    break;
+
+                case 4:
                     // Soft delete a transaction
                     System.out.print("Enter the Transaction ID to delete: ");
                     String deleteTransactionID = scanner.nextLine();
                     salesTransactionCRUD.deleteTransaction(deleteTransactionID);  // Call the soft delete method
+                    System.out.println("Transaction deleted successfully.");
                     break;
-
-                case 4:
-//                    // Display all transactions sorted by Total Amount
-//                    List<SalesTransaction> transactionsByAmount = salesTransactionCRUD.getTransactionsOrderedByID(SalesTransactionCRUD.OrderType.TotalAmount, true);
-//                    for (SalesTransaction transaction : transactionsByAmount) {
-//                        transaction.displayTransactionDetails();
-//                        System.out.println();  // Add blank line between transactions
-//                    }
-                    break;
-
-//                case 5:
-//                    // Display transactions for a specific client ID
-//                    System.out.print("Enter the Client ID to display transactions: ");
-//                    String displayClientID = scanner.nextLine();
-//                    salesTransactionCRUD.getTransactionsByClientID(displayClientID)
-//                            .forEach(transaction -> {
-//                                transaction.displayInfo();
-//                                System.out.println();  // Add blank line between transactions
-//                            });
-//                    break;
 
                 case 5:
+                    // Display all transactions sorted by Total Amount
+                    List<SalesTransaction> transactionsByAmount = salesTransactionCRUD.getTransactionsOrderedByID(SalesTransactionCRUD.OrderType.totalAmount, true);
+                    for (SalesTransaction transaction : transactionsByAmount) {
+                        transaction.displayTransactionDetails();
+                        System.out.println();  // Add blank line between transactions
+                    }
+                    break;
+
+                case 6:
+                    // Display transactions for a specific client ID
+                    System.out.print("Enter the Client ID to display transactions: ");
+                    String displayClientID = scanner.nextLine();
+                    salesTransactionCRUD.getTransactionsByClientID(displayClientID)
+                            .forEach(transaction -> {
+                                transaction.displayTransactionDetails();
+                                System.out.println();  // Add blank line between transactions
+                            });
+                    break;
+
+                case 7:
                     // Display a transaction by ID
                     System.out.print("Enter the Transaction ID to display: ");
                     String displayTransactionID = scanner.nextLine();
                     salesTransactionCRUD.displayTransactionByID(displayTransactionID);
                     break;
 
-                case 6:
+                case 8:
                     // Exit
                     exit = true;
                     System.out.println("Exiting...");

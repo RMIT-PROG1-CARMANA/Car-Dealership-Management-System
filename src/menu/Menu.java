@@ -1,25 +1,21 @@
 package menu;
 
-import FileHandling.UserDataHandler;
 import menu.UserMenu.EmployeeBaseMenu;
-import menu.UserMenu.EmployeeRoles.MechanicMenu;
-import menu.UserMenu.EmployeeRoles.SalespersonMenu;
+import menu.UserMenu.EmployeeRolesMenu.MechanicMenu;
+import menu.UserMenu.EmployeeRolesMenu.SalespersonMenu;
 import menu.UserMenu.ManagerMenu;
-import menu.MenuStyle;
 import operations.UserService;
-import user.Employee;
 import user.Mechanic;
 import user.Salesperson;
 import user.User;
 import user.Authenticator;
 import utils.Divider;
 import utils.InputValidation;
-import java.io.Serializable;
+
 import java.util.Scanner;
 
 
 import static menu.MenuStyle.*;
-import static operations.UserService.deleteUser;
 
 import static operations.UserService.displayInfoUsers;
 

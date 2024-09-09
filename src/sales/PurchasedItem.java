@@ -7,8 +7,6 @@ public class PurchasedItem implements Serializable {
     private Car car;
     private AutoPart part;
 
-    // Constructor, getters, setters
-
     public PurchasedItem(Car car, AutoPart part) {
         this.car = car;
         this.part = part;
@@ -32,7 +30,7 @@ public class PurchasedItem implements Serializable {
 
     public double getItemPrice() {
         double carPrice = (car != null) ? car.getPrice() : 0.0;
-        double partPrice = (part != null) ? part.getCost() : 0.0;
+        double partPrice = (part != null) ? part.getPrice() : 0.0;
         return carPrice + partPrice;
     }
 
