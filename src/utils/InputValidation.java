@@ -1,13 +1,17 @@
 package utils;
 
+import FileHandling.UserDataHandler;
+import part.AutoPart;
+import user.User;
+import service.*;
+
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.InputMismatchException;
-import java.util.Scanner;
+import java.util.*;
 import java.util.function.Function;
 
 public class InputValidation {
+    private static final UserDataHandler userDAO = new UserDataHandler();
+
     public static long validateLong(String question) {
         return validateLong((v) -> true, question, "Invalid input, please try again.");
     }
@@ -156,5 +160,154 @@ public class InputValidation {
                 "Invalid input. Please enter a valid boolean.");
         return !answer.equals("-1") && Arrays.asList("true", "t", "yes", "y").contains(answer.toLowerCase());
     }
+
+    public static String validateUserID(String promptMessage) {
+        Scanner input = new Scanner(System.in);
+        String userID;
+
+        while (true) {
+            System.out.print(promptMessage);
+            userID = input.nextLine().trim();
+
+            // Validate the format of the userID (should be in the form u-xxxx, where xxxx is a number)
+            if (!userID.matches("u-\\d{4}")) {
+                System.out.println("Invalid User ID format. It should be 'u-XXXX', where 'XXXX' is a number.");
+                continue;  // Re-prompt for user input
+            }
+
+            // Check if the userID already exists in the database using the existing userDAO
+            User[] existingUsers = userDAO.readAllUsers();
+
+            // Check for null or empty user list
+            if (existingUsers == null) {
+                System.out.println("Error: No users found in the system.");
+                break; // Exit loop if no users found (or handle this case appropriately)
+            }
+
+            boolean userExists = false;
+
+            // Loop through the existing users and check if any have the same userID
+            for (User user : existingUsers) {
+                if (user != null && user.getUserID().equals(userID)) {  // Null check before accessing userID
+                    System.out.println("User ID already exists. Please enter a different User ID.");
+                    userExists = true;
+                    break;  // Exit the loop if we find a match
+                }
+            }
+
+            // If the userID is unique and valid, return it
+            if (!userExists) {
+                return userID;
+            }
+        }
+
+        return null; // Default return in case of errors
+    }
+
+    public static String validatePartID(String promptMessage) {
+        Scanner input = new Scanner(System.in);
+        String partID;
+
+        while (true) {
+            System.out.print(promptMessage);
+            partID = input.nextLine().trim();
+
+            // Validate the format of the partID (should be in the form p-xxxx, where xxxx is a number)
+            if (!partID.matches("p-\\d{4}")) {
+                System.out.println("Invalid Part ID format. It should be 'p-XXXX', where 'XXXX' is a number.");
+                continue;  // Re-prompt for user input
+            }
+
+            // Check if the partID already exists in the parts list
+            List<AutoPart> existingParts = AutoPart.getAllParts();  // Retrieve all parts
+
+            // Check for null or empty parts list
+            if (existingParts == null || existingParts.isEmpty()) {
+                System.out.println("Error: No parts found in the system.");
+                return partID;  // If no parts exist, return the entered partID
+            }
+
+            String finalPartID = partID;
+            boolean partExists = existingParts.stream().anyMatch(part -> part.getPartID().equals(finalPartID));
+
+            // If the partID is unique and valid, return it
+            if (!partExists) {
+                return partID;
+            } else {
+                System.out.println("Part ID already exists. Please enter a different Part ID.");
+            }
+        }
+    }
+
+    public static boolean validatePartIDFormat(String question) {
+        Scanner input = new Scanner(System.in);
+        String partID;
+
+        while (true) {
+            System.out.print(question);
+            partID = input.nextLine().trim();
+
+            // Validate the format of the partID (should be in the form p-xxxx, where xxxx is a number)
+            if (!partID.matches("p-\\d{4}")) {
+                System.out.println("Invalid Part ID format. It should be 'p-XXXX', where 'XXXX' is a number.");
+                continue;  // Re-prompt for user input
+            }
+
+        }
+    }
+
+    public static boolean doesPartIDExist(String partID, List<AutoPart> existingParts) {
+        return existingParts.stream()
+                .anyMatch(part -> part.getPartID().equals(partID));
+    }
+
+    public static String validateServiceID(String promptMessage, List<Service> existingServices) {
+        Scanner scanner = new Scanner(System.in);
+        String serviceID;
+        while (true) {
+            System.out.print(promptMessage);
+            serviceID = scanner.nextLine().trim();
+
+            // Check if input matches a valid format (e.g., S-XXXX where XXXX is a number)
+            if (!serviceID.matches("^S-\\d{4}$")) {
+                System.out.println("Invalid Service ID format. It should be in the format 'S-XXXX' where 'XXXX' are digits.");
+                continue;
+            }
+
+            // Check if ServiceID is unique
+            String finalServoceID = serviceID;
+            boolean isDuplicate = existingServices.stream()
+                    .anyMatch(service -> service.getServiceID().equals(finalServoceID));
+
+            if (isDuplicate) {
+                System.out.println("Service ID already exists. Please enter a unique Service ID.");
+            } else {
+                break; // Service ID is valid and unique
+            }
+        }
+        return serviceID;
+    }
+
+
+    public static String validateServiceIDFormat(String promptMessage, List<Service> existingServices) {
+        Scanner scanner = new Scanner(System.in);
+        String serviceID;
+        while (true) {
+            System.out.print(promptMessage);
+            serviceID = scanner.nextLine().trim();
+            // Check if input matches a valid format (e.g., S-XXXX where XXXX is a number)
+            if (!serviceID.matches("^S-\\d{4}$")) {
+                System.out.println("Invalid Service ID format. It should be in the format 'S-XXXX' where 'XXXX' are digits.");
+                continue;
+            }
+        }
+    }
+
+    public static boolean doesServiceIDExist(String serviceID, List<Service> existingServices) {
+        return existingServices.stream()
+                .anyMatch(service -> service.getServiceID().equals(serviceID));
+    }
+
+
 
 }

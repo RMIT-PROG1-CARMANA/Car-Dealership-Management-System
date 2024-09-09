@@ -28,24 +28,19 @@ public class ServiceService {
 
 
     public static void addService() {
-        System.out.print("Enter Service ID: ");
-        String serviceID = scanner.nextLine();
+        String serviceID = InputValidation.validateServiceID("Enter Service ID: ", serviceList);
 
         Date serviceDate = InputValidation.validateDate("Enter Service Date (dd/MM/yyyy): ");
 
-        System.out.print("Enter Client ID: ");
-        String clientID = scanner.nextLine();
+        String clientID = InputValidation.validateUserID("Enter Client ID: ");
 
-        System.out.print("Enter Mechanic ID: ");
-        String mechanicID = scanner.nextLine();
+        String mechanicID = InputValidation.validateString("Enter Mechanic ID: ");
 
-        System.out.print("Enter Service Type: ");
-        String serviceType = scanner.nextLine();
+        String serviceType = InputValidation.validateString("Enter Service Type: ");
 
-        double serviceCost = getValidDouble("Enter Service Cost: ");
+        double serviceCost = InputValidation.validateDouble("Enter Service Cost: ");
 
-        System.out.print("Enter Notes: ");
-        String notes = scanner.nextLine();
+        String notes = InputValidation.validateString("Enter Notes: ");
 
         Service newService = new Service();
         newService.setServiceID(serviceID);
@@ -64,8 +59,7 @@ public class ServiceService {
     }
 
     public static void getServiceByID() {
-        System.out.print("Enter Service ID: ");
-        String serviceID = scanner.nextLine();
+        String serviceID = InputValidation.validateString("Enter Service ID: ");
 
         Service service = findServiceByID(serviceID);
         if (service != null) {
@@ -76,8 +70,7 @@ public class ServiceService {
     }
 
     public static void updateService() {
-        System.out.print("Enter Service ID to Update: ");
-        String serviceID = scanner.nextLine();
+        String serviceID = InputValidation.validateString("Enter Service ID to Update: ");
 
         Service service = findServiceByID(serviceID);
         if (service == null) {
@@ -85,8 +78,7 @@ public class ServiceService {
             return;
         }
 
-        System.out.print("Enter New Service Date (dd/MM/yyyy) or press Enter to keep current: ");
-        String dateInput = scanner.nextLine();
+        String dateInput = InputValidation.validateString("Enter New Service Date (dd/MM/yyyy) or press Enter to keep current: ");
         if (!dateInput.trim().isEmpty()) {
             try {
                 Date serviceDate = DATE_FORMAT.parse(dateInput);
@@ -96,26 +88,22 @@ public class ServiceService {
             }
         }
 
-        System.out.print("Enter New Client ID or press Enter to keep current: ");
-        String clientID = scanner.nextLine();
+        String clientID = InputValidation.validateString("Enter New Client ID or press Enter to keep current: ");
         if (!clientID.trim().isEmpty()) {
             service.setClientID(clientID);
         }
 
-        System.out.print("Enter New Mechanic ID or press Enter to keep current: ");
-        String mechanicID = scanner.nextLine();
+        String mechanicID = InputValidation.validateString("Enter New Mechanic ID or press Enter to keep current: ");
         if (!mechanicID.trim().isEmpty()) {
             service.setMechanicID(mechanicID);
         }
 
-        System.out.print("Enter New Service Type or press Enter to keep current: ");
-        String serviceType = scanner.nextLine();
+        String serviceType = InputValidation.validateString("Enter New Service Type or press Enter to keep current: ");
         if (!serviceType.trim().isEmpty()) {
             service.setServiceType(serviceType);
         }
 
-        System.out.print("Enter New Service Cost or press Enter to keep current: ");
-        String serviceCostInput = scanner.nextLine();
+        String serviceCostInput = InputValidation.validateString("Enter New Service Cost or press Enter to keep current: ");
         if (!serviceCostInput.trim().isEmpty()) {
             try {
                 service.setServiceCost(Double.parseDouble(serviceCostInput));
@@ -124,8 +112,7 @@ public class ServiceService {
             }
         }
 
-        System.out.print("Enter New Notes or press Enter to keep current: ");
-        String notes = scanner.nextLine();
+        String notes = InputValidation.validateString("Enter New Notes or press Enter to keep current: ");
         if (!notes.trim().isEmpty()) {
             service.setNotes(notes);
         }
@@ -137,8 +124,7 @@ public class ServiceService {
     }
 
     public static void deleteService() {
-        System.out.print("Enter Service ID to Delete: ");
-        String serviceID = scanner.nextLine();
+        String serviceID = InputValidation.validateString("Enter Service ID to Delete: ");
 
         Service service = findServiceByID(serviceID);
         if (service != null) {
@@ -174,8 +160,7 @@ public class ServiceService {
     }
 
     public static void removePartFromService(String serviceID) {
-        System.out.print("Enter Part ID to Remove: ");
-        String partID = scanner.nextLine();
+        String partID = InputValidation.validateString("Enter Part ID to Remove: ");
 
         Service service = findServiceByID(serviceID);
         if (service == null) {
@@ -246,5 +231,4 @@ public class ServiceService {
             }
         }
     }
-
 }

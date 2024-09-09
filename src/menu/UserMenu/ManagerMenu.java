@@ -22,6 +22,8 @@ public class ManagerMenu extends Menu {
     int choice;
     Scanner input = new Scanner(System.in);
     private operations.UserService UserService;
+    private operations.PartService PartService;
+    private operations.ServiceService ServiceService;
 
     public void displayManagerMenu(){
 //        uiUtils.clearScreen();
@@ -269,31 +271,31 @@ public class ManagerMenu extends Menu {
 
                 switch (choice) {
                     case 0:
-                        ServiceMenu.addService();
+                        ServiceService.addService();
                         break;
                     case 1:
-                        ServiceMenu.getServiceByID();
+                        ServiceService.getServiceByID();
                         break;
                     case 2:
-                        ServiceMenu.updateService();
+                        ServiceService.updateService();
                         break;
                     case 3:
-                        ServiceMenu.deleteService();
+                        ServiceService.deleteService();
                         break;
                     case 4:
                         System.out.print("Enter Service ID: ");
                         String serviceID = scanner.nextLine();
                         System.out.print("Enter Part ID: ");
                         String partID = scanner.nextLine();
-                        ServiceMenu.addPartToService(serviceID, partID);
+                        ServiceService.addPartToService(serviceID, partID);
                         break;
                     case 5:
                         System.out.print("Enter Service ID: ");
                         String serviceIDToRemove = scanner.nextLine();
-                        ServiceMenu.removePartFromService(serviceIDToRemove);
+                        ServiceService.removePartFromService(serviceIDToRemove);
                         break;
                     case 6:
-                        ServiceMenu.listAllServices();
+                        ServiceService.listAllServices();
                         break;
                     case 7:
                         System.out.println("Exiting...");
