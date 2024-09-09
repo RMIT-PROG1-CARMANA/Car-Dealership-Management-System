@@ -72,6 +72,20 @@ public class SalesTransactionCRUD {
         }
     }
 
+    public List<SalesTransaction> getTransactionsByClientID(String clientID) {
+        List<SalesTransaction> clientTransactions = new ArrayList<>();
+
+        // Loop through all transactions in the SalesTransactionDataHandler
+        for (SalesTransaction transaction : stdl.transactions) {
+            // Check if the transaction's clientID matches the provided clientID
+            if (transaction.getClientID().equals(clientID) && !transaction.isDeleted()) {
+                clientTransactions.add(transaction);
+            }
+        }
+
+        return clientTransactions;
+    }
+
 
     //Display transaction by transaction ID
     public void displayTransactionByID(String id) {
