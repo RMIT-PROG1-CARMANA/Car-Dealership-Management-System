@@ -1,7 +1,10 @@
-package part;
+package FileHandling;
+
+import part.AutoPart;
+import operations.*;
 
 import java.io.*;
-import java.util.List;
+import java.util.*;
 
 public class AutoPartFileHandler {
 
@@ -25,7 +28,7 @@ public class AutoPartFileHandler {
         try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(FILE_PATH))) {
             List<AutoPart> deserializedParts = (List<AutoPart>) ois.readObject();
             for (AutoPart part : deserializedParts) {
-                AutoPartMenu.addPart(part);
+                PartService.addPart(part);
             }
             System.out.println("Parts deserialized from file successfully.");
         } catch (IOException | ClassNotFoundException e) {

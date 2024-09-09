@@ -1,35 +1,10 @@
-package part;
-
-import java.util.Scanner;
-
+package operations;
+import java.util.*;
 import menu.UserMenu.ManagerMenu;
+import part.*;
 
-public class AutoPartMenu {
+public class PartService {
     private static final String SERIALIZE_FILE_PATH = "src/DataBase/parts.ser"; // Path to the serialized file
-
-    public AutoPartMenu() {
-        Scanner scanner = new Scanner(System.in);
-        boolean exit = false;
-
-        // Load parts from serialized file at startup
-        AutoPartFileHandler.deserializeParts();
-
-        // Create an instance of ManagerMenu
-        ManagerMenu managerMenu = new ManagerMenu();
-
-        while (!exit) {
-            // Call the ManagerMenu's method to display the main menu
-            managerMenu.displayManagerMenu();
-
-            // Check if we need to exit
-            exit = true; // Assume we want to exit after displaying the menu
-        }
-
-        // Save parts to serialized file before exiting
-        AutoPartFileHandler.serializeParts();
-        scanner.close();
-        System.out.println("Exiting the AutoPart Management System. Goodbye!");
-    }
 
     public static void addPart(Scanner scanner) {
         String partID;
@@ -198,6 +173,4 @@ public class AutoPartMenu {
             }
         }
     }
-
-
 }

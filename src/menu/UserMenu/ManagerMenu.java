@@ -3,14 +3,15 @@ package menu.UserMenu;
 
 import menu.Menu;
 import part.AutoPart;
-import part.AutoPartFileHandler;
+import FileHandling.AutoPartFileHandler;
 import service.Service;
-import service.ServiceFileHandler;
+import FileHandling.ServiceFileHandler;
 import user.Authenticator;
 import utils.Divider;
 import utils.InputValidation;
-import part.AutoPartMenu;
-import service.ServiceMenu;
+import service.*;
+import operations.*;
+
 
 import java.util.List;
 import java.util.Map;
@@ -139,19 +140,19 @@ public class ManagerMenu extends Menu {
 
             switch (choice) {
                 case 0:
-                    AutoPartMenu.addPart(input); // Ensure these methods are accessible
+                    PartService.addPart(input); // Ensure these methods are accessible
                     break;
                 case 1:
-                    AutoPartMenu.updatePart(input);
+                    PartService.updatePart(input);
                     break;
                 case 2:
-                    AutoPartMenu.deletePart(input);
+                    PartService.deletePart(input);
                     break;
                 case 3:
-                    AutoPartMenu.viewPartDetails(input);
+                    PartService.viewPartDetails(input);
                     break;
                 case 4:
-                    AutoPartMenu.listAllParts();
+                    PartService.listAllParts();
                     break;
                 case 5:
                     exit = true; // Exit the loop and return to the main manager menu

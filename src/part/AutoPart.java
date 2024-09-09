@@ -16,7 +16,7 @@ public class AutoPart implements Serializable {
     private double price;
     private String notes;
 
-    static List<AutoPart> partsList = new ArrayList<>();
+    static public List<AutoPart> partsList = new ArrayList<>();
 
     // Default Constructor
     public AutoPart() {
