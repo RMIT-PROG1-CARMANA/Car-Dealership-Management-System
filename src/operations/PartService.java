@@ -5,7 +5,7 @@ import utils.*;
 
 public class PartService {
     // Method to add part with validation
-    public static void addPart(Scanner scanner) {
+    public static void addPart() {
         String partID = InputValidation.validatePartID("Enter Part ID (format: p-XXXX): ");
         String partName = InputValidation.validateString("Enter Part Name: ");
         String manufacturer = InputValidation.validateString("Enter Manufacturer: ");

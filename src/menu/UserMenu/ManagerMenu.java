@@ -9,8 +9,6 @@ import FileHandling.ServiceFileHandler;
 import user.Authenticator;
 import utils.Divider;
 import utils.InputValidation;
-import service.*;
-import operations.*;
 
 
 import java.util.List;
@@ -142,7 +140,7 @@ public class ManagerMenu extends Menu {
 
             switch (choice) {
                 case 0:
-                    PartService.addPart(input); // Ensure these methods are accessible
+                    PartService.addPart(); // Ensure these methods are accessible
                     break;
                 case 1:
                     PartService.updatePart(input);
