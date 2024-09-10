@@ -221,11 +221,12 @@ public class ManagerMenu extends Menu {
         displayOption(GREEN_BOLD + "2. " + RESET + "Search Sale Transactions by Client ID");
         displayOption(GREEN_BOLD + "3. " + RESET + "View All Sale Transactions");
         displayOption(GREEN_BOLD + "4. " + RESET + "View Transaction Details by ID");
-        displayOption(GREEN_BOLD + "5. " + RESET + "Back");
+        displayOption(GREEN_BOLD + "5. " + RESET + "Sort Transaction by total price");
+        displayOption(GREEN_BOLD + "6. " + RESET + "Back");
         Divider.printDivider();
 
         System.out.print("Enter Selection (0-5): ");
-        int choice = getValidatedChoice(0, 5);
+        int choice = getValidatedChoice(0, 6);
 
         switch (choice) {
             case 0:
@@ -238,33 +239,23 @@ public class ManagerMenu extends Menu {
                 break;
 
             case 2:
-                String clientID = InputValidation.validateUserID("Enter Client ID to search transactions (format: CL-XXXX): ");
-                List<SalesTransaction> transactions = TransactionService.getTransactionsByClientID(clientID);
-                if (transactions.isEmpty()) {
-                    System.out.println("No transactions found for client ID: " + clientID);
-                } else {
-                    transactions.forEach(SalesTransaction::displayTransactionDetails);
-                }
+                TransactionService.displayTransactionsByClientID();
                 break;
-
             case 3:
-                List<SalesTransaction> allTransactions = TransactionService.getTransactionsOrderedByID(operations.TransactionService.OrderType.transactionID, true);
-                if (allTransactions.isEmpty()) {
-                    System.out.println("No transactions available.");
-                } else {
-                    allTransactions.forEach(SalesTransaction::displayTransactionDetails);
-                }
+                TransactionService.displayAllTransactions();
                 break;
 
             case 4:
-                String transactionID = InputValidation.validateTransactionID("Enter Transaction ID to view details (format: t-XXXX): ");
-                TransactionService.displayTransactionByID(transactionID); // Call the displayTransactionByID method to show details of a specific transaction
+                TransactionService.displayTransactionsByID();
                 break;
 
             case 5:
-                displayManagerMenu(); // Go back to the main menu
+                TransactionService.displayTransactionsSortByPrice();
                 break;
 
+            case 6:
+                displayManagerMenu(); // Go back to the main menu
+                break;
             default:
                 System.err.println("\n**Please, Enter a Valid Input**");
                 System.out.println();

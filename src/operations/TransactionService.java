@@ -1,65 +1,109 @@
 package operations;
 
-
-import FileHandling.SalesTransactionDataHandler;
+import FileHandling.CarDataHandler;
+import logsystem.ActivityLog;
+import part.AutoPart;
 import sales.SalesTransaction;
+import user.Client;
 import utils.InputValidation;
-import logsystem.*;
-
+import FileHandling.UserDataHandler;
+import crudHandlers.CarCRUDMethodHandler;
+import crudHandlers.SalesTransactionCRUD;
+import sales.PurchasedItem;
+import user.Membership;
+import vehicle.Car;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
+import java.util.Scanner;
 
+import static crudHandlers.SalesTransactionCRUD.OrderType.clientID;
+import static crudHandlers.SalesTransactionCRUD.OrderType.transactionID;
 import static user.Authenticator.loggedUser;
 
+
 public class TransactionService {
-    private static final SalesTransactionDataHandler transactionDAO = new SalesTransactionDataHandler();
+    Scanner scanner = new Scanner(System.in);
+    static UserDataHandler userDataHandler = new UserDataHandler();
+    private static CarCRUDMethodHandler methodHandler;
 
-    public enum OrderType {
-        transactionID,
-        transactionDate,
-        clientID,
-        salespersonID,
-        discount,
-        totalAmount,
-
-        notes
-    }
-    //Constructor
-    public void TransactionService() {
-        transactionDAO.loadTransactionDatabase();
+    public TransactionService() {
+        // Initialize CarDataHandler and CarCRUDMethodHandler here
+        CarDataHandler carDataHandler = new CarDataHandler();
+        carDataHandler.loadCarDatabase("src/DataBase/SalesTransactionDatabase.ser"); // Adjust the file path as needed
+        methodHandler = new CarCRUDMethodHandler(carDataHandler); // Proper initialization
     }
 
 
+    SalesTransactionCRUD salesTransactionCRUD = new SalesTransactionCRUD();
+    private static double totalAmountCalculation(List<PurchasedItem> purchaseItems, Membership membership) {
+        double sum = purchaseItems.stream()
+                .mapToDouble(PurchasedItem::getItemPrice)
+                .sum();
 
+        // Apply membership discount
+        double discount = membership.getDiscount();
+        double totalAmount = sum * (1 - discount);  // Apply discount
+
+        return totalAmount;
+    }
     public void addTransaction() {
-        // Validate input for a new transaction
+        // Add a new transaction
         String transactionID = InputValidation.validateTransactionID("Transaction ID (format: t-XXXX): ");
         Date transactionDate = InputValidation.validateDate("Transaction Date (DD/MM/YYYY): ");
+
         String clientID = InputValidation.validateUserID("Client ID (format: CL-XXXX): ");
+
         String salespersonID = InputValidation.validateUserID("Salesperson ID (format: SP-XXXX): ");
-        double totalAmount = InputValidation.validateDouble("Total Amount: ");
-        double discount = InputValidation.validateDouble("Discount (as a percentage): ");
+        // Collect PurchasedItem details
+        List<PurchasedItem> purchaseItems = new ArrayList<>();
+        boolean addMoreItems = true;
+
+        while (addMoreItems) {
+            System.out.print("Enter car ID (or leave blank if none): ");
+            String carID = scanner.nextLine();
+            Car car = null;
+            if (!carID.isEmpty()) {
+                // Retrieve the car from the database
+                car = methodHandler.findCarByID(carID);
+                if (car == null) {
+                    System.out.println("Car with ID " + carID + " not found.");
+                }
+            }
+
+            // Since AutoPart is optional, we'll ask for part details similarly
+            System.out.print("Enter part ID (or leave blank if none): ");
+            String partID = scanner.nextLine();
+
+            AutoPart part = null;
+            if (!partID.isEmpty()) {
+                part = PartService.findAutoPartByID(partID);
+                if (part == null) {
+                    System.out.println("Part with ID " + partID + " not found.");
+                }
+            }
+
+            // Create a PurchasedItem object and add it to the list
+            PurchasedItem purchasedItem = new PurchasedItem(car, part);
+            purchaseItems.add(purchasedItem);
+
+            // Ask the user if they want to add more items
+            System.out.print("Do you want to add another item? (yes/no): ");
+            addMoreItems = scanner.nextLine().equalsIgnoreCase("yes");
+        }
         String notes = InputValidation.validateString("Notes: ");
 
-        // Create a new SalesTransaction object
-        SalesTransaction newTransaction = new SalesTransaction(
-                transactionID,
-                transactionDate,
-                clientID,
-                salespersonID,
-                new ArrayList<>(),   // Assuming no purchased items at creation, modify this if needed
-                discount,
-                totalAmount,
-                notes
-        );
+        // Calculate total amount based on client's membership
+        Client client = userDataHandler.findClientByID(clientID);
+        Membership membership = client.getMembership();  // Retrieve the Membership object
+        double totalAmount = totalAmountCalculation(purchaseItems, membership);
 
-        // Add the transaction to the transactionDAO and sort by transactionID
-        transactionDAO.transactions.add(newTransaction);
-        transactionDAO.transactions.sort(Comparator.comparing(SalesTransaction::getTransactionID));
-        transactionDAO.overwriteDatabase(transactionDAO.transactions);
+
+        SalesTransaction newTransaction = new SalesTransaction(transactionID, transactionDate, clientID, salespersonID, purchaseItems, membership.getDiscount(), totalAmount, notes);
+        salesTransactionCRUD.addTransaction(newTransaction);
+        System.out.println("New transaction added successfully.");
+
 
         // Optionally log the activity
         String logID = ActivityLog.generateLogID();
@@ -74,30 +118,15 @@ public class TransactionService {
         System.out.println("Transaction added successfully.");
     }
 
-
-
-    //Read
-    public List<SalesTransaction> getTransactionsOrderedByID(OrderType type, boolean ascending) {
-        ArrayList<SalesTransaction> sortedTransactions = new ArrayList<>(transactionDAO.transactions);
-        Comparator<SalesTransaction> comparator;
-
-        switch (type) {
-            case transactionID -> comparator = Comparator.comparing(SalesTransaction::getTransactionID);
-            case transactionDate -> comparator = Comparator.comparing(SalesTransaction::getTransactionDate);
-            case clientID -> comparator = Comparator.comparing(SalesTransaction::getClientID);
-            case salespersonID -> comparator = Comparator.comparing(SalesTransaction::getSalespersonID);
-            case discount -> comparator = Comparator.comparingDouble(SalesTransaction::getDiscount);
-            case totalAmount -> comparator = Comparator.comparingDouble(SalesTransaction::getTotalAmount);
-            case notes -> comparator = Comparator.comparing(SalesTransaction::getNotes);
-            default -> throw new IllegalArgumentException("Unexpected value: " + type);
+    // Display all transactions sorted by TransactionID
+    public void displayAllTransactions(){
+        List<SalesTransaction> transactionsByID = salesTransactionCRUD.getTransactionsOrderedByID(SalesTransactionCRUD.OrderType.transactionID, true);
+        for (SalesTransaction transaction : transactionsByID) {
+            if (!transaction.isDeleted()) {
+                transaction.displayTransactionDetails();
+                System.out.println();  // Add blank line between transactions
+            }
         }
-
-        if (!ascending) {
-            comparator = comparator.reversed();
-        }
-
-        sortedTransactions.sort(comparator);
-
         // Log the activity
         String logID = ActivityLog.generateLogID();
         ActivityLogService.logActivity(
@@ -105,47 +134,43 @@ public class TransactionService {
                 new Date(),
                 loggedUser.getUsername(),
                 loggedUser.getUserID(),
-                "Retrieved transactions ordered by " + type + (ascending ? " in ascending order." : " in descending order.")
+                "Retrieved transactions ordered by " + transactionsByID
+                // + (ascending ? " in ascending order." : " in descending order.")
         );
-
-        return sortedTransactions;
     }
-
+    // Soft delete a transaction
     public void deleteTransaction(String transactionID) {
-        boolean transactionFound = false;
-        for (SalesTransaction transaction : transactionDAO.transactions) {
-            if (transaction.getTransactionID().equals(transactionID)) {
-                transaction.setDeleted(true);
-                transactionFound = true;
-                break;
-            }
-        }
-        if (transactionFound) {
-            System.out.println("Transaction deleted successfully.");
-
-            // Log the activity
-            String logID = ActivityLog.generateLogID();
-            ActivityLogService.logActivity(
-                    logID,
-                    new Date(),
-                    loggedUser.getUsername(),
-                    loggedUser.getUserID(),
-                    "Deleted transaction with ID: " + transactionID
-            );
-        } else {
-            System.out.println("Unable to find transaction with that ID.");
-        }
+        String deleteTransactionID = InputValidation.validateTransactionID("Transaction ID (format: t-XXXX): ");
+        salesTransactionCRUD.deleteTransaction(deleteTransactionID);  // Call the soft delete method
+        System.out.println("Transaction deleted successfully.");
+        // Log the activity
+        String logID = ActivityLog.generateLogID();
+        ActivityLogService.logActivity(
+                logID,
+                new Date(),
+                loggedUser.getUsername(),
+                loggedUser.getUserID(),
+                "Deleted transaction with ID: " + transactionID
+        );
     }
 
-    public List<SalesTransaction> getTransactionsByClientID(String clientID) {
-        List<SalesTransaction> clientTransactions = new ArrayList<>();
+    // Display all transactions sorted by Total Amount
+    public void displayTransactionsSortByPrice(){
 
-        for (SalesTransaction transaction : transactionDAO.transactions) {
-            if (transaction.getClientID().equals(clientID) && !transaction.isDeleted()) {
-                clientTransactions.add(transaction);
-            }
+        List<SalesTransaction> transactionsByAmount = salesTransactionCRUD.getTransactionsOrderedByID(SalesTransactionCRUD.OrderType.totalAmount, true);
+        for (SalesTransaction transaction : transactionsByAmount) {
+            transaction.displayTransactionDetails();
+            System.out.println();  // Add blank line between transactions
         }
-
+    }
+    public void displayTransactionsByClientID(){
+        // Display transactions for a specific client ID
+        String displayClientID = InputValidation.validateUserID("Client ID (format: CL-XXXX): ");
+        salesTransactionCRUD.getTransactionsByClientID(displayClientID)
+                .forEach(transaction -> {
+                    transaction.displayTransactionDetails();
+                    System.out.println();  // Add blank line between transactions
+                });
         // Log the activity
         String logID = ActivityLog.generateLogID();
         ActivityLogService.logActivity(
@@ -155,34 +180,18 @@ public class TransactionService {
                 loggedUser.getUserID(),
                 "Retrieved transactions for client ID: " + clientID
         );
-
-        return clientTransactions;
     }
-
-    public void displayTransactionByID(String id) {
-        boolean transactionFound = false;
-
-        for (SalesTransaction transaction : transactionDAO.transactions) {
-            if (transaction.getTransactionID().equals(id)) {
-                transaction.displayTransactionDetails();
-                transactionFound = true;
-                break;
-            }
-        }
-        if (transactionFound) {
-            // Log the activity
-            String logID = ActivityLog.generateLogID();
-            ActivityLogService.logActivity(
-                    logID,
-                    new Date(),
-                    loggedUser.getUsername(),
-                    loggedUser.getUserID(),
-                    "Displayed transaction details for ID: " + id
-            );
-        } else {
-            System.out.println("Unable to find transaction with ID " + id);
-        }
+    public void displayTransactionsByID(){
+        String displayTransactionID = InputValidation.validateTransactionID("Transaction ID (format: t-XXXX): ");
+        salesTransactionCRUD.displayTransactionByID(displayTransactionID);
+        // Log the activity
+        String logID = ActivityLog.generateLogID();
+        ActivityLogService.logActivity(
+                logID,
+                new Date(),
+                loggedUser.getUsername(),
+                loggedUser.getUserID(),
+                "Displayed transaction details for ID: " + transactionID
+        );
     }
-
-
 }

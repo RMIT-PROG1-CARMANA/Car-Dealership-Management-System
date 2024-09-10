@@ -186,32 +186,33 @@ public class InputValidation {
             }
 
             // Check if the userID already exists in the database using the existing userDAO
-            User[] existingUsers = userDAO.readAllUsers();
-
-            // Check for null or empty user list
-            if (existingUsers == null) {
-                System.out.println("Error: No users found in the system.");
-                break; // Exit loop if no users found (or handle this case appropriately)
-            }
-
-            boolean userExists = false;
-
-            // Loop through the existing users and check if any have the same userID
-            for (User user : existingUsers) {
-                if (user != null && user.getUserID().equals(userID)) {  // Null check before accessing userID
-                    System.out.println("User ID already exists. Please enter a different User ID.");
-                    userExists = true;
-                    break;  // Exit the loop if we find a match
-                }
-            }
-
-            // If the userID is unique and valid, return it
-            if (!userExists) {
-                return userID;
-            }
+//            User[] existingUsers = userDAO.readAllUsers();
+//
+//            // Check for null or empty user list
+//            if (existingUsers == null) {
+//                System.out.println("Error: No users found in the system.");
+//                break; // Exit loop if no users found (or handle this case appropriately)
+//            }
+//
+//            boolean userExists = false;
+//
+//            // Loop through the existing users and check if any have the same userID
+//            for (User user : existingUsers) {
+//                if (user != null && user.getUserID().equals(userID)) {  // Null check before accessing userID
+//                    System.out.println("User ID already exists. Please enter a different User ID.");
+//                    userExists = true;
+//                    break;  // Exit the loop if we find a match
+//                }
+//            }
+//
+//            // If the userID is unique and valid, return it
+//            if (!userExists) {
+//                return userID;
+//            }
+            return userID;
         }
 
-        return null; // Default return in case of errors
+//        return null; // Default return in case of errors
     }
 
     public static String validateExistingUserID(String promptMessage) {

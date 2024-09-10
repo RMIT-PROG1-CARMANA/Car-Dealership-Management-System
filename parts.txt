@@ -1,1 +1,0 @@
-AutoPart{partID='p-004', partName='asd', manufacturer='123', partNumber='123', condition='123', warranty='', cost=123.0, notes=''}
