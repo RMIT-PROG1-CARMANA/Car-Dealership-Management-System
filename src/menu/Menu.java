@@ -4,7 +4,6 @@ import menu.UserMenu.EmployeeBaseMenu;
 import menu.UserMenu.EmployeeRolesMenu.MechanicMenu;
 import menu.UserMenu.EmployeeRolesMenu.SalespersonMenu;
 import menu.UserMenu.ManagerMenu;
-import operations.ActivityLogService;
 import operations.UserService;
 import user.Mechanic;
 import user.Salesperson;
@@ -25,10 +24,6 @@ import static operations.UserService.displayInfoUsers;
 public class Menu  {
 
     private static User loggedUser;  // Static variable
-//    private final UserService userRepository = new UserService();
-    private static UserService userService = new UserService();
-    private ActivityLogService activityLogService;
-
 
     public Menu() {
     }
@@ -51,37 +46,9 @@ public class Menu  {
         menuStyle.printMenuHeader(menuName, totalWidth);
     }
 
-    protected void displayHorizontalLine(int width) {
-        menuStyle.printSeparator(width, '-');
-    }
-
-    protected void displayMessage(String message) {
-        System.out.println(message);
-    }
-
     protected void displayOption(String option) {
         System.out.printf("| %-53s |\n", option);
     }
-
-    protected int promptForInput(String prompt) {
-        System.out.print(prompt);
-        return scanner.nextInt();
-    }
-//
-//    protected void backToMenu() {
-//        System.out.print("Press enter to continue...");
-//        scanner.nextLine(); // To consume the remaining newline
-//        scanner.nextLine();
-//    }
-//
-    protected void printCentered(String text, int width) {
-        menuStyle.printCentered(text, width);
-    }
-
-    protected void printSeparator(int width) {
-        menuStyle.printSeparator(width, '-');
-    }
-
 
     protected int getValidatedChoice(int min, int max) {
         return InputValidation.validateInt(

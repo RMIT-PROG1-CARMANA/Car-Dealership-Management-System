@@ -186,15 +186,15 @@ public class ManagerMenu extends Menu {
                 partDAO.serializeParts();
                 break;
             case 1:
-                PartService.updatePart(input);
+                PartService.updatePart();
                 partDAO.serializeParts();
                 break;
             case 2:
-                PartService.deletePart(input);
+                PartService.deletePart();
                 partDAO.serializeParts();
                 break;
             case 3:
-                PartService.viewPartDetails(input);
+                PartService.viewPartDetails();
                 partDAO.serializeParts();
                 break;
             case 4:
