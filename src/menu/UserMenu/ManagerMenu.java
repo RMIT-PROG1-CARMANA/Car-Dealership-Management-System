@@ -4,12 +4,9 @@ import FileHandling.*;
 import logsystem.*;
 import crudHandlers.CarCRUD;
 import menu.Menu;
-import operations.CarService;
-import operations.UserService;
-import operations.PartService;
-import operations.ServiceService;
-import operations.ActivityLogService;
+import operations.*;
 import part.AutoPart;
+import sales.SalesTransaction;
 import service.Service;
 import user.Authenticator;
 import user.*;
@@ -36,6 +33,7 @@ public class ManagerMenu extends Menu {
     private final PartService partService;
     private final ServiceService serviceService;
     private final ActivityLogService activityLogService;
+    private final TransactionService TransactionService;
 
     Scanner input = new Scanner(System.in);
 
@@ -45,6 +43,7 @@ public class ManagerMenu extends Menu {
         this.partService = new PartService();
         this.serviceService = new ServiceService();
         this.activityLogService = new ActivityLogService();
+        this.TransactionService = new TransactionService();
     }
 
 
@@ -210,49 +209,66 @@ public class ManagerMenu extends Menu {
                 System.out.println();
         }
     }
-    public void displayManagerSaleTransactionsMenu(){
+    public void displayManagerSaleTransactionsMenu() {
         ClearScreen.clear();
         System.out.println(CYAN_BOLD + "=====================================" + RESET);
         System.out.println(CYAN_BOLD + "Manager Sale Transactions Menu" + RESET);
         System.out.println(CYAN_BOLD + "=====================================" + RESET);
 
         displayMenuHeader("MANAGER SALE TRANSACTION MENU", 53);
-        displayOption(GREEN_BOLD + "0. " + RESET + "Add Sale Transactions");
-        displayOption(GREEN_BOLD + "1. " + RESET + "Update Sale Transactions");
-        displayOption(GREEN_BOLD + "2. " + RESET + "Delete Sale Transactions");
-        displayOption(GREEN_BOLD + "3. " + RESET + "Search Sale Transactions");
-        displayOption(GREEN_BOLD + "4. " + RESET + "View All Sale Transactions");
+        displayOption(GREEN_BOLD + "0. " + RESET + "Add Sale Transaction");
+        displayOption(GREEN_BOLD + "1. " + RESET + "Delete Sale Transaction");
+        displayOption(GREEN_BOLD + "2. " + RESET + "Search Sale Transactions by Client ID");
+        displayOption(GREEN_BOLD + "3. " + RESET + "View All Sale Transactions");
+        displayOption(GREEN_BOLD + "4. " + RESET + "View Transaction Details by ID");
         displayOption(GREEN_BOLD + "5. " + RESET + "Back");
         Divider.printDivider();
 
         System.out.print("Enter Selection (0-5): ");
-        choice = getValidatedChoice(0, 5);
+        int choice = getValidatedChoice(0, 5);
 
         switch (choice) {
             case 0:
-
+                TransactionService.addTransaction(); // Call the addTransaction method to add a new sale
                 break;
 
             case 1:
-
+                String deleteID = InputValidation.validateTransactionID("Enter Transaction ID to delete (format: t-XXXX): ");
+                TransactionService.deleteTransaction(deleteID); // Call the deleteTransaction method to delete a sale
                 break;
+
             case 2:
-
+                String clientID = InputValidation.validateUserID("Enter Client ID to search transactions (format: CL-XXXX): ");
+                List<SalesTransaction> transactions = TransactionService.getTransactionsByClientID(clientID);
+                if (transactions.isEmpty()) {
+                    System.out.println("No transactions found for client ID: " + clientID);
+                } else {
+                    transactions.forEach(SalesTransaction::displayTransactionDetails);
+                }
                 break;
+
             case 3:
-
+                List<SalesTransaction> allTransactions = TransactionService.getTransactionsOrderedByID(operations.TransactionService.OrderType.transactionID, true);
+                if (allTransactions.isEmpty()) {
+                    System.out.println("No transactions available.");
+                } else {
+                    allTransactions.forEach(SalesTransaction::displayTransactionDetails);
+                }
                 break;
+
             case 4:
-
+                String transactionID = InputValidation.validateTransactionID("Enter Transaction ID to view details (format: t-XXXX): ");
+                TransactionService.displayTransactionByID(transactionID); // Call the displayTransactionByID method to show details of a specific transaction
                 break;
+
             case 5:
                 displayManagerMenu(); // Go back to the main menu
                 break;
+
             default:
                 System.err.println("\n**Please, Enter a Valid Input**");
                 System.out.println();
         }
-
     }
     public void displayManagerUsersMenu(){
         ClearScreen.clear();

@@ -212,21 +212,22 @@ public class UserService {
             userDAO.writeUsersToFile(usersList.toArray(new User[0]));  // Write the updated list back to the file
             System.out.println("User with username " + usernameToDelete + " deleted successfully.");
             isDeleted = true;
+            // Log the deletion
+            String logID = ActivityLog.generateLogID();
+            ActivityLogService.logActivity(
+                    logID,
+                    new Date(),
+                    loggedUser.getUsername(),
+                    loggedUser.getUserID(),
+                    "Deleted User with username: " + usernameToDelete
+            );
+
         }
 
         if (!isDeleted) {
             System.out.println("No user found with the given username.");
         }
 
-        // Log the deletion
-        String logID = ActivityLog.generateLogID();
-        ActivityLogService.logActivity(
-                logID,
-                new Date(),
-                loggedUser.getUsername(),
-                loggedUser.getUserID(),
-                "Deleted User with username: " + usernameToDelete
-        );
-    }
+            }
 
 }
