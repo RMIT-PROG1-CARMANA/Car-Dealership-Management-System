@@ -22,13 +22,14 @@ public class SalespersonMenu extends EmployeeBaseMenu {
 
 
             displayMenuHeader("Salesperson Menu", 53);
-            displayOption(GREEN_BOLD + "0. " + RESET + "Record Sales Transaction");
+            displayOption(GREEN_BOLD + "0. " + RESET + "Add Sales Transaction");
             displayOption(GREEN_BOLD + "1. " + RESET + "View Sales Transactions");
             displayOption(GREEN_BOLD + "2. " + RESET + "Calculate Revenue (Day/Week/Month)");
             displayOption(GREEN_BOLD + "3. " + RESET + "List Number of Services(Day/Week/Month)");
-            displayOption(GREEN_BOLD + "4. " + RESET + "View Sales Report");
+            displayOption(GREEN_BOLD + "4. " + RESET + "");
             displayOption(GREEN_BOLD + "5. " + RESET + "Update Customer Information");
             displayOption(GREEN_BOLD + "6. " + RESET + "Back to Main Menu");
+            displayOption(GREEN_BOLD + "7. " + RESET + "Exit");
             displayOption(GREEN_BOLD + "7. " + RESET + "Exit");
             Divider.printDivider();
 

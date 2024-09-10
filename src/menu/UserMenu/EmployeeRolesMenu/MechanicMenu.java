@@ -24,12 +24,12 @@ public class MechanicMenu extends EmployeeBaseMenu {
             System.out.println(CYAN_BOLD + "=====================================" + RESET);
 
             displayMenuHeader("Mechanic Menu", 53);
-            displayOption(GREEN_BOLD + "0. " + RESET + "Record Service Transaction");
+            displayOption(GREEN_BOLD + "0. " + RESET + "Add Service Transaction");
             displayOption(GREEN_BOLD + "1. " + RESET + "View Service Transactions");
-            displayOption(GREEN_BOLD + "2. " + RESET + "Check Service Schedule");
-            displayOption(GREEN_BOLD + "3. " + RESET + "Update Vehicle Information");
-            displayOption(GREEN_BOLD + "4. " + RESET + "Generate Service Report");
-            displayOption(GREEN_BOLD + "5. " + RESET + "Manage Parts Inventory");
+            displayOption(GREEN_BOLD + "2. " + RESET + "Update Vehicle Status");
+            displayOption(GREEN_BOLD + "3. " + RESET + "List Number of Services(Day/Week/Month)");
+            displayOption(GREEN_BOLD + "4. " + RESET + "Calculate Revenue (Day/Week/Month)");
+            displayOption(GREEN_BOLD + "5. " + RESET + "View Parts Inventory");
             displayOption(GREEN_BOLD + "6. " + RESET + "Back to Main Menu");
             displayOption(GREEN_BOLD + "7. " + RESET + "Exit");
             Divider.printDivider();

@@ -19,6 +19,7 @@ public class InputValidation {
     private static final UserDataHandler userDAO = new UserDataHandler();
     private static final CarDataHandler carDAO = new CarDataHandler();
     private static final ActivityLogService logService = new ActivityLogService();
+    private static final SalesTransactionDataHandler transactionDAO = new SalesTransactionDataHandler();
 
     public static long validateLong(String question) {
         return validateLong((v) -> true, question, "Invalid input, please try again.");
@@ -544,10 +545,10 @@ public class InputValidation {
                 continue;  // Re-prompt for user input
             }
 
-            // Fetch the existing transactions
-            SalesTransactionDataHandler transactionDataHandler = new SalesTransactionDataHandler();
-            transactionDataHandler.loadTransactionDatabase(); // Ensure transactions are loaded
-            List<SalesTransaction> existingTransactions = transactionDataHandler.transactions;
+//             Fetch the existing transactions
+
+            transactionDAO.loadTransactionDatabase(); // Ensure transactions are loaded
+            List<SalesTransaction> existingTransactions = transactionDAO.transactions;
 
             // Check if the transactionID already exists in the list
 
@@ -561,6 +562,7 @@ public class InputValidation {
                 // If the ID is valid and unique, return it
                 return transactionID;
             }
+
         }
     }
 
