@@ -1,17 +1,13 @@
-
 package FileHandling;
 
 import sales.SalesTransaction;
-import vehicle.Car;
-
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 public class SalesTransactionDataHandler {
     public List<SalesTransaction> transactions = new ArrayList<>();
-    private String transactionDatabaseFile = "src/DataBase/SalesTransactionDatabase.txt";
+    private String transactionDatabaseFile = "src/DataBase/SalesTransactionDatabase.ser";
 
     // Load the transactions from the .ser file using deserialization
     public void loadTransactionDatabase() {
@@ -46,5 +42,4 @@ public class SalesTransactionDataHandler {
             System.out.println("Error writing to the database file: " + e.getMessage());
         }
     }
-
 }

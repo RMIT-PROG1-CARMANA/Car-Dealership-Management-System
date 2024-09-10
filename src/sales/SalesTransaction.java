@@ -1,39 +1,22 @@
-
 package sales;
-
-import operations.*;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
-public class SalesTransaction  implements Serializable {
+public class SalesTransaction implements Serializable {
     private String transactionID;
-    private String transactionDate;
+    private Date transactionDate;
     private String clientID;
     private String salespersonID;
     private List<PurchasedItem> purchaseItems;
-    // discount will base on the client membership type
     private double discount;
     private double totalAmount;
     private String notes;
     private boolean deleted;
 
-    public SalesTransaction(String transactionID, String transactionDate, String clientID, String salespersonID, List<PurchasedItem> purchaseItems, TransactionService.OrderType discount, double totalAmount, String notes) {
-        this.transactionID = "t-000";//t-XXX formatted
-        this.transactionDate = "1970-01-01";
-        this.clientID = "cl-000"; //cl-XXX formatted
-        this.salespersonID = "sp-000";
-        this.purchaseItems = new ArrayList<>();
-        this.discount = 0.0;
-        this.totalAmount = 0.0;
-        this.notes = "No additional notes";
-        this.deleted = true;
-    }
-
-    public SalesTransaction(String transactionID, String transactionDate, String clientID,
-                            String salespersonID,List<PurchasedItem> purchaseItems,
-                            double discount, double totalAmount, String notes) {
+    public SalesTransaction(String transactionID, Date transactionDate, String clientID, String salespersonID, List<PurchasedItem> purchaseItems, double discount, double totalAmount, String notes) {
         this.transactionID = transactionID;
         this.transactionDate = transactionDate;
         this.clientID = clientID;
@@ -45,7 +28,6 @@ public class SalesTransaction  implements Serializable {
         this.deleted = false;
     }
 
-
     // Getters and Setters
     public String getTransactionID() {
         return transactionID;
@@ -55,11 +37,11 @@ public class SalesTransaction  implements Serializable {
         this.transactionID = transactionID;
     }
 
-    public String getTransactionDate() {
+    public Date getTransactionDate() {
         return transactionDate;
     }
 
-    public void setTransactionDate(String transactionDate) {
+    public void setTransactionDate(Date transactionDate) {
         this.transactionDate = transactionDate;
     }
 
@@ -111,11 +93,6 @@ public class SalesTransaction  implements Serializable {
         this.notes = notes;
     }
 
-    // Additional Methods
-    public void addPurchasedItem(Object item) {
-        this.purchaseItems.add((PurchasedItem) item);
-    }
-
     public boolean isDeleted() {
         return deleted;
     }
@@ -136,12 +113,11 @@ public class SalesTransaction  implements Serializable {
         System.out.println("Deleted Status: " + deleted);
     }
 
-
     @Override
     public String toString() {
         return "SalesTransaction{" +
                 "transactionID='" + transactionID + '\'' +
-                ", transactionDate='" + transactionDate + '\'' +
+                ", transactionDate=" + transactionDate +
                 ", clientID='" + clientID + '\'' +
                 ", salespersonID='" + salespersonID + '\'' +
                 ", purchasedItems=" + purchaseItems +

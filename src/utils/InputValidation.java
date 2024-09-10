@@ -3,6 +3,7 @@ package utils;
 import FileHandling.*;
 import operations.ActivityLogService;
 import part.AutoPart;
+import sales.SalesTransaction;
 import user.User;
 import service.*;
 
@@ -11,10 +12,6 @@ import java.util.*;
 import java.util.function.Function;
 
 import FileHandling.UserDataHandler;
-import user.*;
-import service.*;
-import part.*;
-import sales.*;
 import vehicle.Car;
 
 
@@ -215,6 +212,49 @@ public class InputValidation {
 
         return null; // Default return in case of errors
     }
+
+    public static String validateExistingUserID(String promptMessage) {
+        Scanner input = new Scanner(System.in);
+        String userID;
+
+        while (true) {
+            System.out.print(promptMessage);
+            userID = input.nextLine().trim();
+
+            // Validate the format of the userID (should be in the form u-xxxx, where xxxx is a number)
+            if (!userID.matches("u-\\d{4}")) {
+                System.out.println("Invalid User ID format. It should be 'u-XXXX', where 'XXXX' is a number.");
+                continue;  // Re-prompt for user input
+            }
+
+            // Check if the userID exists in the database using the existing userDAO
+            User[] existingUsers = userDAO.readAllUsers();
+
+            // Check for null or empty user list
+            if (existingUsers == null || existingUsers.length == 0) {
+                System.out.println("Error: No users found in the system.");
+                return null;  // Exit method if no users found (or handle this case appropriately)
+            }
+
+            boolean userExists = false;
+
+            // Loop through the existing users and check if any have the same userID
+            for (User user : existingUsers) {
+                if (user != null && user.getUserID().equals(userID)) {  // Null check before accessing userID
+                    userExists = true;
+                    break;  // Exit the loop if we find a match
+                }
+            }
+
+            // If the userID exists, return it
+            if (userExists) {
+                return userID;
+            } else {
+                System.out.println("User ID does not exist. Please enter a valid User ID.");
+            }
+        }
+    }
+
 
     // Validate username format and check if it exists in one method
     public static String validateUsername(String question) {
@@ -489,6 +529,41 @@ public class InputValidation {
             return logID;
         }
     }
+
+    public static String validateTransactionID(String promptMessage) {
+        Scanner input = new Scanner(System.in);
+        String transactionID;
+
+        while (true) {
+            System.out.print(promptMessage);
+            transactionID = input.nextLine().trim();
+
+            // Validate the format of the transactionID (should be in the form t-XXXX, where XXXX is a number)
+            if (!transactionID.matches("t-\\d{4}")) {
+                System.out.println("Invalid Transaction ID format. It should be 't-XXXX', where 'XXXX' is a number.");
+                continue;  // Re-prompt for user input
+            }
+
+            // Fetch the existing transactions
+            SalesTransactionDataHandler transactionDataHandler = new SalesTransactionDataHandler();
+            transactionDataHandler.loadTransactionDatabase(); // Ensure transactions are loaded
+            List<SalesTransaction> existingTransactions = transactionDataHandler.transactions;
+
+            // Check if the transactionID already exists in the list
+
+            String finalTransactionID = transactionID;
+            boolean transactionExists = existingTransactions.stream()
+                    .anyMatch(transaction -> transaction.getTransactionID().equals(finalTransactionID));
+
+            if (transactionExists) {
+                System.out.println("Transaction ID already exists. Please enter a different Transaction ID.");
+            } else {
+                // If the ID is valid and unique, return it
+                return transactionID;
+            }
+        }
+    }
+
 
 
 }
