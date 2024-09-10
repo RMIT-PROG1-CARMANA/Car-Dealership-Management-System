@@ -2,7 +2,6 @@ package operations;
 import java.util.*;
 import part.*;
 import utils.*;
-import vehicle.Car;
 
 public class PartService {
     // Method to add part with validation
@@ -24,7 +23,7 @@ public class PartService {
     }
 
     // Method to view part details with validation
-    public static void viewPartDetails(Scanner scanner) {
+    public static void viewPartDetails() {
         String partID = InputValidation.validatePartID("Enter Part ID to View Details: ");
         AutoPart part = getPartByID(partID);
         if (part != null) {
@@ -35,7 +34,7 @@ public class PartService {
     }
 
     // Method to update part with validation
-    public static void updatePart(Scanner scanner) {
+    public static void updatePart() {
         String partID = InputValidation.validatePartID("Enter Part ID to Update: ");
 
         AutoPart part = getPartByID(partID);
@@ -84,7 +83,7 @@ public class PartService {
     }
 
     // Method to delete part
-    public static void deletePart(Scanner scanner) {
+    public static void deletePart() {
         String partID = InputValidation.validatePartID("Enter Part ID to Delete: ");
         if (deletePart(partID)) {
             System.out.println("Part deleted successfully.");

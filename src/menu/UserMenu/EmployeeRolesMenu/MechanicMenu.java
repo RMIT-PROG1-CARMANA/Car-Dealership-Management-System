@@ -77,6 +77,6 @@ public class MechanicMenu extends EmployeeBaseMenu {
                     System.err.println("\n**Please, Enter a Valid Input**");
                     break;
             }
-        } while (choice != 6 && choice != 7);
+        } while (choice != 7);
     }
 }

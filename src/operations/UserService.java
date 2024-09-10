@@ -2,6 +2,7 @@ package operations;
 
 import FileHandling.UserDataHandler;
 import logsystem.*;
+import part.AutoPart;
 import sales.SalesTransaction;
 import user.*;
 import utils.Divider;
@@ -122,24 +123,60 @@ public class UserService {
     }
 
 
-//    public static void editProfile() {
-//        if (loggedUser == null) {
-//            System.out.println("You need to be logged in to edit your profile.");
-//            return;
-//        }
-//
-//        // Ask for the new password
-//        String newUserPassword = InputValidation.validateString("Please enter your new password: ");
-//
-//        // Set the new password
-//        loggedUser.setPassword(newUserPassword);
-//
-//        // Update in the database
-//        usersInstance.put(loggedUser.getUsername(), loggedUser);
-//        saveData();  // Save data after updating the user profile
-//
-//        System.out.println("Your information has been updated successfully!");
-//    }
+    public static void editProfile(User loggedUser) {
+        if (loggedUser == null) {
+            System.out.println("You need to be logged in to edit your profile.");
+            return;
+        }
+
+        // Update User ID
+        String newUserID = InputValidation.validateUserID("Enter new user ID: ");
+        loggedUser.setUserID(newUserID);
+
+        // Update full name
+        String newFullName = InputValidation.validateString("Enter new full name: ");
+        loggedUser.setFullName(newFullName);
+
+        // Update date of birth
+        Date newDateOfBirth = InputValidation.validateDate("Enter new date of birth (dd/mm/yyyy): ");
+        loggedUser.setDateOfBirth(newDateOfBirth);
+
+        // Update address
+        String newAddress = InputValidation.validateString("Enter new address: ");
+        loggedUser.setAddress(newAddress);
+
+        // Update phone number
+        long newPhoneNumber = InputValidation.validateLong("Enter new phone number: ");
+        loggedUser.setPhoneNumber(newPhoneNumber);
+
+        // Update email
+        String newEmail = InputValidation.validateString("Enter new email: ");
+        loggedUser.setEmail(newEmail);
+
+// Update user type
+        String userTypeInput = InputValidation.validateString("Enter new user type (MANAGER, EMPLOYEE, CLIENT): ");
+        try {
+            User.UserType newUserType = User.UserType.valueOf(userTypeInput.toUpperCase());
+            loggedUser.setUserType(newUserType);
+        } catch (IllegalArgumentException e) {
+            System.out.println("Invalid user type. Please enter one of the following: MANAGER, EMPLOYEE, CLIENT.");
+        }
+
+
+        // Update status
+        boolean newStatus = InputValidation.validateBoolean("Enter new status (true for active, false for inactive): ");
+        loggedUser.setStatus(newStatus);
+
+        // Update password
+        String newPassword = InputValidation.validateString("Enter new password: ");
+        loggedUser.setPassword(newPassword);
+
+        // Update username
+        String newUsername = InputValidation.validateUsername("Enter new username: ");
+        loggedUser.setUsername(newUsername);
+
+        System.out.println("Your information has been updated successfully!");
+    }
 
     public static void deleteUser() {
         System.out.println();

@@ -13,7 +13,6 @@ public class ClientMenu extends Menu {
 
     public void displayClientMenu() {
         int choice;
-        Scanner scanner = new Scanner(System.in);
 
         do {
             // Clear the screen
