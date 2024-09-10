@@ -2,6 +2,7 @@ package operations;
 
 
 import FileHandling.ServiceFileHandler;
+import logsystem.*;
 import part.*;
 import service.Service;
 import utils.InputValidation;
@@ -9,6 +10,8 @@ import utils.InputValidation;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+
+import static user.Authenticator.loggedUser;
 
 
 public class ServiceService {
@@ -51,6 +54,14 @@ public class ServiceService {
         newService.setNotes(notes);
 
         serviceList.add(newService);
+        String logID = ActivityLog.generateLogID();
+        ActivityLogService.logActivity(
+                logID,
+                new Date(),
+                loggedUser.getUsername(),
+                loggedUser.getUserID(),
+                "Adding new service: " + serviceID
+        );
         System.out.println("Service added successfully.");
 
         // Save the updated service list to the file
@@ -62,6 +73,14 @@ public class ServiceService {
 
         Service service = findServiceByID(serviceID);
         if (service != null) {
+            String logID = ActivityLog.generateLogID();
+            ActivityLogService.logActivity(
+                    logID,
+                    new Date(),
+                    loggedUser.getUsername(),
+                    loggedUser.getUserID(),
+                    "Get service by ID: " + serviceID
+            );
             System.out.println(service);
         } else {
             System.out.println("Service not found with ID: " + serviceID);
@@ -116,6 +135,14 @@ public class ServiceService {
             service.setNotes(notes);
         }
 
+        String logID = ActivityLog.generateLogID();
+        ActivityLogService.logActivity(
+                logID,
+                new Date(),
+                loggedUser.getUsername(),
+                loggedUser.getUserID(),
+                "Update the service: " + serviceID
+        );
         System.out.println("Service updated successfully.");
 
         // Save the updated service list to the file
@@ -129,6 +156,14 @@ public class ServiceService {
         if (service != null) {
             serviceList.remove(service);
             System.out.println("Service deleted successfully.");
+            String logID = ActivityLog.generateLogID();
+            ActivityLogService.logActivity(
+                    logID,
+                    new Date(),
+                    loggedUser.getUsername(),
+                    loggedUser.getUserID(),
+                    "Delete the service : " + serviceID
+            );
 
             // Save the updated service list to the file
             ServiceFileHandler.saveServices(serviceList);
@@ -153,7 +188,14 @@ public class ServiceService {
         // Add part to the service
         service.addPartService(part);
         System.out.println("Part " + partID + " added to service " + serviceID);
-
+        String logID = ActivityLog.generateLogID();
+        ActivityLogService.logActivity(
+                logID,
+                new Date(),
+                loggedUser.getUsername(),
+                loggedUser.getUserID(),
+                "Adding part: " + partID +" to service " + serviceID
+        );
         // Save the updated service list to the file
         ServiceFileHandler.saveServices(serviceList);
     }
@@ -176,6 +218,14 @@ public class ServiceService {
         // Remove part from the service
         boolean removed = service.removePartService(partID);
         if (removed) {
+            String logID = ActivityLog.generateLogID();
+            ActivityLogService.logActivity(
+                    logID,
+                    new Date(),
+                    loggedUser.getUsername(),
+                    loggedUser.getUserID(),
+                    "Remove part: " + partID +" from service " + serviceID
+            );
             System.out.println("Part " + partID + " removed from service " + serviceID);
         } else {
             System.out.println("Part " + partID + " not found in service " + serviceID);
@@ -189,6 +239,14 @@ public class ServiceService {
         if (serviceList.isEmpty()) {
             System.out.println("No services available.");
         } else {
+            String logID = ActivityLog.generateLogID();
+            ActivityLogService.logActivity(
+                    logID,
+                    new Date(),
+                    loggedUser.getUsername(),
+                    loggedUser.getUserID(),
+                    "View all service"
+            );
             for (Service service : serviceList) {
                 System.out.println(service);
             }
@@ -198,6 +256,14 @@ public class ServiceService {
     private static Service findServiceByID(String serviceID) {
         for (Service service : serviceList) {
             if (service.getServiceID().equals(serviceID)) {
+                String logID = ActivityLog.generateLogID();
+                ActivityLogService.logActivity(
+                        logID,
+                        new Date(),
+                        loggedUser.getUsername(),
+                        loggedUser.getUserID(),
+                        "Find service: " + serviceID
+                );
                 return service;
             }
         }
@@ -207,6 +273,14 @@ public class ServiceService {
     private static AutoPart findPartByID(String partID) {
         for (AutoPart part : autoPartsList) {
             if (part.getPartID().equals(partID)) {
+                String logID = ActivityLog.generateLogID();
+                ActivityLogService.logActivity(
+                        logID,
+                        new Date(),
+                        loggedUser.getUsername(),
+                        loggedUser.getUserID(),
+                        "Find part: " + partID
+                );
                 return part;
             }
         }

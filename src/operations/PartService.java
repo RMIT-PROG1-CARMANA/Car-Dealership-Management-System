@@ -1,8 +1,12 @@
 package operations;
 import java.util.*;
+
+import logsystem.ActivityLog;
 import part.*;
 import utils.*;
 import vehicle.Car;
+
+import static user.Authenticator.loggedUser;
 
 public class PartService {
     // Method to add part with validation
@@ -20,6 +24,14 @@ public class PartService {
 
         AutoPart part = new AutoPart(partID, partName, manufacturer, partNumber, condition, warranty, price, notes);
         addPart(part);
+        String logID = ActivityLog.generateLogID();
+        ActivityLogService.logActivity(
+                logID,
+                new Date(),
+                loggedUser.getUsername(),
+                loggedUser.getUserID(),
+                "Add new part: " + partID
+        );
         System.out.println("Part added successfully.");
     }
 
@@ -28,6 +40,14 @@ public class PartService {
         String partID = InputValidation.validatePartID("Enter Part ID to View Details: ");
         AutoPart part = getPartByID(partID);
         if (part != null) {
+            String logID = ActivityLog.generateLogID();
+            ActivityLogService.logActivity(
+                    logID,
+                    new Date(),
+                    loggedUser.getUsername(),
+                    loggedUser.getUserID(),
+                    "View Part details " + partID
+            );
             System.out.println(part.toString());
         } else {
             System.out.println("No part found with the given ID.");
@@ -77,6 +97,14 @@ public class PartService {
                 part.setNotes(notes);
             }
 
+            String logID = ActivityLog.generateLogID();
+            ActivityLogService.logActivity(
+                    logID,
+                    new Date(),
+                    loggedUser.getUsername(),
+                    loggedUser.getUserID(),
+                    "Update part information: " + partID
+            );
             System.out.println("Part updated successfully.");
         } else {
             System.out.println("No part found with the given ID.");
@@ -87,6 +115,14 @@ public class PartService {
     public static void deletePart(Scanner scanner) {
         String partID = InputValidation.validatePartID("Enter Part ID to Delete: ");
         if (deletePart(partID)) {
+            String logID = ActivityLog.generateLogID();
+            ActivityLogService.logActivity(
+                    logID,
+                    new Date(),
+                    loggedUser.getUsername(),
+                    loggedUser.getUserID(),
+                    "Delete part: " + partID
+            );
             System.out.println("Part deleted successfully.");
         } else {
             System.out.println("No part found with the given ID.");
@@ -117,6 +153,14 @@ public class PartService {
     public static AutoPart findAutoPartByID(String partId) {
         for (AutoPart part : AutoPart.partsList) {
             if (Objects.equals(part.getPartID(), partId)) {
+                String logID = ActivityLog.generateLogID();
+                ActivityLogService.logActivity(
+                        logID,
+                        new Date(),
+                        loggedUser.getUsername(),
+                        loggedUser.getUserID(),
+                        "Search part by ID: " + partId
+                );
                 return part;  // Return the part if found
             }
         }

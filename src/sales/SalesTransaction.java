@@ -1,6 +1,7 @@
 
 package sales;
-import crudHandlers.SalesTransactionCRUD;
+
+import operations.*;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -18,7 +19,7 @@ public class SalesTransaction  implements Serializable {
     private String notes;
     private boolean deleted;
 
-    public SalesTransaction(String transactionID, String transactionDate, String clientID, String salespersonID, List<PurchasedItem> purchaseItems, SalesTransactionCRUD.OrderType discount, double totalAmount, String notes) {
+    public SalesTransaction(String transactionID, String transactionDate, String clientID, String salespersonID, List<PurchasedItem> purchaseItems, TransactionService.OrderType discount, double totalAmount, String notes) {
         this.transactionID = "t-000";//t-XXX formatted
         this.transactionDate = "1970-01-01";
         this.clientID = "cl-000"; //cl-XXX formatted

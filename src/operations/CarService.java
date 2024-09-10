@@ -1,10 +1,13 @@
 package operations;
 
+import logsystem.ActivityLog;
 import vehicle.Car;
 import crudHandlers.CarCRUD;
 import utils.InputValidation;
 
 import java.util.*;
+
+import static user.Authenticator.loggedUser;
 
 public class CarService {
     static CarCRUD carCRUD = new CarCRUD("");
@@ -34,6 +37,16 @@ public class CarService {
 
         Car newCar = new Car(carID, make, model, year, mileage, color, status, price, notes);
         carCRUD.addCar(newCar);
+        // Log the deletion
+        String logID = ActivityLog.generateLogID();
+        ActivityLogService.logActivity(
+                logID,
+                new Date(),
+                loggedUser.getUsername(),
+                loggedUser.getUserID(),
+                "Create a car : " + carID
+        );
+
         System.out.println("New car added successfully.");
     }
 
@@ -51,17 +64,46 @@ public class CarService {
 
         Car updateCar = new Car(updateCarID, updateMake, updateModel, updateYear, updateMileage, updateColor, updateStatus, updatePrice, updateNotes);
         carCRUD.updateCar(updateCarID, updateCar);
+        // Log the deletion
+        String logID = ActivityLog.generateLogID();
+        ActivityLogService.logActivity(
+                logID,
+                new Date(),
+                loggedUser.getUsername(),
+                loggedUser.getUserID(),
+                "Update car information: " + updateCarID
+        );
+
         System.out.println("Car updated successfully.");
     }
     public static void deleteCar(){
         System.out.print("Enter the Car ID to delete: ");
         String deleteCarID = scanner.nextLine();
+        // Log the deletion
+        String logID = ActivityLog.generateLogID();
+        ActivityLogService.logActivity(
+                logID,
+                new Date(),
+                loggedUser.getUsername(),
+                loggedUser.getUserID(),
+                "Soft delete car: " + deleteCarID
+        );
         carCRUD.softDeleteCarByID(deleteCarID);  // Call the soft delete method
     }
     public static void displayCarByPrice(){
         List<Car> carsByPrice = carCRUD.getCarsOrderedByID(CarCRUD.OrderType.Price, true);
         for (Car car : carsByPrice) {
             car.displayInfo();
+            // Log the deletion
+            String logID = ActivityLog.generateLogID();
+            ActivityLogService.logActivity(
+                    logID,
+                    new Date(),
+                    loggedUser.getUsername(),
+                    loggedUser.getUserID(),
+                    "Display car by price"
+            );
+
             System.out.println();  // Add blank line between cars
         }
     }
@@ -74,5 +116,15 @@ public class CarService {
                     car.displayInfo();
                     System.out.println();  // Add blank line between cars
                 });
+        // Log the deletion
+        String logID = ActivityLog.generateLogID();
+        ActivityLogService.logActivity(
+                logID,
+                new Date(),
+                loggedUser.getUsername(),
+                loggedUser.getUserID(),
+                "Display all car "
+        );
+
     }
 }
