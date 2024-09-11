@@ -2,6 +2,7 @@ package operations;
 
 
 import FileHandling.ServiceFileHandler;
+import interfaces.ServiceInterfaces;
 import logsystem.*;
 import part.*;
 import service.Service;
@@ -14,8 +15,7 @@ import java.util.*;
 import static user.Authenticator.loggedUser;
 
 
-public class ServiceService {
-    static Scanner scanner = new Scanner(System.in);
+public class ServiceService implements ServiceInterfaces {
     private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd/MM/yyyy");
     private static List<Service> serviceList = new ArrayList<>();
     private static List<AutoPart> autoPartsList = new ArrayList<>();
@@ -28,8 +28,8 @@ public class ServiceService {
         autoPartsList = new ArrayList<>(partsMap.values());
     }
 
-
-    public static void addService() {
+    @Override
+    public void addService() {
         String serviceID = InputValidation.validateServiceID("Enter Service ID: ", serviceList);
 
         Date serviceDate = InputValidation.validateDate("Enter Service Date (dd/MM/yyyy): ");
@@ -67,8 +67,8 @@ public class ServiceService {
         // Save the updated service list to the file
         ServiceFileHandler.saveServices(serviceList);
     }
-
-    public static void getServiceByID() {
+    @Override
+    public void getServiceByID() {
         String serviceID = InputValidation.validateString("Enter Service ID: ");
 
         Service service = findServiceByID(serviceID);
@@ -86,8 +86,8 @@ public class ServiceService {
             System.out.println("Service not found with ID: " + serviceID);
         }
     }
-
-    public static void updateService() {
+    @Override
+    public void updateService() {
         String serviceID = InputValidation.validateString("Enter Service ID to Update: ");
 
         Service service = findServiceByID(serviceID);
@@ -148,8 +148,8 @@ public class ServiceService {
         // Save the updated service list to the file
         ServiceFileHandler.saveServices(serviceList);
     }
-
-    public static void deleteService() {
+    @Override
+    public  void deleteService() {
         String serviceID = InputValidation.validateString("Enter Service ID to Delete: ");
 
         Service service = findServiceByID(serviceID);
@@ -171,8 +171,8 @@ public class ServiceService {
             System.out.println("Service not found with ID: " + serviceID);
         }
     }
-
-    public static void addPartToService(String serviceID, String partID) {
+    @Override
+    public void addPartToService(String serviceID, String partID) {
         Service service = findServiceByID(serviceID);
         if (service == null) {
             System.out.println("Service not found.");
@@ -199,8 +199,8 @@ public class ServiceService {
         // Save the updated service list to the file
         ServiceFileHandler.saveServices(serviceList);
     }
-
-    public static void removePartFromService(String serviceID) {
+    @Override
+    public void removePartFromService(String serviceID) {
         String partID = InputValidation.validateString("Enter Part ID to Remove: ");
 
         Service service = findServiceByID(serviceID);
@@ -234,8 +234,8 @@ public class ServiceService {
         // Save the updated service list to the file
         ServiceFileHandler.saveServices(serviceList);
     }
-
-    public static void listAllServices() {
+    @Override
+    public  void listAllServices() {
         if (serviceList.isEmpty()) {
             System.out.println("No services available.");
         } else {

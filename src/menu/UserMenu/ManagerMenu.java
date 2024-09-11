@@ -1,49 +1,38 @@
 package menu.UserMenu;
 
 import FileHandling.*;
+import interfaces.*;
 import logsystem.*;
-import crudHandlers.CarCRUD;
 import menu.Menu;
 import operations.*;
-import part.AutoPart;
-import sales.SalesTransaction;
 import service.Service;
-import user.Authenticator;
-import user.*;
-import crudHandlers.*;
-import vehicle.*;
+import user.User;
 import utils.*;
 import java.util.*;
-
 import static menu.MenuStyle.*;
-import static operations.ActivityLogService.*;
 import static utils.InputValidation.isCarIDExists;
+import static user.Authenticator.loggedUser;
 
 public class ManagerMenu extends Menu {
     int choice;
-    private static final UserDataHandler userDAO = new UserDataHandler();
-    private static final CarDataHandler carDAO = new CarDataHandler();
     private static final AutoPartFileHandler partDAO = new AutoPartFileHandler();
-    private static final ServiceFileHandler serviceDAO = new ServiceFileHandler();
-    private static final SalesTransactionDataHandler transDAO = new SalesTransactionDataHandler();
-    private static final ActivityLogDataHandler logDAO = new ActivityLogDataHandler();
+    private static List<Service> serviceList = new ArrayList<>();
 
-    private final UserService userService;
-    private final CarService carService;
-    private final PartService partService;
-    private final ServiceService serviceService;
     private final ActivityLogService activityLogService;
-    private final TransactionService TransactionService;
+    // Use the CarInterfaces reference
+    static CarInterfaces carService = new CarService();
+    static AutoPartInterfaces autoPartService = new AutoPartService();
+    static ServiceInterfaces serviceService = new ServiceService();
+    static TransactionInterfaces transactionService = new TransactionService();
+    static UserInterfaces userService = new UserService();
 
     Scanner input = new Scanner(System.in);
 
     public ManagerMenu() {
-        this.userService = new UserService();
-        this.carService = new CarService();
-        this.partService = new PartService();
-        this.serviceService = new ServiceService();
+
+
         this.activityLogService = new ActivityLogService();
-        this.TransactionService = new TransactionService();
+
     }
 
 
@@ -73,7 +62,6 @@ public class ManagerMenu extends Menu {
             case 0:
                 displayManagerCarMenu();
                 break;
-
             case 1:
                 displayManagerAutoPartMenu();
                 break;
@@ -131,15 +119,15 @@ public class ManagerMenu extends Menu {
         choice = getValidatedChoice(0, 5);
         switch (choice) {
             case 0:
-                CarService.createCar(); // Add a new car
+                carService.createCar(); // Add a new car
                 break;
 
             case 1:
-                CarService.updateCar(); // Update an existing car
+                carService.updateCar(); // Update an existing car
                 break;
 
             case 2:
-                CarService.deleteCar(); // Delete a car
+                carService.deleteCar(); // Delete a car
                 break;
 
             case 3:
@@ -150,7 +138,7 @@ public class ManagerMenu extends Menu {
                 break;
 
             case 4:
-                CarService.displayAllCar(); // View all available cars
+                carService.displayAllCar(); // View all available cars
                 break;
 
             case 5:
@@ -182,23 +170,23 @@ public class ManagerMenu extends Menu {
 
         switch (choice) {
             case 0:
-                PartService.addPart();
+                autoPartService.addPart();
                 partDAO.serializeParts();
                 break;
             case 1:
-                PartService.updatePart();
+                autoPartService.updatePart();
                 partDAO.serializeParts();
                 break;
             case 2:
-                PartService.deletePart();
+                autoPartService.deletePart();
                 partDAO.serializeParts();
                 break;
             case 3:
-                PartService.viewPartDetails();
+                autoPartService.viewPartDetails();
                 partDAO.serializeParts();
                 break;
             case 4:
-                PartService.listAllParts();
+                autoPartService.listAllParts();
                 partDAO.serializeParts();
                 break;
             case 5:
@@ -230,27 +218,27 @@ public class ManagerMenu extends Menu {
 
         switch (choice) {
             case 0:
-                TransactionService.addTransaction(); // Call the addTransaction method to add a new sale
+                transactionService.addTransaction(); // Call the addTransaction method to add a new sale
                 break;
 
             case 1:
                 String deleteID = InputValidation.validateTransactionID("Enter Transaction ID to delete (format: t-XXXX): ");
-                TransactionService.deleteTransaction(deleteID); // Call the deleteTransaction method to delete a sale
+                transactionService.deleteTransaction(deleteID); // Call the deleteTransaction method to delete a sale
                 break;
 
             case 2:
-                TransactionService.displayTransactionsByClientID();
+                transactionService.displayTransactionsByClientID();
                 break;
             case 3:
-                TransactionService.displayAllTransactions();
+                transactionService.displayAllTransactions();
                 break;
 
             case 4:
-                TransactionService.displayTransactionsByID();
+                transactionService.displayTransactionsByID();
                 break;
 
             case 5:
-                TransactionService.displayTransactionsSortByPrice();
+                transactionService.displayTransactionsSortByPrice();
                 break;
 
             case 6:
@@ -281,20 +269,20 @@ public class ManagerMenu extends Menu {
 
         switch (choice) {
             case 0:
-                UserService.createUser();
+                userService.createUser();
                 break;
 
             case 1:
-
+                userService.editProfile(loggedUser);
                 break;
             case 2:
-                UserService.deleteUser();
+                userService.deleteUser();
                 break;
             case 3:
 
                 break;
             case 4:
-                UserService.displayAllUsers();
+                userService.displayAllUsers();
                 break;
             case 5:
                 displayManagerMenu(); // Go back to the main menu
@@ -326,31 +314,28 @@ public class ManagerMenu extends Menu {
 
         switch (choice) {
             case 0:
-                ServiceService.addService();
+                serviceService.addService();
                 break;
             case 1:
-                ServiceService.getServiceByID();
+                serviceService.getServiceByID();
                 break;
             case 2:
-                ServiceService.updateService();
+                serviceService.updateService();
                 break;
             case 3:
-                ServiceService.deleteService();
+                serviceService.deleteService();
                 break;
             case 4:
-                System.out.print("Enter Service ID: ");
-                String serviceID = scanner.nextLine();
-                System.out.print("Enter Part ID: ");
-                String partID = scanner.nextLine();
-                ServiceService.addPartToService(serviceID, partID);
+                String serviceID = InputValidation.validateExistingServiceID("Enter Service ID: ",serviceList);
+                String partID = InputValidation.validateExistingPartID("Enter Part ID: ");
+                serviceService.addPartToService(serviceID, partID);
                 break;
             case 5:
-                System.out.print("Enter Service ID: ");
-                String serviceIDToRemove = scanner.nextLine();
-                ServiceService.removePartFromService(serviceIDToRemove);
+                String serviceIDToRemove = InputValidation.validateExistingServiceID("Enter Service ID: ",serviceList);
+                serviceService.removePartFromService(serviceIDToRemove);
                 break;
             case 6:
-                ServiceService.listAllServices();
+                serviceService.listAllServices();
                 break;
             case 7:
                 displayManagerMenu(); // Go back to the main menu
@@ -453,7 +438,8 @@ public class ManagerMenu extends Menu {
 
                 break;
             case 5:
-                displayManagerMenu(); // Go back to the main menu
+                // Go back to the main menu
+                displayManagerMenu();
                 break;
             default:
                 System.err.println("\n**Please, Enter a Valid Input**");

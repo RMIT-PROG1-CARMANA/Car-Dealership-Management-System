@@ -1,5 +1,6 @@
 package operations;
 
+import interfaces.CarInterfaces;
 import logsystem.ActivityLog;
 import vehicle.Car;
 import crudHandlers.CarCRUD;
@@ -9,11 +10,12 @@ import java.util.*;
 
 import static user.Authenticator.loggedUser;
 
-public class CarService {
+public class CarService implements CarInterfaces {
     static CarCRUD carCRUD = new CarCRUD("");
     static Scanner scanner = new Scanner(System.in);
 
-    public static void displayCarByID(){
+    @Override
+    public void displayCarByID(){
         List<Car> carsByID = carCRUD.getCarsOrderedByID(CarCRUD.OrderType.CarID, true);
         for (Car car : carsByID) {
             if (!car.isDeleted()) {
@@ -22,8 +24,9 @@ public class CarService {
             }
         }
     }
-    public static void createCar() {
-        // Add a new car
+
+    @Override
+    public void createCar() {
         String carID = InputValidation.validateCarID("Car ID (format: C-XXXX where XXXX is a number): ");
         String make = InputValidation.validateString("Make: ");
         String model = InputValidation.validateString("Model: ");
@@ -34,10 +37,9 @@ public class CarService {
         double price = InputValidation.validateDouble("Price: ");
         String notes = InputValidation.validateString("Notes: ");
 
-
         Car newCar = new Car(carID, make, model, year, mileage, color, status, price, notes);
         carCRUD.addCar(newCar);
-        // Log the deletion
+
         String logID = ActivityLog.generateLogID();
         ActivityLogService.logActivity(
                 logID,
@@ -50,8 +52,8 @@ public class CarService {
         System.out.println("New car added successfully.");
     }
 
-    public static void updateCar(){
-        System.out.println("Enter new details for the car:");
+    @Override
+    public void updateCar(){
         String updateCarID = InputValidation.validateCarID("Enter the Car ID to update: ");
         String updateMake = InputValidation.validateString("Make: ");
         String updateModel = InputValidation.validateString("Model: ");
@@ -64,7 +66,7 @@ public class CarService {
 
         Car updateCar = new Car(updateCarID, updateMake, updateModel, updateYear, updateMileage, updateColor, updateStatus, updatePrice, updateNotes);
         carCRUD.updateCar(updateCarID, updateCar);
-        // Log the deletion
+
         String logID = ActivityLog.generateLogID();
         ActivityLogService.logActivity(
                 logID,
@@ -76,10 +78,12 @@ public class CarService {
 
         System.out.println("Car updated successfully.");
     }
-    public static void deleteCar(){
+
+    @Override
+    public void deleteCar(){
         System.out.print("Enter the Car ID to delete: ");
         String deleteCarID = scanner.nextLine();
-        // Log the deletion
+
         String logID = ActivityLog.generateLogID();
         ActivityLogService.logActivity(
                 logID,
@@ -88,13 +92,16 @@ public class CarService {
                 loggedUser.getUserID(),
                 "Soft delete car: " + deleteCarID
         );
-        carCRUD.softDeleteCarByID(deleteCarID);  // Call the soft delete method
+
+        carCRUD.softDeleteCarByID(deleteCarID);
     }
-    public static void displayCarByPrice(){
+
+    @Override
+    public void displayCarByPrice(){
         List<Car> carsByPrice = carCRUD.getCarsOrderedByID(CarCRUD.OrderType.Price, true);
         for (Car car : carsByPrice) {
             car.displayInfo();
-            // Log the deletion
+
             String logID = ActivityLog.generateLogID();
             ActivityLogService.logActivity(
                     logID,
@@ -107,7 +114,9 @@ public class CarService {
             System.out.println();  // Add blank line between cars
         }
     }
-    public static void displayAllCar(){
+
+    @Override
+    public void displayAllCar(){
         System.out.println("Available cars:");
         carCRUD.getCarsOrderedByID(CarCRUD.OrderType.CarID, true)
                 .stream()
@@ -116,7 +125,7 @@ public class CarService {
                     car.displayInfo();
                     System.out.println();  // Add blank line between cars
                 });
-        // Log the deletion
+
         String logID = ActivityLog.generateLogID();
         ActivityLogService.logActivity(
                 logID,
@@ -125,6 +134,5 @@ public class CarService {
                 loggedUser.getUserID(),
                 "Display all car "
         );
-
     }
 }

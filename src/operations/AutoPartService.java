@@ -1,15 +1,18 @@
 package operations;
 import java.util.*;
 
+import interfaces.AutoPartInterfaces;
 import logsystem.ActivityLog;
 import part.*;
 import utils.*;
 
 import static user.Authenticator.loggedUser;
 
-public class PartService {
+public class AutoPartService implements AutoPartInterfaces {
     // Method to add part with validation
-    public static void addPart() {
+    @Override
+    public void addPart() {
+        // Collect input and validate
         String partID = InputValidation.validatePartID("Enter Part ID (format: p-XXXX): ");
         String partName = InputValidation.validateString("Enter Part Name: ");
         String manufacturer = InputValidation.validateString("Enter Manufacturer: ");
@@ -19,10 +22,13 @@ public class PartService {
         double price = InputValidation.validateDouble("Enter Cost: ");
         String notes = InputValidation.validateString("Enter Notes: "); // Notes can be empty
 
-        // Create and add the part
-
+        // Create the part
         AutoPart part = new AutoPart(partID, partName, manufacturer, partNumber, condition, warranty, price, notes);
-        addPart(part);
+
+        // Add the part to the list
+        AutoPart.partsList.add(part);
+
+        // Log the activity
         String logID = ActivityLog.generateLogID();
         ActivityLogService.logActivity(
                 logID,
@@ -31,11 +37,15 @@ public class PartService {
                 loggedUser.getUserID(),
                 "Add new part: " + partID
         );
+
+        // Confirmation message
         System.out.println("Part added successfully.");
     }
 
+
     // Method to view part details with validation
-    public static void viewPartDetails() {
+    @Override
+    public void viewPartDetails() {
         String partID = InputValidation.validatePartID("Enter Part ID to View Details: ");
         AutoPart part = getPartByID(partID);
         if (part != null) {
@@ -54,7 +64,8 @@ public class PartService {
     }
 
     // Method to update part with validation
-    public static void updatePart() {
+    @Override
+    public void updatePart() {
         String partID = InputValidation.validatePartID("Enter Part ID to Update: ");
 
         AutoPart part = getPartByID(partID);
@@ -111,7 +122,8 @@ public class PartService {
     }
 
     // Method to delete part
-    public static void deletePart() {
+    @Override
+    public void deletePart() {
         String partID = InputValidation.validatePartID("Enter Part ID to Delete: ");
         if (deletePart(partID)) {
             String logID = ActivityLog.generateLogID();
@@ -128,20 +140,16 @@ public class PartService {
         }
     }
 
-    // Static methods for managing parts
-    public static void addPart(AutoPart part) {
-        AutoPart.partsList.add(part);
-    }
-
-    public static AutoPart getPartByID(String partID) {
+    @Override
+    public  AutoPart getPartByID(String partID) {
         return AutoPart.partsList.stream().filter(part -> part.getPartID().equals(partID)).findFirst().orElse(null);
     }
-
-    public static boolean deletePart(String partID) {
+    @Override
+    public boolean deletePart(String partID) {
         return AutoPart.partsList.removeIf(part -> part.getPartID().equals(partID));
     }
-
-    public static void listAllParts() {
+    @Override
+    public void listAllParts() {
         if (AutoPart.partsList.isEmpty()) {
             System.out.println("No parts available.");
         } else {

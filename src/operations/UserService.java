@@ -1,8 +1,9 @@
 package operations;
 
 import FileHandling.UserDataHandler;
+import interfaces.UserInterfaces;
 import logsystem.*;
-import part.AutoPart;
+
 import sales.SalesTransaction;
 import user.*;
 import utils.Divider;
@@ -14,10 +15,10 @@ import java.util.Date;
 import java.util.List;
 import static menu.MenuStyle.*;
 import static user.Authenticator.loggedUser;
-import static user.Membership.MembershipType.REGULAR;
 
 
-public class UserService {
+
+public class UserService implements UserInterfaces {
 
     public static void addUser(User newUserManager) {
         List<User> managersList = userDAO.fetchManagerFromDatabase();
@@ -28,7 +29,8 @@ public class UserService {
     private static final UserDataHandler userDAO = new UserDataHandler();
 
     // manager can add user
-    public static void createUser() {
+    @Override
+    public void createUser() {
         String userID = InputValidation.validateUserID("Enter User ID (uXXXX format): ");
         String fullName = InputValidation.validateString("Enter Full Name: ");
         Date dateOfBirth = InputValidation.validateDate("Enter Date of Birth (dd/MM/yyyy): ");
@@ -90,15 +92,16 @@ public class UserService {
     }
 
     // Adds a new manager to the list and saves it to the file
-    public static void displayAllUsers() {
+    @Override
+    public void displayAllUsers() {
         User[] users = userDAO.readAllUsers();
         for (User user : users) {
             System.out.println(user);
             System.out.println("--------------");
         }
     }
-
-    public static void displayInfoUsers() {
+    @Override
+    public void displayInfoUsers() {
         Divider.printDivider();
         System.out.println("User Information:");
         if (loggedUser != null) {
@@ -122,8 +125,8 @@ public class UserService {
         Divider.printDivider();
     }
 
-
-    public static void editProfile(User loggedUser) {
+    @Override
+    public void editProfile(User loggedUser) {
         if (loggedUser == null) {
             System.out.println("You need to be logged in to edit your profile.");
             return;
@@ -177,8 +180,8 @@ public class UserService {
 
         System.out.println("Your information has been updated successfully!");
     }
-
-    public static void deleteUser() {
+    @Override
+    public void deleteUser() {
         System.out.println();
 
         // Fetch users as an array

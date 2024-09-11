@@ -1,6 +1,7 @@
 package operations;
 
 import FileHandling.CarDataHandler;
+import interfaces.TransactionInterfaces;
 import logsystem.ActivityLog;
 import part.AutoPart;
 import sales.SalesTransaction;
@@ -23,7 +24,8 @@ import static crudHandlers.SalesTransactionCRUD.OrderType.transactionID;
 import static user.Authenticator.loggedUser;
 
 
-public class TransactionService {
+public class TransactionService implements TransactionInterfaces {
+
     Scanner scanner = new Scanner(System.in);
     static UserDataHandler userDataHandler = new UserDataHandler();
     private static CarCRUDMethodHandler methodHandler;
@@ -48,6 +50,7 @@ public class TransactionService {
 
         return totalAmount;
     }
+    @Override
     public void addTransaction() {
         // Add a new transaction
         String transactionID = InputValidation.validateTransactionID("Transaction ID (format: t-XXXX): ");
@@ -78,7 +81,7 @@ public class TransactionService {
 
             AutoPart part = null;
             if (!partID.isEmpty()) {
-                part = PartService.findAutoPartByID(partID);
+                part = AutoPartService.findAutoPartByID(partID);
                 if (part == null) {
                     System.out.println("Part with ID " + partID + " not found.");
                 }
@@ -119,6 +122,7 @@ public class TransactionService {
     }
 
     // Display all transactions sorted by TransactionID
+    @Override
     public void displayAllTransactions(){
         List<SalesTransaction> transactionsByID = salesTransactionCRUD.getTransactionsOrderedByID(SalesTransactionCRUD.OrderType.transactionID, true);
         for (SalesTransaction transaction : transactionsByID) {
@@ -139,6 +143,7 @@ public class TransactionService {
         );
     }
     // Soft delete a transaction
+    @Override
     public void deleteTransaction(String transactionID) {
         String deleteTransactionID = InputValidation.validateTransactionID("Transaction ID (format: t-XXXX): ");
         salesTransactionCRUD.deleteTransaction(deleteTransactionID);  // Call the soft delete method
@@ -155,6 +160,7 @@ public class TransactionService {
     }
 
     // Display all transactions sorted by Total Amount
+    @Override
     public void displayTransactionsSortByPrice(){
 
         List<SalesTransaction> transactionsByAmount = salesTransactionCRUD.getTransactionsOrderedByID(SalesTransactionCRUD.OrderType.totalAmount, true);
@@ -163,6 +169,7 @@ public class TransactionService {
             System.out.println();  // Add blank line between transactions
         }
     }
+    @Override
     public void displayTransactionsByClientID(){
         // Display transactions for a specific client ID
         String displayClientID = InputValidation.validateUserID("Client ID (format: CL-XXXX): ");
@@ -181,6 +188,7 @@ public class TransactionService {
                 "Retrieved transactions for client ID: " + clientID
         );
     }
+    @Override
     public void displayTransactionsByID(){
         String displayTransactionID = InputValidation.validateTransactionID("Transaction ID (format: t-XXXX): ");
         salesTransactionCRUD.displayTransactionByID(displayTransactionID);
@@ -194,4 +202,5 @@ public class TransactionService {
                 "Displayed transaction details for ID: " + transactionID
         );
     }
+
 }

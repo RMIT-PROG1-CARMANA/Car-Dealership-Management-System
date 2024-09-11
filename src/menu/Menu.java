@@ -1,5 +1,7 @@
 package menu;
 
+import interfaces.UserInterfaces;
+import menu.UserMenu.ClientMenu;
 import menu.UserMenu.EmployeeBaseMenu;
 import menu.UserMenu.EmployeeRolesMenu.MechanicMenu;
 import menu.UserMenu.EmployeeRolesMenu.SalespersonMenu;
@@ -14,10 +16,8 @@ import utils.InputValidation;
 
 import java.util.Scanner;
 
-
 import static menu.MenuStyle.*;
 
-import static operations.UserService.displayInfoUsers;
 
 
 
@@ -27,6 +27,7 @@ public class Menu  {
 
     public Menu() {
     }
+    static UserInterfaces userService = new UserService();
 
     // Method to set loggedUser
     public static void setLoggedUser(User user) {
@@ -56,11 +57,6 @@ public class Menu  {
                 "Enter Selection: ",       // Prompt message
                 "Invalid input. Please enter a number between " + min + " and " + max + "." // Error message
         );
-    }
-
-    private void clearScreen() {
-        System.out.print("\033[H\033[2J");
-        System.out.flush();
     }
 
     // Method to display the role of the logged-in user
@@ -102,10 +98,10 @@ public class Menu  {
             // Handle menu options
             switch (choice) {
                 case 0:
-                    displayInfoUsers();
+                    userService.displayInfoUsers();
                     break;
                 case 1:
-                    UserService.createUser();
+                    userService.createUser();
                     break;
                 case 2:
                     // Navigate to the appropriate menu based on the user's role
@@ -124,7 +120,9 @@ public class Menu  {
                             mechanicMenu.displayEmployeeMenu();
                         }
                     } else if (userType == User.UserType.CLIENT) {
-                        // Implement ClientMenu
+                        // ClientMenu
+                        ClientMenu clientMenu = new ClientMenu();
+                        clientMenu.displayClientMenu();
                     }
                     break;
                 case 3:

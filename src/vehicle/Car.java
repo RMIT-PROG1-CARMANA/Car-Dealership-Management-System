@@ -1,13 +1,14 @@
 package vehicle;
 
 
+import service.Service;
+
 import java.io.Serializable;
 
 import java.io.Serial;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.io.Serializable;
+
 
 
 public class Car implements Serializable {
@@ -15,7 +16,7 @@ public class Car implements Serializable {
     private static final long serialVersionUID = 1L;
 
 //    public class Car {
-        private final ArrayList<Object> serviceHistory;
+        private final ArrayList<Service> serviceHistory;
         private String carID; // format c-number
         private String make;
         private String model;
