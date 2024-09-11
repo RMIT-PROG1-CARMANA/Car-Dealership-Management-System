@@ -222,8 +222,7 @@ public class ManagerMenu extends Menu {
                 break;
 
             case 1:
-                String deleteID = InputValidation.validateTransactionID("Enter Transaction ID to delete (format: t-XXXX): ");
-                transactionService.deleteTransaction(deleteID); // Call the deleteTransaction method to delete a sale
+                transactionService.deleteTransaction(); // Call the deleteTransaction method to delete a sale
                 break;
 
             case 2:
@@ -326,13 +325,10 @@ public class ManagerMenu extends Menu {
                 serviceService.deleteService();
                 break;
             case 4:
-                String serviceID = InputValidation.validateExistingServiceID("Enter Service ID: ",serviceList);
-                String partID = InputValidation.validateExistingPartID("Enter Part ID: ");
-                serviceService.addPartToService(serviceID, partID);
+                serviceService.addPartToService();
                 break;
             case 5:
-                String serviceIDToRemove = InputValidation.validateExistingServiceID("Enter Service ID: ",serviceList);
-                serviceService.removePartFromService(serviceIDToRemove);
+                serviceService.removePartFromService();
                 break;
             case 6:
                 serviceService.listAllServices();

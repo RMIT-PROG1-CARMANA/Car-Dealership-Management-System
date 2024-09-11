@@ -54,7 +54,7 @@ public class CarService implements CarInterfaces {
 
     @Override
     public void updateCar(){
-        String updateCarID = InputValidation.validateCarID("Enter the Car ID to update: ");
+        String updateCarID = InputValidation.validateExistingCarID("Enter the Car ID to update: ");
         String updateMake = InputValidation.validateString("Make: ");
         String updateModel = InputValidation.validateString("Model: ");
         int updateYear = InputValidation.validateInt("Year: ");
@@ -81,8 +81,8 @@ public class CarService implements CarInterfaces {
 
     @Override
     public void deleteCar(){
-        System.out.print("Enter the Car ID to delete: ");
-        String deleteCarID = scanner.nextLine();
+
+        String deleteCarID = InputValidation.validateExistingCarID("Enter the Car ID to delete: ");
 
         String logID = ActivityLog.generateLogID();
         ActivityLogService.logActivity(

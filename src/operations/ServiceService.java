@@ -34,9 +34,9 @@ public class ServiceService implements ServiceInterfaces {
 
         Date serviceDate = InputValidation.validateDate("Enter Service Date (dd/MM/yyyy): ");
 
-        String clientID = InputValidation.validateUserID("Enter Client ID: ");
+        String clientID = InputValidation.validateExistingUserID("Enter Client ID: ");
 
-        String mechanicID = InputValidation.validateString("Enter Mechanic ID: ");
+        String mechanicID = InputValidation.validateExistingUserID("Enter Mechanic ID: ");
 
         String serviceType = InputValidation.validateString("Enter Service Type: ");
 
@@ -69,7 +69,7 @@ public class ServiceService implements ServiceInterfaces {
     }
     @Override
     public void getServiceByID() {
-        String serviceID = InputValidation.validateString("Enter Service ID: ");
+        String serviceID = InputValidation.validateExistingServiceID("Enter Service ID: ",serviceList);
 
         Service service = findServiceByID(serviceID);
         if (service != null) {
@@ -88,7 +88,7 @@ public class ServiceService implements ServiceInterfaces {
     }
     @Override
     public void updateService() {
-        String serviceID = InputValidation.validateString("Enter Service ID to Update: ");
+        String serviceID = InputValidation.validateExistingServiceID("Enter Service ID to Update: ",serviceList);
 
         Service service = findServiceByID(serviceID);
         if (service == null) {
@@ -106,12 +106,12 @@ public class ServiceService implements ServiceInterfaces {
             }
         }
 
-        String clientID = InputValidation.validateString("Enter New Client ID or press Enter to keep current: ");
+        String clientID = InputValidation.validateExistingUserID("Enter New Client ID or press Enter to keep current: ");
         if (!clientID.trim().isEmpty()) {
             service.setClientID(clientID);
         }
 
-        String mechanicID = InputValidation.validateString("Enter New Mechanic ID or press Enter to keep current: ");
+        String mechanicID = InputValidation.validateExistingUserID("Enter New Mechanic ID or press Enter to keep current: ");
         if (!mechanicID.trim().isEmpty()) {
             service.setMechanicID(mechanicID);
         }
@@ -150,7 +150,7 @@ public class ServiceService implements ServiceInterfaces {
     }
     @Override
     public  void deleteService() {
-        String serviceID = InputValidation.validateString("Enter Service ID to Delete: ");
+        String serviceID = InputValidation.validateExistingServiceID("Enter Service ID to Delete: ",serviceList);
 
         Service service = findServiceByID(serviceID);
         if (service != null) {
@@ -172,7 +172,9 @@ public class ServiceService implements ServiceInterfaces {
         }
     }
     @Override
-    public void addPartToService(String serviceID, String partID) {
+    public void addPartToService() {
+        String serviceID = InputValidation.validateExistingServiceID("Enter Service ID: ",serviceList);
+        String partID = InputValidation.validateExistingPartID("Enter Part ID");
         Service service = findServiceByID(serviceID);
         if (service == null) {
             System.out.println("Service not found.");
@@ -200,8 +202,9 @@ public class ServiceService implements ServiceInterfaces {
         ServiceFileHandler.saveServices(serviceList);
     }
     @Override
-    public void removePartFromService(String serviceID) {
-        String partID = InputValidation.validateString("Enter Part ID to Remove: ");
+    public void removePartFromService() {
+        String serviceID = InputValidation.validateExistingServiceID("Enter Service ID: ",serviceList);
+        String partID = InputValidation.validateExistingPartID("Enter Part ID");
 
         Service service = findServiceByID(serviceID);
         if (service == null) {
