@@ -36,8 +36,7 @@ public class TransactionStatistics implements interfaces.statistics.TransactionS
     }
 
     @Override
-    import java.text.SimpleDateFormat;
-import java.util.List;
+
 
     public void displayTransactions(List<SalesTransaction> transactions) {
         if (transactions.isEmpty()) {
