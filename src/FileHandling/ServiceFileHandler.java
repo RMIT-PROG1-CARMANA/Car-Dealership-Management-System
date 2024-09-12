@@ -13,7 +13,12 @@ public class ServiceFileHandler {
     // Load parts from file and return as a Map
     public static Map<String, AutoPart> loadParts() {
         Map<String, AutoPart> partsMap = new HashMap<>();
-        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(PARTS_FILE_PATH))) {
+        File partsFile = new File(PARTS_FILE_PATH);
+        if (!partsFile.exists()) {
+            System.out.println("Parts file does not exist.");
+            return partsMap;
+        }
+        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(partsFile))) {
             Object object = ois.readObject();
             if (object instanceof List<?>) {
                 List<AutoPart> partsList = (List<AutoPart>) object;
@@ -28,6 +33,7 @@ public class ServiceFileHandler {
         }
         return partsMap;
     }
+
 
     // Load services from file and return as a List
     public static List<Service> loadServices() {

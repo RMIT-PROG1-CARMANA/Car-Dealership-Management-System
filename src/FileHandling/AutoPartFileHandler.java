@@ -16,7 +16,7 @@ public class AutoPartFileHandler {
     public static void serializeParts() {
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(FILE_PATH))) {
             oos.writeObject(AutoPart.getAllParts());
-            System.out.println("Parts serialized to file successfully.");
+            System.out.println("Parts saved to file successfully.");
         } catch (IOException e) {
             System.out.println("Error serializing parts: " + e.getMessage());
         }
@@ -30,7 +30,7 @@ public class AutoPartFileHandler {
             List<AutoPart> deserializedParts = (List<AutoPart>) ois.readObject();
             AutoPart.setPartsList(deserializedParts);  // Replace the parts list with deserialized data
 
-            System.out.println("Parts deserialized from file successfully.");
+            System.out.println("Parts loaded from file successfully.");
         } catch (IOException | ClassNotFoundException e) {
             System.out.println("Error deserializing parts: " + e.getMessage());
         }

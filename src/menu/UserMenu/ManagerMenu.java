@@ -149,9 +149,8 @@ public class ManagerMenu extends Menu {
                 System.out.println();
         }
     }
-    public void displayManagerAutoPartMenu(){
+    public void displayManagerAutoPartMenu() {
         ClearScreen.clear();
-        partDAO.deserializeParts();
         System.out.println(CYAN_BOLD + "=====================================" + RESET);
         System.out.println(CYAN_BOLD + "    Manager Auto Parts Menu" + RESET);
         System.out.println(CYAN_BOLD + "=====================================" + RESET);
@@ -171,23 +170,18 @@ public class ManagerMenu extends Menu {
         switch (choice) {
             case 0:
                 autoPartService.addPart();
-                partDAO.serializeParts();
                 break;
             case 1:
                 autoPartService.updatePart();
-                partDAO.serializeParts();
                 break;
             case 2:
                 autoPartService.deletePart();
-                partDAO.serializeParts();
                 break;
             case 3:
                 autoPartService.viewPartDetails();
-                partDAO.serializeParts();
                 break;
             case 4:
                 autoPartService.listAllParts();
-                partDAO.serializeParts();
                 break;
             case 5:
                 displayManagerMenu(); // Go back to the main menu
@@ -197,6 +191,7 @@ public class ManagerMenu extends Menu {
                 System.out.println();
         }
     }
+
     public void displayManagerSaleTransactionsMenu() {
         ClearScreen.clear();
         System.out.println(CYAN_BOLD + "=====================================" + RESET);

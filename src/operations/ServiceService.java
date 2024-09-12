@@ -1,6 +1,5 @@
 package operations;
 
-
 import FileHandling.ServiceFileHandler;
 import interfaces.ServiceInterfaces;
 import logsystem.*;
@@ -13,7 +12,6 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 import static user.Authenticator.loggedUser;
-
 
 public class ServiceService implements ServiceInterfaces {
     private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd/MM/yyyy");
@@ -67,9 +65,10 @@ public class ServiceService implements ServiceInterfaces {
         // Save the updated service list to the file
         ServiceFileHandler.saveServices(serviceList);
     }
+
     @Override
     public void getServiceByID() {
-        String serviceID = InputValidation.validateExistingServiceID("Enter Service ID: ",serviceList);
+        String serviceID = InputValidation.validateExistingServiceID("Enter Service ID: ", serviceList);
 
         Service service = findServiceByID(serviceID);
         if (service != null) {
@@ -86,9 +85,10 @@ public class ServiceService implements ServiceInterfaces {
             System.out.println("Service not found with ID: " + serviceID);
         }
     }
+
     @Override
     public void updateService() {
-        String serviceID = InputValidation.validateExistingServiceID("Enter Service ID to Update: ",serviceList);
+        String serviceID = InputValidation.validateExistingServiceID("Enter Service ID to Update: ", serviceList);
 
         Service service = findServiceByID(serviceID);
         if (service == null) {
@@ -148,9 +148,10 @@ public class ServiceService implements ServiceInterfaces {
         // Save the updated service list to the file
         ServiceFileHandler.saveServices(serviceList);
     }
+
     @Override
-    public  void deleteService() {
-        String serviceID = InputValidation.validateExistingServiceID("Enter Service ID to Delete: ",serviceList);
+    public void deleteService() {
+        String serviceID = InputValidation.validateExistingServiceID("Enter Service ID to Delete: ", serviceList);
 
         Service service = findServiceByID(serviceID);
         if (service != null) {
@@ -171,10 +172,14 @@ public class ServiceService implements ServiceInterfaces {
             System.out.println("Service not found with ID: " + serviceID);
         }
     }
+
     @Override
     public void addPartToService() {
-        String serviceID = InputValidation.validateExistingServiceID("Enter Service ID: ",serviceList);
-        String partID = InputValidation.validateExistingPartID("Enter Part ID");
+        // Reload parts to ensure the latest data
+        autoPartsList = new ArrayList<>(ServiceFileHandler.loadParts().values());
+
+        String serviceID = InputValidation.validateExistingServiceID("Enter Service ID: ", serviceList);
+        String partID = InputValidation.validateExistingPartID("Enter Part ID: ");
         Service service = findServiceByID(serviceID);
         if (service == null) {
             System.out.println("Service not found.");
@@ -196,14 +201,20 @@ public class ServiceService implements ServiceInterfaces {
                 new Date(),
                 loggedUser.getUsername(),
                 loggedUser.getUserID(),
-                "Adding part: " + partID +" to service " + serviceID
+                "Adding part: " + partID + " to service " + serviceID
         );
         // Save the updated service list to the file
         ServiceFileHandler.saveServices(serviceList);
+        // Save the updated parts list to the file
+        ServiceFileHandler.saveParts(autoPartsList);
     }
+
     @Override
     public void removePartFromService() {
-        String serviceID = InputValidation.validateExistingServiceID("Enter Service ID: ",serviceList);
+        // Reload parts to ensure the latest data
+        autoPartsList = new ArrayList<>(ServiceFileHandler.loadParts().values());
+
+        String serviceID = InputValidation.validateExistingServiceID("Enter Service ID: ", serviceList);
         String partID = InputValidation.validateExistingPartID("Enter Part ID");
 
         Service service = findServiceByID(serviceID);
@@ -227,7 +238,7 @@ public class ServiceService implements ServiceInterfaces {
                     new Date(),
                     loggedUser.getUsername(),
                     loggedUser.getUserID(),
-                    "Remove part: " + partID +" from service " + serviceID
+                    "Remove part: " + partID + " from service " + serviceID
             );
             System.out.println("Part " + partID + " removed from service " + serviceID);
         } else {
@@ -236,9 +247,12 @@ public class ServiceService implements ServiceInterfaces {
 
         // Save the updated service list to the file
         ServiceFileHandler.saveServices(serviceList);
+        // Save the updated parts list to the file
+        ServiceFileHandler.saveParts(autoPartsList);
     }
+
     @Override
-    public  void listAllServices() {
+    public void listAllServices() {
         if (serviceList.isEmpty()) {
             System.out.println("No services available.");
         } else {
@@ -289,6 +303,9 @@ public class ServiceService implements ServiceInterfaces {
         }
         return null;
     }
+
+
+
 
     public static void listAllReplacedParts(String serviceID) {
         Service service = findServiceByID(serviceID);
