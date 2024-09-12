@@ -2,11 +2,14 @@ package menu.UserMenu;
 
 import FileHandling.*;
 import interfaces.*;
+import interfaces.statistics.CarStatisticsInterfaces;
+import interfaces.statistics.ServiceStatisticsInterfaces;
 import logsystem.*;
 import menu.Menu;
 import operations.*;
+import operations.statistics.CarStatistics;
+import operations.statistics.ServiceStatistics;
 import service.Service;
-import user.User;
 import utils.*;
 import java.util.*;
 import static menu.MenuStyle.*;
@@ -25,6 +28,8 @@ public class ManagerMenu extends Menu {
     static ServiceInterfaces serviceService = new ServiceService();
     static TransactionInterfaces transactionService = new TransactionService();
     static UserInterfaces userService = new UserService();
+    static CarStatisticsInterfaces carStatistics = new CarStatistics();
+    static ServiceStatisticsInterfaces serviceStatistics = new ServiceStatistics();
 
     Scanner input = new Scanner(System.in);
 
@@ -421,29 +426,36 @@ public class ManagerMenu extends Menu {
         choice = getValidatedChoice(0, 5);
 
         switch (choice) {
-            case 0:
+            case 0 ->{
+                carStatistics.calculateCarsSoldInMonth();
+                System.out.println();
+                carStatistics.calculateRevenueFromCars();
+            }
 
-                break;
+            case 1 -> {}
 
-            case 1:
 
-                break;
-            case 2:
+            case 2 -> {
+                serviceStatistics.calculateRevenueFromServices();
+            }
 
-                break;
-            case 3:
 
-                break;
-            case 4:
+            case 3 -> {}
 
-                break;
-            case 5:
+
+            case 4 -> {}
+
+
+            case 5 -> {
                 // Go back to the main menu
                 displayManagerMenu();
                 break;
-            default:
+            }
+
+            default -> {
                 System.err.println("\n**Please, Enter a Valid Input**");
                 System.out.println();
+            }
         }
 
     }
