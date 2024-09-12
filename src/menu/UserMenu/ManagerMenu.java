@@ -2,13 +2,11 @@ package menu.UserMenu;
 
 import FileHandling.*;
 import interfaces.*;
-import interfaces.statistics.CarStatisticsInterfaces;
-import interfaces.statistics.ServiceStatisticsInterfaces;
+import interfaces.statistics.*;
 import logsystem.*;
 import menu.Menu;
 import operations.*;
-import operations.statistics.CarStatistics;
-import operations.statistics.ServiceStatistics;
+import operations.statistics.*;
 import service.Service;
 import utils.*;
 import java.util.*;
@@ -29,7 +27,12 @@ public class ManagerMenu extends Menu {
     static TransactionInterfaces transactionService = new TransactionService();
     static UserInterfaces userService = new UserService();
     static CarStatisticsInterfaces carStatistics = new CarStatistics();
+    static AutoPartStatisticsInterfaces autoPartStatistics = new AutoPartStatistics();
     static ServiceStatisticsInterfaces serviceStatistics = new ServiceStatistics();
+    static TransactionStatisticsInterfaces transactionStatistics = new TransactionStatistics();
+    static RevenueStatisticsInterfaces revenueStatistics = new RevenueStatistics();
+
+
 
     Scanner input = new Scanner(System.in);
 
@@ -227,8 +230,7 @@ public class ManagerMenu extends Menu {
                 break;
 
             case 1:
-                String deleteID = InputValidation.validateTransactionID("Enter Transaction ID to delete (format: t-XXXX): ");
-                transactionService.deleteTransaction(deleteID); // Call the deleteTransaction method to delete a sale
+                transactionService.deleteTransaction(); // Call the deleteTransaction method to delete a sale
                 break;
 
             case 2:
@@ -331,13 +333,10 @@ public class ManagerMenu extends Menu {
                 serviceService.deleteService();
                 break;
             case 4:
-                String serviceID = InputValidation.validateExistingServiceID("Enter Service ID: ",serviceList);
-                String partID = InputValidation.validateExistingPartID("Enter Part ID: ");
-                serviceService.addPartToService(serviceID, partID);
+                serviceService.addPartToService();
                 break;
             case 5:
-                String serviceIDToRemove = InputValidation.validateExistingServiceID("Enter Service ID: ",serviceList);
-                serviceService.removePartFromService(serviceIDToRemove);
+                serviceService.removePartFromService();
                 break;
             case 6:
                 serviceService.listAllServices();
@@ -432,18 +431,42 @@ public class ManagerMenu extends Menu {
                 carStatistics.calculateRevenueFromCars();
             }
 
-            case 1 -> {}
+            case 1 -> {
+                autoPartStatistics.getSoldPartsByDay();
+                System.out.println();
+                autoPartStatistics.getSoldPartsByWeek();
+                System.out.println();
+                autoPartStatistics.getSoldPartsByMonth();
+            }
 
 
             case 2 -> {
+                serviceStatistics.getServicesByDay();
+                System.out.println();
+                serviceStatistics.getServicesByWeek();
+                System.out.println();
+                serviceStatistics.getServicesByMonth();
+                System.out.println();
                 serviceStatistics.calculateRevenueFromServices();
             }
 
 
-            case 3 -> {}
+            case 3 -> {
+                transactionStatistics.getTransactionsByDay();
+                System.out.println();
+                transactionStatistics.getTransactionsByWeek();
+                System.out.println();
+                transactionStatistics.getTransactionsByMonth();
+            }
 
 
-            case 4 -> {}
+            case 4 -> {
+                revenueStatistics.calculateTotalRevenueForDay();
+                System.out.println();
+                revenueStatistics.calculateTotalRevenueByWeek();
+                System.out.println();
+                revenueStatistics.calculateTotalRevenueByMonth();
+            }
 
 
             case 5 -> {

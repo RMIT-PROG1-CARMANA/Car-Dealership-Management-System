@@ -200,7 +200,7 @@ public class UserService implements UserInterfaces {
             }
         }
         // Validate and retrieve the username to delete
-        String usernameToDelete = InputValidation.validateUsernameFormat("Enter username to delete: ");
+        String usernameToDelete = InputValidation.validateExistingUserID("Enter username to delete: ");
         System.out.println();
 
 

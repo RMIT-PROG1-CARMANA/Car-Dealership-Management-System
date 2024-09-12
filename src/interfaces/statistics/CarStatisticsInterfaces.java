@@ -1,5 +1,10 @@
 package interfaces.statistics;
 
+import vehicle.Car;
+
+import java.util.Date;
+import java.util.List;
+
 public interface CarStatisticsInterfaces {
 
     // Method to calculate number of cars sold in a specific month
@@ -8,6 +13,9 @@ public interface CarStatisticsInterfaces {
     //Calculate the revenue of the cars sold of a salesperson
     void calculateRevenueFromCars();
 
-    //Calculate the revenue of the cars sold of a salesperson
+    void getSoldCarsByDay();
 
+    void getSoldCarsByWeek();
+
+    void getSoldCarsByMonth();
 }

@@ -5,8 +5,8 @@ public interface ServiceInterfaces {
     void getServiceByID();
     void updateService();
     void deleteService();
-    void addPartToService(String serviceID, String partID);
-    void removePartFromService(String serviceID);
+    void addPartToService();
+    void removePartFromService();
     void listAllServices();
 
 }

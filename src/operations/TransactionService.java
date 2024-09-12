@@ -55,10 +55,8 @@ public class TransactionService implements TransactionInterfaces {
         // Add a new transaction
         String transactionID = InputValidation.validateTransactionID("Transaction ID (format: t-XXXX): ");
         Date transactionDate = InputValidation.validateDate("Transaction Date (DD/MM/YYYY): ");
-
-        String clientID = InputValidation.validateUserID("Client ID (format: CL-XXXX): ");
-
-        String salespersonID = InputValidation.validateUserID("Salesperson ID (format: SP-XXXX): ");
+        String clientID = InputValidation.validateExistingUserID("Client ID (format: CL-XXXX): ");
+        String salespersonID = InputValidation.validateExistingUserID("Salesperson ID (format: SP-XXXX): ");
         // Collect PurchasedItem details
         List<PurchasedItem> purchaseItems = new ArrayList<>();
         boolean addMoreItems = true;
@@ -144,8 +142,8 @@ public class TransactionService implements TransactionInterfaces {
     }
     // Soft delete a transaction
     @Override
-    public void deleteTransaction(String transactionID) {
-        String deleteTransactionID = InputValidation.validateTransactionID("Transaction ID (format: t-XXXX): ");
+    public void deleteTransaction() {
+        String deleteTransactionID = InputValidation.validateExistingTransactionID("Transaction ID (format: t-XXXX): ");
         salesTransactionCRUD.deleteTransaction(deleteTransactionID);  // Call the soft delete method
         System.out.println("Transaction deleted successfully.");
         // Log the activity
@@ -172,7 +170,7 @@ public class TransactionService implements TransactionInterfaces {
     @Override
     public void displayTransactionsByClientID(){
         // Display transactions for a specific client ID
-        String displayClientID = InputValidation.validateUserID("Client ID (format: CL-XXXX): ");
+        String displayClientID = InputValidation.validateExistingUserID("Client ID (format: CL-XXXX): ");
         salesTransactionCRUD.getTransactionsByClientID(displayClientID)
                 .forEach(transaction -> {
                     transaction.displayTransactionDetails();
@@ -190,7 +188,7 @@ public class TransactionService implements TransactionInterfaces {
     }
     @Override
     public void displayTransactionsByID(){
-        String displayTransactionID = InputValidation.validateTransactionID("Transaction ID (format: t-XXXX): ");
+        String displayTransactionID = InputValidation.validateExistingTransactionID("Transaction ID (format: t-XXXX): ");
         salesTransactionCRUD.displayTransactionByID(displayTransactionID);
         // Log the activity
         String logID = ActivityLog.generateLogID();

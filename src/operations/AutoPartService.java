@@ -1,6 +1,6 @@
 package operations;
-import java.util.*;
 
+import java.util.*;
 import interfaces.AutoPartInterfaces;
 import logsystem.ActivityLog;
 import part.*;
@@ -46,7 +46,7 @@ public class AutoPartService implements AutoPartInterfaces {
     // Method to view part details with validation
     @Override
     public void viewPartDetails() {
-        String partID = InputValidation.validatePartID("Enter Part ID to View Details: ");
+        String partID = InputValidation.validateExistingPartID("Enter Part ID to View Details: ");
         AutoPart part = getPartByID(partID);
         if (part != null) {
             String logID = ActivityLog.generateLogID();
@@ -66,7 +66,7 @@ public class AutoPartService implements AutoPartInterfaces {
     // Method to update part with validation
     @Override
     public void updatePart() {
-        String partID = InputValidation.validatePartID("Enter Part ID to Update: ");
+        String partID = InputValidation.validateExistingPartID("Enter Part ID to Update: ");
 
         AutoPart part = getPartByID(partID);
         if (part != null) {
@@ -124,7 +124,7 @@ public class AutoPartService implements AutoPartInterfaces {
     // Method to delete part
     @Override
     public void deletePart() {
-        String partID = InputValidation.validatePartID("Enter Part ID to Delete: ");
+        String partID = InputValidation.validateExistingPartID("Enter Part ID to Delete: ");
         if (deletePart(partID)) {
             String logID = ActivityLog.generateLogID();
             ActivityLogService.logActivity(
