@@ -13,7 +13,7 @@ public class AutoPartService implements AutoPartInterfaces {
     @Override
     public void addPart() {
         // Collect input and validate
-        String partID = InputValidation.validatePartID("Enter Part ID (format: p-XXXX): ");
+        String partID = InputValidation.validateString("Enter Part ID (format: p-XXXX): ");
         String partName = InputValidation.validateString("Enter Part Name: ");
         String manufacturer = InputValidation.validateString("Enter Manufacturer: ");
         String partNumber = InputValidation.validateString("Enter Part Number: ");

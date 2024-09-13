@@ -3,7 +3,7 @@ package operations;
 import interfaces.CarInterfaces;
 import logsystem.ActivityLog;
 import vehicle.Car;
-import crudHandlers.CarCRUD;
+import crudhandlers.CarCRUD;
 import utils.InputValidation;
 
 import java.util.*;
@@ -27,7 +27,7 @@ public class CarService implements CarInterfaces {
 
     @Override
     public void createCar() {
-        String carID = InputValidation.validateCarID("Car ID (format: C-XXXX where XXXX is a number): ");
+        String carID = InputValidation.validateString("Car ID (format: C-XXXX where XXXX is a number): ");
         String make = InputValidation.validateString("Make: ");
         String model = InputValidation.validateString("Model: ");
         int year = InputValidation.validateInt("Year: ");

@@ -7,7 +7,7 @@ import interfaces.statistics.AutoPartStatisticsInterfaces;
 import sales.PurchasedItem;
 import sales.SalesTransaction;
 import part.AutoPart;
-import crudHandlers.SalesTransactionCRUD;
+import crudhandlers.SalesTransactionCRUD;
 import utils.DateRange;
 import utils.InputValidation;
 

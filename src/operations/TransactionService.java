@@ -1,15 +1,15 @@
 package operations;
 
-import FileHandling.CarDataHandler;
+import filehandling.CarDataHandler;
 import interfaces.TransactionInterfaces;
 import logsystem.ActivityLog;
 import part.AutoPart;
 import sales.SalesTransaction;
 import user.Client;
 import utils.InputValidation;
-import FileHandling.UserDataHandler;
-import crudHandlers.CarCRUDMethodHandler;
-import crudHandlers.SalesTransactionCRUD;
+import filehandling.UserDataHandler;
+import crudhandlers.CarCRUDMethodHandler;
+import crudhandlers.SalesTransactionCRUD;
 import sales.PurchasedItem;
 import user.Membership;
 import vehicle.Car;
@@ -19,8 +19,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
 
-import static crudHandlers.SalesTransactionCRUD.OrderType.clientID;
-import static crudHandlers.SalesTransactionCRUD.OrderType.transactionID;
+import static crudhandlers.SalesTransactionCRUD.OrderType.clientID;
+import static crudhandlers.SalesTransactionCRUD.OrderType.transactionID;
 import static user.Authenticator.loggedUser;
 
 
@@ -33,7 +33,7 @@ public class TransactionService implements TransactionInterfaces {
     public TransactionService() {
         // Initialize CarDataHandler and CarCRUDMethodHandler here
         CarDataHandler carDataHandler = new CarDataHandler();
-        carDataHandler.loadCarDatabase("src/DataBase/SalesTransactionDatabase.ser"); // Adjust the file path as needed
+//        carDataHandler.loadCarDatabase("src/database/SalesTransactionDatabase.txt"); // Adjust the file path as needed
         methodHandler = new CarCRUDMethodHandler(carDataHandler); // Proper initialization
     }
 
@@ -65,28 +65,37 @@ public class TransactionService implements TransactionInterfaces {
             System.out.print("Enter car ID (or leave blank if none): ");
             String carID = scanner.nextLine();
             Car car = null;
+            Integer carQuality = null;
             if (!carID.isEmpty()) {
                 // Retrieve the car from the database
                 car = methodHandler.findCarByID(carID);
                 if (car == null) {
                     System.out.println("Car with ID " + carID + " not found.");
+                } else {
+                    // Ask for the quality if the car is selected
+                    System.out.print("Enter quality for car (number of units): ");
+                    carQuality = Integer.parseInt(scanner.nextLine());
                 }
             }
 
             // Since AutoPart is optional, we'll ask for part details similarly
             System.out.print("Enter part ID (or leave blank if none): ");
             String partID = scanner.nextLine();
-
             AutoPart part = null;
+            Integer partQuality = null;
             if (!partID.isEmpty()) {
                 part = AutoPartService.findAutoPartByID(partID);
                 if (part == null) {
                     System.out.println("Part with ID " + partID + " not found.");
+                } else {
+                    // Ask for the quality if the part is selected
+                    System.out.print("Enter quality for part (number of units): ");
+                    partQuality = Integer.parseInt(scanner.nextLine());
                 }
             }
 
             // Create a PurchasedItem object and add it to the list
-            PurchasedItem purchasedItem = new PurchasedItem(car, part);
+            PurchasedItem purchasedItem = new PurchasedItem(car, part, carQuality, partQuality);
             purchaseItems.add(purchasedItem);
 
             // Ask the user if they want to add more items

@@ -1,6 +1,6 @@
-package crudHandlers;
+package crudhandlers;
 
-import FileHandling.SalesTransactionDataHandler;
+import filehandling.SalesTransactionDataHandler;
 import sales.SalesTransaction;
 
 import java.util.ArrayList;

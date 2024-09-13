@@ -1,15 +1,14 @@
-package FileHandling;
+package filehandling;
 
 import vehicle.Car;
 
 import java.io.*;
 import java.util.ArrayList;
-import java.util.Optional;
 
 
 public class CarDataHandler {
     private ArrayList<Car> cars = new ArrayList<>();
-    private String carDatabaseFile = "src/DataBase/CarDatabase.txt";
+    private String carDatabaseFile = "src/database/CarDatabase.txt";
 
     // Constructor to set the default file path (optional)
     public CarDataHandler() {
@@ -17,21 +16,21 @@ public class CarDataHandler {
     }
 
     // Load the car database from the specified file
-    public void loadCarDatabase(String testDatabaseFile) {
-        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(carDatabaseFile))) {
-            cars = (ArrayList<Car>) ois.readObject();  // Deserialize the list of cars
-            if (cars.isEmpty()) {
-                System.out.println("The car database is empty.");
-            } else {
-                System.out.println("Car database loaded successfully from " + carDatabaseFile);
-            }
-        } catch (FileNotFoundException e) {
-            System.err.println("File not found: " + carDatabaseFile);
-        } catch (IOException | ClassNotFoundException e) {
-            System.err.println("Error loading car database: " + e.getMessage());
-            e.printStackTrace();
-        }
-    }
+//    public void loadCarDatabase(String testDatabaseFile) {
+//        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(carDatabaseFile))) {
+//            cars = (ArrayList<Car>) ois.readObject();  // Deserialize the list of cars
+//            if (cars.isEmpty()) {
+//                System.out.println("The car database is empty.");
+//            } else {
+//                System.out.println("Car database loaded successfully from " + carDatabaseFile);
+//            }
+//        } catch (FileNotFoundException e) {
+//            System.err.println("File not found: " + carDatabaseFile);
+//        } catch (IOException | ClassNotFoundException e) {
+//            System.err.println("Error loading car database: " + e.getMessage());
+//            e.printStackTrace();
+//        }
+//    }
 
     // Get the list of cars
     public ArrayList<Car> getCars() {

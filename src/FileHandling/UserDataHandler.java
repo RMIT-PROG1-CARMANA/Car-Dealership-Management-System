@@ -1,4 +1,4 @@
-package FileHandling;
+package filehandling;
 
 import user.Client;
 import user.User;
@@ -10,21 +10,35 @@ import java.util.List;
 import java.util.Optional;
 
 public class UserDataHandler {
-    private static final String FILE_USER_NAME = "src/Database/users.txt";
+    private static final String FILE_USER_NAME = "src/database/users.txt";
 
     // Read all users from the file
     public User[] readAllUsers() {
         User[] users = new User[0];  // Default to empty array
-        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(FILE_USER_NAME))) {
+        File file = new File(FILE_USER_NAME);
+
+        if (!file.exists() || file.length() == 0) {
+            // File doesn't exist or is empty, return empty array
+            System.err.println("No user data found. Returning an empty array.");
+            return users;
+        }
+
+        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(file))) {
             users = (User[]) ois.readObject();
+        } catch (EOFException e) {
+            // Handle case where file is empty but the stream is still open
+            System.err.println("End of file reached. No data to read.");
         } catch (FileNotFoundException e) {
             // File not found, return empty array
-            System.err.println("No user data found. Returning an empty array.");
+            System.err.println("File not found. Returning an empty array.");
         } catch (IOException | ClassNotFoundException e) {
+            // Handle other exceptions
             e.printStackTrace();
         }
+
         return users;
     }
+
 
     // Writes the array of users to the file
     public void writeUsersToFile(User[] users) {

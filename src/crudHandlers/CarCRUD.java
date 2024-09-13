@@ -1,7 +1,6 @@
-package crudHandlers;
+package crudhandlers;
 
-import FileHandling.CarDataHandler;
-import crudHandlers.CarCRUDMethodHandler;
+import filehandling.CarDataHandler;
 import vehicle.Car;
 
 import java.util.List;
@@ -24,7 +23,7 @@ public class CarCRUD {
     // Constructor
     public CarCRUD(String carDB) {
         CarDataHandler cdl = new CarDataHandler();
-        cdl.loadCarDatabase(carDB);
+//        cdl.loadCarDatabase(carDB);
         methodHandler = new CarCRUDMethodHandler(cdl);
     }
 

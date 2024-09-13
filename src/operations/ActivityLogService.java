@@ -1,6 +1,6 @@
 package operations;
 
-import FileHandling.ActivityLogDataHandler;
+import filehandling.ActivityLogDataHandler;
 import logsystem.ActivityLog;
 
 import java.text.SimpleDateFormat;

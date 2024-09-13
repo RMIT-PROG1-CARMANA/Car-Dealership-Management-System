@@ -1,6 +1,6 @@
 package utils;
 
-import FileHandling.*;
+import filehandling.*;
 import operations.ActivityLogService;
 import part.AutoPart;
 import sales.SalesTransaction;
@@ -11,7 +11,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.function.Function;
 
-import FileHandling.UserDataHandler;
+import filehandling.UserDataHandler;
 import vehicle.Car;
 
 
@@ -354,7 +354,7 @@ public class InputValidation {
         String carID;
 
         // Load the car database before checking for existing car IDs
-        carDAO.loadCarDatabase("src/DataBase/CarDatabase.txt");
+//        carDAO.loadCarDatabase("src/DataBase/CarDatabase.txt");
 
         while (true) {
             carID = InputValidation.validateString(question); // Retrieve user input
@@ -381,7 +381,7 @@ public class InputValidation {
         String carID;
 
         // Load the car database before checking for existing car IDs
-        carDAO.loadCarDatabase("src/DataBase/CarDatabase.txt");
+//        carDAO.loadCarDatabase("src/DataBase/CarDatabase.txt");
 
         while (true) {
             carID = InputValidation.validateString(question); // Retrieve user input

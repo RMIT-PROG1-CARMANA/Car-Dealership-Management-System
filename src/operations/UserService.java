@@ -1,6 +1,6 @@
 package operations;
 
-import FileHandling.UserDataHandler;
+import filehandling.UserDataHandler;
 import interfaces.UserInterfaces;
 import logsystem.*;
 
@@ -31,13 +31,13 @@ public class UserService implements UserInterfaces {
     // manager can add user
     @Override
     public void createUser() {
-        String userID = InputValidation.validateUserID("Enter User ID (uXXXX format): ");
+        String userID = InputValidation.validateString("Enter User ID (uXXXX format): ");
         String fullName = InputValidation.validateString("Enter Full Name: ");
         Date dateOfBirth = InputValidation.validateDate("Enter Date of Birth (dd/MM/yyyy): ");
         String address = InputValidation.validateString("Enter Address: ");
         long phoneNumber = InputValidation.validateLong("Enter Phone Number: ");
         String email = InputValidation.validateString("Enter Email: ");
-        String username = InputValidation.validateUsername("Enter Username: ");
+        String username = InputValidation.validateString("Enter Username: ");
         String password = InputValidation.validateString("Enter Password: ");
         Boolean status = InputValidation.validateBoolean("Enter Status (true/false): ");
         int userTypeChoice = InputValidation.validateInt("Select User Type (1 for Manager, 2 for Employee, 3 for Client): ");
@@ -79,14 +79,14 @@ public class UserService implements UserInterfaces {
         }
 
 
-        String logID = ActivityLog.generateLogID();
-        ActivityLogService.logActivity(
-                logID,
-                new Date(),
-                loggedUser.getUsername(),
-                loggedUser.getUserID(),
-                "Created User with ID: " + userID + " Username :" + username
-        );
+//        String logID = ActivityLog.generateLogID();
+//        ActivityLogService.logActivity(
+//                logID,
+//                new Date(),
+//                loggedUser.getUsername(),
+//                loggedUser.getUserID(),
+//                "Created User with ID: " + userID + " Username :" + username
+//        );
         addUser(user);
         System.out.println("User created successfully.");
     }

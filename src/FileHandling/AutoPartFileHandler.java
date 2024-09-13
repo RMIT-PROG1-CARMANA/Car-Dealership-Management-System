@@ -1,7 +1,6 @@
-package FileHandling;
+package filehandling;
 
 import part.AutoPart;
-import operations.*;
 
 import java.io.*;
 import java.util.*;
@@ -9,7 +8,7 @@ import java.util.*;
 public class AutoPartFileHandler {
 
     // Update the file path to reflect the new location
-    private static final String FILE_PATH = "src/DataBase/parts.txt";
+    private static final String FILE_PATH = "src/database/parts.txt";
 
 
     // Serialize parts to a binary file

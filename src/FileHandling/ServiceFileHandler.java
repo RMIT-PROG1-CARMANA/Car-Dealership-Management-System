@@ -1,4 +1,4 @@
-package FileHandling;
+package filehandling;
 
 import part.AutoPart;
 import service.Service;
@@ -7,8 +7,8 @@ import java.io.*;
 import java.util.*;
 
 public class ServiceFileHandler {
-    private static final String SERVICE_FILE_PATH = "src/DataBase/services.txt";
-    private static final String PARTS_FILE_PATH = "src/DataBase/parts.txt";
+    private static final String SERVICE_FILE_PATH = "src/database/services.txt";
+    private static final String PARTS_FILE_PATH = "src/database/parts.txt";
 
     // Load parts from file and return as a Map
     public static Map<String, AutoPart> loadParts() {

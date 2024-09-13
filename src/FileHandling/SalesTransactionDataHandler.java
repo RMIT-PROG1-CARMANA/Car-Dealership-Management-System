@@ -1,4 +1,4 @@
-package FileHandling;
+package filehandling;
 
 import sales.SalesTransaction;
 import java.io.*;
@@ -7,7 +7,7 @@ import java.util.List;
 
 public class SalesTransactionDataHandler {
     public List<SalesTransaction> transactions = new ArrayList<>();
-    private String transactionDatabaseFile = "src/DataBase/SalesTransactionDatabase.ser";
+    private String transactionDatabaseFile = "src/DataBase/SalesTransactionDatabase.txt";
 
     // Load the transactions from the .ser file using deserialization
     public void loadTransactionDatabase() {

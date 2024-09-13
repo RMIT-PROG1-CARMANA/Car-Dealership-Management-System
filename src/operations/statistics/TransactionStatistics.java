@@ -7,7 +7,7 @@ import java.util.stream.Collectors;
 import interfaces.statistics.TransactionStatisticsInterfaces;
 import sales.*;
 import sales.SalesTransaction;
-import crudHandlers.SalesTransactionCRUD;
+import crudhandlers.SalesTransactionCRUD;
 import utils.DateRange;
 import utils.InputValidation;
 

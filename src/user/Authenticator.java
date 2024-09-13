@@ -1,6 +1,6 @@
 
 package user;
-import FileHandling.UserDataHandler;
+import filehandling.UserDataHandler;
 import java.util.Optional;
 
 public class Authenticator {

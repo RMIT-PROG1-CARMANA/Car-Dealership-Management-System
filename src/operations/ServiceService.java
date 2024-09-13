@@ -1,7 +1,7 @@
 package operations;
 
 
-import FileHandling.ServiceFileHandler;
+import filehandling.ServiceFileHandler;
 import interfaces.ServiceInterfaces;
 import logsystem.*;
 import part.*;

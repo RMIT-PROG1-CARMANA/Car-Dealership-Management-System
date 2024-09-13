@@ -1,6 +1,6 @@
 package menu.UserMenu;
 
-import FileHandling.*;
+import filehandling.*;
 import interfaces.*;
 import interfaces.statistics.*;
 import logsystem.*;
