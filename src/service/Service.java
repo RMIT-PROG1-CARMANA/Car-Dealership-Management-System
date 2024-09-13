@@ -1,5 +1,6 @@
 package service;
 
+import operations.ServiceService;
 import part.AutoPart;
 import java.io.Serializable;
 import java.util.Date;
@@ -101,18 +102,29 @@ public class Service implements Serializable {
         }
         return false;
     }
-
+ServiceService service = new ServiceService();
     @Override
     public String toString() {
-        return "Service{" +
-                "serviceID='" + serviceID + '\'' +
-                ", serviceDate=" + serviceDate +
-                ", clientID='" + clientID + '\'' +
-                ", mechanicID='" + mechanicID + '\'' +
-                ", serviceType='" + serviceType + '\'' +
-                ", replacedParts=" + replacedParts +
-                ", serviceCost=" + serviceCost +
-                ", notes='" + notes + '\'' +
-                '}';
+        // If replacedParts is not null and contains parts, format each part's ID, Name, and Price
+
+
+        return String.format("Service Details:%n" +
+                        "Service ID    : %s%n" +
+                        "Service Date  : %s%n" +
+                        "Client ID     : %s%n" +
+                        "Mechanic ID   : %s%n" +
+                        "Service Type  : %s%n" +
+                        "Service Cost  : $%.2f%n" +
+                        "Notes         : %s%n" +
+                        "Replaced Parts: %s%n",
+                serviceID,
+                serviceDate,
+                clientID,
+                mechanicID,
+                serviceType,
+                serviceCost,
+                notes,
+                service.getReplacedPartsInfo(replacedParts)
+        );
     }
 }

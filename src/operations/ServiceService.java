@@ -290,21 +290,16 @@ public class ServiceService implements ServiceInterfaces {
         return null;
     }
 
-    public static void listAllReplacedParts(String serviceID) {
-        Service service = findServiceByID(serviceID);
-        if (service == null) {
-            System.out.println("Service not found with ID: " + serviceID);
-            return;
+        public String getReplacedPartsInfo(List<AutoPart> replacedParts) {
+            String replacedPartsInfo = (replacedParts != null && !replacedParts.isEmpty())
+                    ? replacedParts.stream()
+                    .map(part -> String.format("Part ID: %s, Part Name: %s, Price: $%.2f",
+                            part.getPartID(), part.getPartName(), part.getPrice()))
+                    .reduce((part1, part2) -> part1 + "\n               " + part2)
+                    .orElse("No replaced parts.")
+                    : "No replaced parts.";
+
+            return replacedPartsInfo;
         }
 
-        List<AutoPart> replacedParts = service.getReplacedParts();
-        if (replacedParts.isEmpty()) {
-            System.out.println("No parts replaced in this service.");
-        } else {
-            System.out.println("Replaced Parts for Service ID " + serviceID + ":");
-            for (AutoPart part : replacedParts) {
-                System.out.println("Part Name: " + part.getPartName());
-            }
-        }
     }
-}
