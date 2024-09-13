@@ -556,11 +556,11 @@ public class InputValidation {
             }
 
             // Check if ServiceID is unique
-            String finalServoceID = serviceID;
+            String finalServiceID = serviceID;
             boolean isDuplicate = existingServices.stream()
-                    .anyMatch(service -> service.getServiceID().equals(finalServoceID));
+                    .anyMatch(service -> service.getServiceID().equals(finalServiceID));
 
-            if (!isDuplicate) {
+            if (isDuplicate) {
                 break;
             } else {
                 System.out.println(RED + "Invalid Service ID . Please enter a exist Service ID." + RESET);

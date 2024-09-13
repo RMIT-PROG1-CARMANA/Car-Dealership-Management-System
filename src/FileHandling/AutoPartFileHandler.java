@@ -13,7 +13,7 @@ public class AutoPartFileHandler {
 
 
     // Serialize parts to a binary file
-    public static void serializeParts() {
+    public static void savePartsData() {
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(FILE_PATH))) {
             oos.writeObject(AutoPart.getAllParts());
             System.out.println("Parts saved to file successfully.");
@@ -24,11 +24,11 @@ public class AutoPartFileHandler {
 
     // Deserialize parts from a binary file
     @SuppressWarnings("unchecked")
-    public static void deserializeParts() {
+    public static void loadPartsData() {
         try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(FILE_PATH))) {
             // Replace the existing parts list with the deserialized one
-            List<AutoPart> deserializedParts = (List<AutoPart>) ois.readObject();
-            AutoPart.setPartsList(deserializedParts);  // Replace the parts list with deserialized data
+            List<AutoPart> loadPartsData = (List<AutoPart>) ois.readObject();
+            AutoPart.setPartsList(loadPartsData);  // Replace the parts list with deserialized data
 
             System.out.println("Parts loaded from file successfully.");
         } catch (IOException | ClassNotFoundException e) {
