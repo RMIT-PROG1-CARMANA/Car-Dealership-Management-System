@@ -1,5 +1,6 @@
 package operations;
 
+
 import filehandling.CarDataHandler;
 import interfaces.TransactionInterfaces;
 import logsystem.ActivityLog;
@@ -26,14 +27,16 @@ import static user.Authenticator.loggedUser;
 
 public class TransactionService implements TransactionInterfaces {
 
+
     Scanner scanner = new Scanner(System.in);
     static UserDataHandler userDataHandler = new UserDataHandler();
     private static CarCRUDMethodHandler methodHandler;
+    AutoPartService autoPartService = new AutoPartService();
 
     public TransactionService() {
         // Initialize CarDataHandler and CarCRUDMethodHandler here
         CarDataHandler carDataHandler = new CarDataHandler();
-//        carDataHandler.loadCarDatabase("src/database/SalesTransactionDatabase.txt"); // Adjust the file path as needed
+        carDataHandler.loadCarDatabase("src/database/SalesTransactionDatabase.txt"); // Adjust the file path as needed
         methodHandler = new CarCRUDMethodHandler(carDataHandler); // Proper initialization
     }
 
@@ -84,7 +87,7 @@ public class TransactionService implements TransactionInterfaces {
             AutoPart part = null;
             Integer partQuality = null;
             if (!partID.isEmpty()) {
-                part = AutoPartService.findAutoPartByID(partID);
+                part = autoPartService.findAutoPartByID(partID);
                 if (part == null) {
                     System.out.println("Part with ID " + partID + " not found.");
                 } else {
@@ -127,6 +130,7 @@ public class TransactionService implements TransactionInterfaces {
 
         System.out.println("Transaction added successfully.");
     }
+
 
     // Display all transactions sorted by TransactionID
     @Override

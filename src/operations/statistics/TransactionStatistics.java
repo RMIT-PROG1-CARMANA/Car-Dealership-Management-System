@@ -15,7 +15,7 @@ public class TransactionStatistics implements TransactionStatisticsInterfaces {
 
     DateRange dateRange = new DateRange();
 
-    private SalesTransactionCRUD transactionCRUD;
+    private final SalesTransactionCRUD transactionCRUD = new SalesTransactionCRUD();
 
 
     @Override
@@ -54,8 +54,8 @@ public class TransactionStatistics implements TransactionStatisticsInterfaces {
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 
         // Print the header for transactions
-        System.out.println(String.format("%-15s %-12s %-10s %-15s %-10s %-10s %-12s %-50s",
-                "TransactionID", "Date", "ClientID", "SalespersonID", "Items", "Discount", "Total", "Notes"));
+        System.out.printf("%-15s %-12s %-10s %-15s %-10s %-10s %-12s %-50s%n",
+                "TransactionID", "Date", "ClientID", "SalespersonID", "Items", "Discount", "Total", "Notes");
         System.out.println("------------------------------------------------------------------------------------------------------------");
 
         // Print each transaction
@@ -70,7 +70,7 @@ public class TransactionStatistics implements TransactionStatisticsInterfaces {
             String notes = transaction.getNotes() != null ? transaction.getNotes() : "";
 
             // Print the main transaction details
-            System.out.println(String.format("%-15s %-12s %-10s %-15s %-10d %-10.2f %-12.2f %-50s",
+            System.out.printf("%-15s %-12s %-10s %-15s %-10d %-10.2f %-12.2f %-50s%n",
                     transactionID,
                     date,
                     clientID,
@@ -78,26 +78,27 @@ public class TransactionStatistics implements TransactionStatisticsInterfaces {
                     numberOfItems,
                     discount,
                     totalAmount,
-                    notes));
+                    notes);
 
             // Print the details of each purchased item
             System.out.println("    Items:");
             for (PurchasedItem item : transaction.getPurchaseItems()) {
                 if (item.getCar() != null) {
-                    System.out.println(String.format("        CarID: %-10s Quantity: %-5d Price: %-8.2f",
+                    System.out.printf("        CarID: %-10s Quantity: %-5d Price: %-8.2f%n",
                             item.getCar().getCarID(),
-                            1, // Assuming 1 car per purchased item
-                            item.getCar().getPrice()));
+                            item.getCarQuantity(), // Assuming item.getCarQuality() gives the quantity
+                            item.getCar().getPrice());
                 } else if (item.getPart() != null) {
-                    System.out.println(String.format("        PartID: %-10s Quantity: %-5d Price: %-8.2f",
+                    System.out.printf("        PartID: %-10s Quantity: %-5d Price: %-8.2f%n",
                             item.getPart().getPartID(),
-                            1, // Assuming 1 part per purchased item
-                            item.getPart().getPrice()));
+                            item.getPartQuantity(), // Assuming item.getPartQuality() gives the quantity
+                            item.getPart().getPrice());
                 }
             }
             System.out.println(); // Add an empty line for better readability between transactions
         }
     }
+
 
     // Get transactions by date range
     private List<SalesTransaction> getTransactionsByDateRange(Date startDate, Date endDate) {

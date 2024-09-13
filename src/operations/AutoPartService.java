@@ -5,15 +5,20 @@ import interfaces.AutoPartInterfaces;
 import logsystem.ActivityLog;
 import part.*;
 import utils.*;
+import FileHandling.AutoPartFileHandler; // Import the file handler for serialization
 
 import static user.Authenticator.loggedUser;
 
 public class AutoPartService implements AutoPartInterfaces {
+
     // Method to add part with validation
     @Override
     public void addPart() {
+        // Deserialize parts before operation
+        deserializeParts();
+
         // Collect input and validate
-        String partID = InputValidation.validateString("Enter Part ID (format: p-XXXX): ");
+        String partID = InputValidation.validatePartID("Enter Part ID (format: p-XXXX): ");
         String partName = InputValidation.validateString("Enter Part Name: ");
         String manufacturer = InputValidation.validateString("Enter Manufacturer: ");
         String partNumber = InputValidation.validateString("Enter Part Number: ");
@@ -27,6 +32,9 @@ public class AutoPartService implements AutoPartInterfaces {
 
         // Add the part to the list
         AutoPart.partsList.add(part);
+
+        // Serialize the parts list to save the new part to file
+        serializeParts();
 
         // Log the activity
         String logID = ActivityLog.generateLogID();
@@ -42,10 +50,12 @@ public class AutoPartService implements AutoPartInterfaces {
         System.out.println("Part added successfully.");
     }
 
-
     // Method to view part details with validation
     @Override
     public void viewPartDetails() {
+        // Deserialize parts before operation
+        deserializeParts();
+
         String partID = InputValidation.validateExistingPartID("Enter Part ID to View Details: ");
         AutoPart part = getPartByID(partID);
         if (part != null) {
@@ -66,6 +76,9 @@ public class AutoPartService implements AutoPartInterfaces {
     // Method to update part with validation
     @Override
     public void updatePart() {
+        // Deserialize parts before operation
+        deserializeParts();
+
         String partID = InputValidation.validateExistingPartID("Enter Part ID to Update: ");
 
         AutoPart part = getPartByID(partID);
@@ -107,6 +120,9 @@ public class AutoPartService implements AutoPartInterfaces {
                 part.setNotes(notes);
             }
 
+            // Serialize parts after the update
+            serializeParts();
+
             String logID = ActivityLog.generateLogID();
             ActivityLogService.logActivity(
                     logID,
@@ -124,8 +140,14 @@ public class AutoPartService implements AutoPartInterfaces {
     // Method to delete part
     @Override
     public void deletePart() {
+        // Deserialize parts before operation
+        deserializeParts();
+
         String partID = InputValidation.validateExistingPartID("Enter Part ID to Delete: ");
         if (deletePart(partID)) {
+            // Serialize parts after deletion
+            serializeParts();
+
             String logID = ActivityLog.generateLogID();
             ActivityLogService.logActivity(
                     logID,
@@ -141,37 +163,56 @@ public class AutoPartService implements AutoPartInterfaces {
     }
 
     @Override
-    public  AutoPart getPartByID(String partID) {
+    public AutoPart getPartByID(String partID) {
         return AutoPart.partsList.stream().filter(part -> part.getPartID().equals(partID)).findFirst().orElse(null);
     }
+
     @Override
     public boolean deletePart(String partID) {
         return AutoPart.partsList.removeIf(part -> part.getPartID().equals(partID));
     }
+
     @Override
     public void listAllParts() {
-        if (AutoPart.partsList.isEmpty()) {
+        // Deserialize parts before operation
+        deserializeParts();
+
+        if (AutoPart.getAllParts().isEmpty()) {
             System.out.println("No parts available.");
         } else {
-            AutoPart.partsList.forEach(System.out::println);
+            // Print table header
+            System.out.printf("%-12s %-20s %-15s %-15s %-10s %-10s %-10s %-30s%n",
+                    "Part ID", "Part Name", "Manufacturer", "Part Number", "Condition", "Warranty", "Price", "Notes");
+            System.out.println("-----------------------------------------------------------------------------------------------");
+
+            // Print each part
+            for (AutoPart part : AutoPart.getAllParts()) {
+                System.out.printf("%-12s %-20s %-15s %-15s %-10s %-10s %-10.2f %-30s%n",
+                        part.getPartID(), part.getPartName(), part.getManufacturer(),
+                        part.getPartNumber(), part.getCondition(), part.getWarranty(),
+                        part.getPrice(), part.getNotes());
+            }
         }
     }
 
-    public static AutoPart findAutoPartByID(String partId) {
-        for (AutoPart part : AutoPart.partsList) {
-            if (Objects.equals(part.getPartID(), partId)) {
-                String logID = ActivityLog.generateLogID();
-                ActivityLogService.logActivity(
-                        logID,
-                        new Date(),
-                        loggedUser.getUsername(),
-                        loggedUser.getUserID(),
-                        "Search part by ID: " + partId
-                );
-                return part;  // Return the part if found
-            }
-        }
-        return null;  // Return null if the part is not found
+    // Private methods to handle file operations
+    private void serializeParts() {
+        AutoPartFileHandler.serializeParts();
+    }
+
+    private static void deserializeParts() {
+        AutoPartFileHandler.deserializeParts();
+    }
+
+
+    public static AutoPart findAutoPartByID(String partID) {
+        deserializeParts();
+        // Find the part using streams
+        AutoPart part = AutoPart.partsList.stream()
+                .filter(p -> p.getPartID().equals(partID))
+                .findFirst()
+                .orElse(null);
+        return part;  // Return the part or null if not found
     }
 
 }

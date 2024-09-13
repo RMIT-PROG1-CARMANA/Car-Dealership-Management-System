@@ -16,43 +16,32 @@ import java.util.List;
 
 public class CarStatistics implements CarStatisticsInterfaces {
     DateRange dateRange = new DateRange();
-    private List<SalesTransaction> transactions;
+    private final List<SalesTransaction> transactions = new ArrayList<>();
 
     private String salespersonID;
-    private SalesTransactionCRUD transactionCRUD;
+    private final SalesTransactionCRUD transactionCRUD = new SalesTransactionCRUD();
 
 
     // Method to calculate number of cars sold in a specific month
     @Override
     public void calculateCarsSoldInMonth() {
-        Scanner scanner = new Scanner(System.in);
-
-        System.out.print("Enter the year (e.g., 2024): ");
-        int year = scanner.nextInt();
-
-        System.out.print("Enter the month (1-12): ");
-        int month = scanner.nextInt();
-
-        // Validate month input
-        if (month < 1 || month > 12) {
-            System.out.println("Invalid month. Please enter a value between 1 and 12.");
-            return;
-        }
-
+        Date userInputDate = InputValidation.validateDate("Enter the date (dd/MM/yyyy): ");
+        Date[] range = dateRange.getMonthRange(userInputDate);
+        List<SalesTransaction> monthTransactions = getTransactionsByDateRange(range[0], range[1]);
         int carsSold = 0;
 
-        // Iterate over transactions and count cars sold
-        for (SalesTransaction transaction : transactions) {
-            Calendar cal = Calendar.getInstance();
-            cal.setTime(transaction.getTransactionDate());
-            int transYear = cal.get(Calendar.YEAR);
-            int transMonth = cal.get(Calendar.MONTH) + 1; // Months are 0-based in Calendar
+        // Extract month and year for reporting
+        Calendar calendar = Calendar.getInstance();
+        assert userInputDate != null;
+        calendar.setTime(userInputDate);
+        int month = calendar.get(Calendar.MONTH) + 1; // Calendar.MONTH is zero-based
+        int year = calendar.get(Calendar.YEAR);
 
-            if (transYear == year && transMonth == month) {
-                for (PurchasedItem item : transaction.getPurchaseItems()) {
-                    if (item.getCar() != null) {
-                        carsSold++;
-                    }
+        // Iterate over transactions and count cars sold
+        for (SalesTransaction transaction : monthTransactions) {
+            for (PurchasedItem item : transaction.getPurchaseItems()) {
+                if (item.getCar() != null) {
+                    carsSold++;
                 }
             }
         }

@@ -1,5 +1,8 @@
 package sales;
 
+import part.AutoPart;
+import vehicle.Car;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
@@ -106,12 +109,32 @@ public class SalesTransaction implements Serializable {
         System.out.println("Transaction Date: " + transactionDate);
         System.out.println("Client ID: " + clientID);
         System.out.println("Salesperson ID: " + salespersonID);
+
+        // Print the number of purchased items
         System.out.println("Purchased Items: " + purchaseItems.size() + " items");
+
+        // Loop through each purchased item and display details
+        for (PurchasedItem item : purchaseItems) {
+            AutoPart part = item.getPart();
+            Car car = item.getCar();
+            int qualityCar = item.getCarQuantity();
+            int qualityPart = item.getPartQuantity();
+
+            // Print the part and car details
+            if (part != null) {
+                System.out.println("Part Name: " + part.getPartName() + ", Part Quality: " + qualityPart);
+            }
+            if (car != null) {
+                System.out.println("Car Model: " + car.getModel() + ", Car Quality: " + qualityCar);
+            }
+        }
+        // Print the rest of the transaction details
         System.out.println("Discount: " + discount);
         System.out.println("Total Amount: " + totalAmount);
         System.out.println("Notes: " + notes);
         System.out.println("Deleted Status: " + deleted);
     }
+
 
     @Override
     public String toString() {

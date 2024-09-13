@@ -27,7 +27,7 @@ public class CarService implements CarInterfaces {
 
     @Override
     public void createCar() {
-        String carID = InputValidation.validateString("Car ID (format: C-XXXX where XXXX is a number): ");
+        String carID = InputValidation.validateCarID("Car ID (format: C-XXXX where XXXX is a number): ");
         String make = InputValidation.validateString("Make: ");
         String model = InputValidation.validateString("Model: ");
         int year = InputValidation.validateInt("Year: ");
@@ -135,4 +135,5 @@ public class CarService implements CarInterfaces {
                 "Display all car "
         );
     }
+
 }

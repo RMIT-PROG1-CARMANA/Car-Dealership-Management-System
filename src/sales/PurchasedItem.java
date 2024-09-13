@@ -6,14 +6,14 @@ import vehicle.Car;
 public class PurchasedItem implements Serializable {
     private Car car;
     private AutoPart part;
-    private Integer carQuality;
-    private Integer partQuality;
+    private Integer carQuantity;
+    private Integer partQuantity;
 
-    public PurchasedItem(Car car, AutoPart part, Integer carQuality, Integer partQuality) {
+    public PurchasedItem(Car car, AutoPart part, Integer carQuatity, Integer partQuatity) {
         this.car = car;
         this.part = part;
-        this.carQuality = carQuality;
-        this.partQuality = partQuality;
+        this.carQuantity = carQuatity;
+        this.partQuantity = partQuatity;
     }
 
     public Car getCar() {
@@ -32,26 +32,26 @@ public class PurchasedItem implements Serializable {
         this.part = part;
     }
 
-    public Integer getCarQuality() {
-        return carQuality;
+    public Integer getCarQuantity() {
+        return carQuantity;
     }
 
-    public void setCarQuality(Integer carQuality) {
-        this.carQuality = carQuality;
+    public void setCarQuantity(Integer carQuantity) {
+        this.carQuantity = carQuantity;
     }
 
-    public Integer getPartQuality() {
-        return partQuality;
+    public Integer getPartQuantity() {
+        return partQuantity;
     }
 
-    public void setPartQuality(Integer partQuality) {
-        this.partQuality = partQuality;
+    public void setPartQuantity(Integer partQuantity) {
+        this.partQuantity = partQuantity;
     }
 
     public double getItemPrice() {
         double carPrice = (car != null) ? car.getPrice() : 0.0;
         double partPrice = (part != null) ? part.getPrice() : 0.0;
-        return (carPrice * (carQuality != null ? carQuality : 0)) + (partPrice * (partQuality != null ? partQuality : 0));
+        return (carPrice * (carQuantity != null ? carQuantity : 0)) + (partPrice * (partQuantity != null ? partQuantity : 0));
     }
 
     @Override
@@ -59,8 +59,9 @@ public class PurchasedItem implements Serializable {
         return "PurchasedItem {" +
                 "car=" + (car != null ? car.toString() : "No car purchased") +
                 ", part=" + (part != null ? part.toString() : "No part purchased") +
-                ", carQuality=" + carQuality +
-                ", partQuality=" + partQuality +
+                ", carQuality=" + carQuantity +
+                ", partQuality=" + partQuantity +
                 '}';
     }
+
 }

@@ -16,9 +16,6 @@ import static user.Authenticator.loggedUser;
 
 public class ManagerMenu extends Menu {
     int choice;
-    private static final AutoPartFileHandler partDAO = new AutoPartFileHandler();
-    private static List<Service> serviceList = new ArrayList<>();
-
     private final ActivityLogService activityLogService;
     // Use the CarInterfaces reference
     static CarInterfaces carService = new CarService();
@@ -159,7 +156,7 @@ public class ManagerMenu extends Menu {
     }
     public void displayManagerAutoPartMenu(){
         ClearScreen.clear();
-        partDAO.deserializeParts();
+
         System.out.println(CYAN_BOLD + "=====================================" + RESET);
         System.out.println(CYAN_BOLD + "    Manager Auto Parts Menu" + RESET);
         System.out.println(CYAN_BOLD + "=====================================" + RESET);
@@ -179,23 +176,18 @@ public class ManagerMenu extends Menu {
         switch (choice) {
             case 0:
                 autoPartService.addPart();
-                partDAO.serializeParts();
                 break;
             case 1:
                 autoPartService.updatePart();
-                partDAO.serializeParts();
                 break;
             case 2:
                 autoPartService.deletePart();
-                partDAO.serializeParts();
                 break;
             case 3:
                 autoPartService.viewPartDetails();
-                partDAO.serializeParts();
                 break;
             case 4:
                 autoPartService.listAllParts();
-                partDAO.serializeParts();
                 break;
             case 5:
                 displayManagerMenu(); // Go back to the main menu
@@ -429,6 +421,12 @@ public class ManagerMenu extends Menu {
                 carStatistics.calculateCarsSoldInMonth();
                 System.out.println();
                 carStatistics.calculateRevenueFromCars();
+                System.out.println();
+                carStatistics.getSoldCarsByDay();
+                System.out.println();
+                carStatistics.getSoldCarsByWeek();
+                System.out.println();
+                carStatistics.getSoldCarsByMonth();
             }
 
             case 1 -> {

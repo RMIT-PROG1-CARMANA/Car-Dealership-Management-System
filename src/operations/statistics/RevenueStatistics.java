@@ -1,26 +1,28 @@
 package operations.statistics;
 
+import crudhandlers.SalesTransactionCRUD;
 import interfaces.statistics.RevenueStatisticsInterfaces;
 import sales.SalesTransaction;
 import utils.DateRange;
 import utils.InputValidation;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class RevenueStatistics implements RevenueStatisticsInterfaces {
     DateRange dateRange = new DateRange();
 
-    private List<SalesTransaction> allTransactions;
+    private final SalesTransactionCRUD transactionCRUD = new SalesTransactionCRUD();
 
     private List<SalesTransaction> filterTransactionsByDateRange(Date startDate, Date endDate) {
+        List<SalesTransaction> allTransactions = transactionCRUD.getTransactionsOrderedByID(SalesTransactionCRUD.OrderType.transactionDate, true);
+
         return allTransactions.stream()
-                .filter(transaction -> {
-                    Date transactionDate = transaction.getTransactionDate();
-                    return !transactionDate.before(startDate) && !transactionDate.after(endDate);
-                })
-                .toList();
+                .filter(transaction -> !transaction.getTransactionDate().before(startDate) && !transaction.getTransactionDate().after(endDate))
+                .collect(Collectors.toList());
     }
 
     private double calculateTotalRevenue(List<SalesTransaction> transactions) {

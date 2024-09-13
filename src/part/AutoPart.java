@@ -117,17 +117,16 @@ public class AutoPart implements Serializable {
 
     @Override
     public String toString() {
-        return "AutoPart{" +
-                "partID='" + partID + '\'' +
-                ", partName='" + partName + '\'' +
-                ", manufacturer='" + manufacturer + '\'' +
-                ", partNumber='" + partNumber + '\'' +
-                ", condition='" + condition + '\'' +
-                ", warranty='" + warranty + '\'' +
-                ", price=" + price +
-                ", notes='" + notes + '\'' +
-                '}';
+        return String.format(
+                "Part ID: %s\n" +
+                        "Part Name: %s\n" +
+                        "Manufacturer: %s\n" +
+                        "Part Number: %s\n" +
+                        "Condition: %s\n" +
+                        "Warranty: %s\n" +
+                        "Price: $%.2f\n" +
+                        "Notes: %s",
+                partID, partName, manufacturer, partNumber, condition, warranty, price, notes
+        );
     }
-
-
 }

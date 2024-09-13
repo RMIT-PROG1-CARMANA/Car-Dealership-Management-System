@@ -15,7 +15,8 @@ import utils.InputValidation;
 public class AutoPartStatistics implements AutoPartStatisticsInterfaces {
 
     DateRange dateRange = new DateRange();
-    private SalesTransactionCRUD transactionCRUD;
+    private final SalesTransactionCRUD transactionCRUD = new SalesTransactionCRUD();
+    private final List<PurchasedItem> purchaseItems = new ArrayList<>();
 
 
     @Override
@@ -51,6 +52,16 @@ public class AutoPartStatistics implements AutoPartStatisticsInterfaces {
         if (soldParts.isEmpty()) {
             System.out.println("No sold parts found.");
             return;
+        }
+        for (PurchasedItem item : purchaseItems) {
+            AutoPart part = item.getPart();
+
+            int qualityPart = item.getPartQuantity();
+
+            // Print the part and car details
+            if (part != null) {
+                System.out.println("Part Name: " + part.getPartName() + ", Part Quality: " + qualityPart);
+            }
         }
 
         System.out.println(String.format("%-10s %-20s %-15s %-15s %-10s %-10s %-10s %-20s",
