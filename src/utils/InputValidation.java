@@ -7,6 +7,7 @@ import sales.SalesTransaction;
 import user.User;
 import service.*;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.function.Function;
@@ -85,15 +86,20 @@ public class InputValidation {
     }
     public static Date validateDate(String question) {
         Scanner scanner = new Scanner(System.in);
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        dateFormat.setLenient(false);  // Strict parsing
         while (true) {
             try {
                 System.out.print(question);
                 String userInput = scanner.nextLine();
 
-                if (userInput.equals("-1")) return null;
-                Date date = (new SimpleDateFormat("dd/MM/yyyy")).parse(userInput);
-                if (date != null) return date;
-                System.out.println(RED + "Invalid input. Please enter a valid date." + RESET);
+                if (userInput.equals("-1")) return null;  // Exit condition
+
+                // Parse user input with strict validation
+                Date date = dateFormat.parse(userInput);
+                return date;  // If date is parsed successfully, return it
+            } catch (ParseException e) {
+                System.out.println(RED + "Invalid input. Please enter a valid date in dd/MM/yyyy format." + RESET);
             } catch (InputMismatchException e) {
                 System.out.println(RED + "Invalid input. Please enter a valid date." + RESET);
                 scanner.nextLine();
@@ -218,6 +224,7 @@ public class InputValidation {
     }
 
     // Validate userID format and check if it exists in one method
+
     public static String validateExistingUserID(String question) {
         Scanner input = new Scanner(System.in);
         String userID;
@@ -310,14 +317,36 @@ public class InputValidation {
     }
 
     // Check if the user ID already exists in the database
-    private static boolean isUserIDExist(String userID) {
-        for (User user : userDAO.readAllUsers()) {
-            if (user.getUserID().equals(userID)) {
-                System.out.println(RED + "User ID already exists. Please choose a different one." + RESET);
-                return true;
+    public static String validateExistingUsername(String question) {
+        Scanner input = new Scanner(System.in);
+        String username;
+
+        while (true) {
+            username = InputValidation.validateString(question); // Retrieve user input
+
+            // Check if the username format is correct
+            if (!username.matches("[a-zA-Z0-9_]{5,15}")) {  // Example format: alphanumeric, 5 to 15 characters
+                System.out.println(RED + "Invalid Username format. Please ensure it follows the correct format." + RESET);
+                continue;  // Re-prompt the user
+            }
+
+            // Check if the username already exists in the database
+            User[] existingUsers = userDAO.readAllUsers();
+            boolean usernameExists = true;
+
+            for (User user : existingUsers) {
+                if (user != null && user.getUsername() != null && !user.getUsername().equals(username)) {
+                    System.out.println(RED + "Username already exists. Please choose a different one." + RESET);
+                    usernameExists = false;
+                    break;
+                }
+            }
+
+            // If the username is valid and doesn't exist, return it
+            if (usernameExists) {
+                return username;
             }
         }
-        return false;
     }
 
     // Method to check the username format (you can define your own format or use a regex)
@@ -354,7 +383,7 @@ public class InputValidation {
         String carID;
 
         // Load the car database before checking for existing car IDs
-//        carDAO.loadCarDatabase("src/DataBase/CarDatabase.txt");
+//        carDAO.loadCarDatabase("src/DataBase/car.txt");
 
         while (true) {
             carID = InputValidation.validateString(question); // Retrieve user input
@@ -381,7 +410,7 @@ public class InputValidation {
         String carID;
 
         // Load the car database before checking for existing car IDs
-//        carDAO.loadCarDatabase("src/DataBase/CarDatabase.txt");
+//        carDAO.loadCarDatabase("src/DataBase/car.txt");
 
         while (true) {
             carID = InputValidation.validateString(question); // Retrieve user input

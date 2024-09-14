@@ -37,7 +37,7 @@ public class TransactionService implements TransactionInterfaces {
     public TransactionService() {
         // Initialize CarDataHandler and CarCRUDMethodHandler here
         CarDataHandler carDataHandler = new CarDataHandler();
-        carDataHandler.loadCarDatabase("src/database/SalesTransactionDatabase.txt"); // Adjust the file path as needed
+        carDataHandler.loadCarDatabase("src/database/transaction.txt"); // Adjust the file path as needed
         methodHandler = new CarCRUDMethodHandler(carDataHandler); // Proper initialization
     }
 
@@ -150,7 +150,7 @@ public class TransactionService implements TransactionInterfaces {
                 new Date(),
                 loggedUser.getUsername(),
                 loggedUser.getUserID(),
-                "Retrieved transactions ordered by " + transactionsByID
+               "Display all transaction"
                 // + (ascending ? " in ascending order." : " in descending order.")
         );
     }
@@ -167,7 +167,7 @@ public class TransactionService implements TransactionInterfaces {
                 new Date(),
                 loggedUser.getUsername(),
                 loggedUser.getUserID(),
-                "Deleted transaction with ID: " + transactionID
+                "Deleted transaction with ID: " + deleteTransactionID
         );
     }
 
@@ -197,7 +197,7 @@ public class TransactionService implements TransactionInterfaces {
                 new Date(),
                 loggedUser.getUsername(),
                 loggedUser.getUserID(),
-                "Retrieved transactions for client ID: " + clientID
+                "Retrieved transactions for client ID: " + displayClientID
         );
     }
     @Override
@@ -211,7 +211,7 @@ public class TransactionService implements TransactionInterfaces {
                 new Date(),
                 loggedUser.getUsername(),
                 loggedUser.getUserID(),
-                "Displayed transaction details for ID: " + transactionID
+                "Displayed transaction details for ID: " + displayTransactionID
         );
     }
     @Override

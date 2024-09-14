@@ -1,11 +1,11 @@
 package menu;
 
 import interfaces.UserInterfaces;
-import menu.UserMenu.ClientMenu;
-import menu.UserMenu.EmployeeBaseMenu;
-import menu.UserMenu.EmployeeRolesMenu.MechanicMenu;
-import menu.UserMenu.EmployeeRolesMenu.SalespersonMenu;
-import menu.UserMenu.ManagerMenu;
+import menu.usermenu.ClientMenu;
+import menu.usermenu.EmployeeBaseMenu;
+import menu.usermenu.employeerolemenu.MechanicMenu;
+import menu.usermenu.employeerolemenu.SalespersonMenu;
+import menu.usermenu.ManagerMenu;
 import operations.UserService;
 import user.Mechanic;
 import user.Salesperson;
@@ -18,11 +18,7 @@ import java.util.Scanner;
 
 import static menu.MenuStyle.*;
 
-
-
-
 public class Menu  {
-
     private static User loggedUser;  // Static variable
 
     public Menu() {
@@ -128,7 +124,7 @@ public class Menu  {
                 case 3:
                     boolean confirmLogout = InputValidation.validateBoolean("Are you sure you want to log out? (yes/no): ");
                     if (confirmLogout) {
-                        System.out.println("Logging out...");
+                    menuStyle.printLogoutMessage();
                         Authenticator.UserLogOut(); // Call the logout function
                         shouldContinue = false;  // Exit the loop to return to the login menu
                     }

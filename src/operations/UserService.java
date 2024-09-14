@@ -168,7 +168,7 @@ public class UserService implements UserInterfaces {
         String newEmail = InputValidation.validateString("Enter new email: ");
         loggedUser.setEmail(newEmail);
 
-// Update user type
+        // Update user type
         String userTypeInput = InputValidation.validateString("Enter new user type (MANAGER, EMPLOYEE, CLIENT): ");
         try {
             User.UserType newUserType = User.UserType.valueOf(userTypeInput.toUpperCase());
@@ -176,7 +176,6 @@ public class UserService implements UserInterfaces {
         } catch (IllegalArgumentException e) {
             System.out.println("Invalid user type. Please enter one of the following: MANAGER, EMPLOYEE, CLIENT.");
         }
-
 
         // Update status
         boolean newStatus = InputValidation.validateBoolean("Enter new status (true for active, false for inactive): ");
@@ -190,8 +189,96 @@ public class UserService implements UserInterfaces {
         String newUsername = InputValidation.validateUsername("Enter new username: ");
         loggedUser.setUsername(newUsername);
 
+        String logID = ActivityLog.generateLogID();
+        ActivityLogService.logActivity(
+                logID,
+                new Date(),
+                loggedUser.getUsername(),
+                loggedUser.getUserID(),
+                "Update profile : " + loggedUser.getUserID() + "  to" + newUserID
+        );
+
         System.out.println("Your information has been updated successfully!");
     }
+    @Override
+    public void updateUser() {
+        // Read all users
+        User[] users = userDAO.readAllUsers();
+
+        // Get the user ID to update
+        String userID = InputValidation.validateExistingUserID("Enter User ID of the user to update (uXXXX format): ");
+
+        // Find the user to update
+        User userToUpdate = null;
+        for (User user : users) {
+            if (user != null && user.getUserID().equals(userID)) {
+                userToUpdate = user;
+                break;
+            }
+        }
+
+        if (userToUpdate == null) {
+            System.out.println("User with ID " + userID + " not found.");
+            return;
+        }
+
+        // Update user details
+        String fullName = InputValidation.validateString("Enter new Full Name (leave blank to keep current): ");
+        if (!fullName.isEmpty()) {
+            userToUpdate.setFullName(fullName);
+        }
+
+        Date dateOfBirth = InputValidation.validateDate("Enter new Date of Birth (dd/MM/yyyy, leave blank to keep current): ");
+        if (dateOfBirth != null) {
+            userToUpdate.setDateOfBirth(dateOfBirth);
+        }
+
+        String address = InputValidation.validateString("Enter new Address (leave blank to keep current): ");
+        if (!address.isEmpty()) {
+            userToUpdate.setAddress(address);
+        }
+
+        Long phoneNumber = InputValidation.validateLong("Enter new Phone Number (leave blank to keep current): ");
+        if (phoneNumber != null) {
+            userToUpdate.setPhoneNumber(phoneNumber);
+        }
+
+        String email = InputValidation.validateString("Enter new Email (leave blank to keep current): ");
+        if (!email.isEmpty()) {
+            userToUpdate.setEmail(email);
+        }
+
+        String username = InputValidation.validateUsername("Enter new Username (leave blank to keep current): ");
+        if (!username.isEmpty()) {
+            userToUpdate.setUsername(username);
+        }
+
+        String password = InputValidation.validateString("Enter new Password (leave blank to keep current): ");
+        if (!password.isEmpty()) {
+            userToUpdate.setPassword(password);
+        }
+
+        Boolean status = InputValidation.validateBoolean("Enter new Status (true/false, leave blank to keep current): ");
+        if (status != null) {
+            userToUpdate.setStatus(status);
+        }
+
+        // Save updated users back to file
+        userDAO.writeUsersToFile(users);
+
+        // Log the update action
+        String logID = ActivityLog.generateLogID();
+        ActivityLogService.logActivity(
+                logID,
+                new Date(),
+                loggedUser.getUsername(),
+                loggedUser.getUserID(),
+                "Updated User with ID: " + userID
+        );
+
+        System.out.println("User updated successfully.");
+    }
+
     @Override
     public void deleteUser() {
         System.out.println();

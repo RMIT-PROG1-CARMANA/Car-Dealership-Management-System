@@ -1,17 +1,15 @@
-package menu.UserMenu;
+package menu.usermenu;
 
-import filehandling.*;
 import interfaces.*;
 import interfaces.statistics.*;
 import logsystem.*;
 import menu.Menu;
+import menu.statistics.statisticsmenu;
 import operations.*;
 import operations.statistics.*;
-import service.Service;
 import utils.*;
 import java.util.*;
 import static menu.MenuStyle.*;
-import static utils.InputValidation.isCarIDExists;
 import static user.Authenticator.loggedUser;
 
 public class ManagerMenu extends Menu {
@@ -28,6 +26,8 @@ public class ManagerMenu extends Menu {
     static ServiceStatisticsInterfaces serviceStatistics = new ServiceStatistics();
     static TransactionStatisticsInterfaces transactionStatistics = new TransactionStatistics();
     static RevenueStatisticsInterfaces revenueStatistics = new RevenueStatistics();
+    statisticsmenu statisticsMenu = new statisticsmenu();
+
 
 
 
@@ -382,13 +382,13 @@ public class ManagerMenu extends Menu {
                     break;
 
                 case 1:
-                    String logID = InputValidation.validateString("Enter Log ID: ");
+                    String logID = InputValidation.validateExistingUserID("Enter Log ID: ");
                     List<ActivityLog> logById = activityLogService.viewLogById(logID);
                     activityLogService.displayLogs(logById);
                     break;
 
                 case 2:
-                    String username = InputValidation.validateUsernameFormat("Enter Username: ");
+                    String username = InputValidation.validateExistingUsername("Enter Username: ");
                     List<ActivityLog> logsByUsername = activityLogService.viewLogsByUsername(username);
                     activityLogService.displayLogs(logsByUsername);
                     break;
@@ -437,55 +437,27 @@ public class ManagerMenu extends Menu {
 
             switch (choice) {
                 case 0 -> {
-                    carStatistics.calculateCarsSoldInMonth();
-                    System.out.println();
-                    carStatistics.calculateRevenueFromCars();
-                    System.out.println();
-                    carStatistics.getSoldCarsByDay();
-                    System.out.println();
-                    carStatistics.getSoldCarsByWeek();
-                    System.out.println();
-                    carStatistics.getSoldCarsByMonth();
+                    statisticsMenu.displayCarStatisticsMenu();
                 }
 
                 case 1 -> {
-                    autoPartStatistics.getSoldPartsByDay();
-                    System.out.println();
-                    autoPartStatistics.getSoldPartsByWeek();
-                    System.out.println();
-                    autoPartStatistics.getSoldPartsByMonth();
+                    statisticsMenu.displayAutoPartStatisticsMenu();
                 }
 
 
                 case 2 -> {
-                    serviceStatistics.getServicesByDay();
-                    System.out.println();
-                    serviceStatistics.getServicesByWeek();
-                    System.out.println();
-                    serviceStatistics.getServicesByMonth();
-                    System.out.println();
-                    serviceStatistics.calculateRevenueFromServices();
+                    statisticsMenu.displayServiceStatisticsMenu();
                 }
 
 
                 case 3 -> {
-                    transactionStatistics.getTransactionsByDay();
-                    System.out.println();
-                    transactionStatistics.getTransactionsByWeek();
-                    System.out.println();
-                    transactionStatistics.getTransactionsByMonth();
+                    statisticsMenu.displayTransactionStatisticsMenu();
                 }
 
 
                 case 4 -> {
-                    revenueStatistics.calculateTotalRevenueForDay();
-                    System.out.println();
-                    revenueStatistics.calculateTotalRevenueByWeek();
-                    System.out.println();
-                    revenueStatistics.calculateTotalRevenueByMonth();
-                }
-
-
+                    statisticsMenu.displayRevenueStatisticsMenu();
+                    }
                 case 5 -> {
                     // Go back to the main menu
                     displayManagerMenu();

@@ -7,7 +7,7 @@ import java.util.List;
 
 public class SalesTransactionDataHandler {
     public List<SalesTransaction> transactions = new ArrayList<>();
-    private String transactionDatabaseFile = "src/database/SalesTransactionDatabase.txt";
+    private String transactionDatabaseFile = "src/database/transaction.txt";
 
     // Load the transactions from the .ser file using deserialization
     public void loadTransactionDatabase() {

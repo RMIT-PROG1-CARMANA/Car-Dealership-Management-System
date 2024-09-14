@@ -16,18 +16,6 @@ public class MenuStyle {
         System.out.print(style + text + RESET);
     }
 
-    // Method to create a horizontal separator
-    public void printSeparator(int width, char separatorChar) {
-        System.out.println(String.valueOf(separatorChar).repeat(width));
-    }
-
-    // Method to print centered text with padding
-    public void printCentered(String text, int width) {
-        int paddingSize = (width - text.length()) / 2;
-        String padding = " ".repeat(Math.max(0, paddingSize));
-        System.out.println(padding + text + padding);
-    }
-
     // Method to print a menu header
     public void printMenuHeader(String menuName, int totalWidth) {
         // Ensure at least enough width to fit the menu name with two dashes
@@ -46,5 +34,8 @@ public class MenuStyle {
 
         // Print the header with the menu name inline with dashes
         System.out.println(leftDashes + " " +  GREEN + menuName + RESET +  " " + rightDashes);
+    }
+    public void printLogoutMessage(){
+        printStyledText("Logging out ...\n",RED);
     }
 }

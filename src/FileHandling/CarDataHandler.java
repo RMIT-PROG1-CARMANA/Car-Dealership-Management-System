@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 public class CarDataHandler {
     private ArrayList<Car> cars = new ArrayList<>();
-    private String carDatabaseFile = "src/database/CarDatabase.txt";
+    private String carDatabaseFile = "src/database/car.txt";
 
     // Constructor to set the default file path (optional)
     public CarDataHandler() {

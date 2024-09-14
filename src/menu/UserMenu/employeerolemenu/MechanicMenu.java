@@ -1,17 +1,15 @@
-package menu.UserMenu.EmployeeRolesMenu;
+package menu.usermenu.employeerolemenu;
 
 
 import interfaces.AutoPartInterfaces;
 import interfaces.TransactionInterfaces;
 import interfaces.statistics.RevenueStatisticsInterfaces;
 import interfaces.statistics.ServiceStatisticsInterfaces;
-import interfaces.statistics.TransactionStatisticsInterfaces;
-import menu.UserMenu.EmployeeBaseMenu;
+import menu.usermenu.EmployeeBaseMenu;
 import operations.AutoPartService;
 import operations.TransactionService;
 import operations.statistics.RevenueStatistics;
 import operations.statistics.ServiceStatistics;
-import operations.statistics.TransactionStatistics;
 import user.Authenticator;
 import utils.Divider;
 import utils.*;
@@ -37,8 +35,8 @@ public class MechanicMenu extends EmployeeBaseMenu {
             System.out.println(CYAN_BOLD + "=====================================" + RESET);
             System.out.println(CYAN_BOLD + "       Welcome, Mechanic!" + RESET);
             System.out.println(CYAN_BOLD + "=====================================" + RESET);
-
-            displayMenuHeader("Mechanic Menu", 53);
+            System.out.println();
+            displayMenuHeader("Mechanic Menu", 43);
             displayOption(GREEN_BOLD + "0. " + RESET + "Add Service Transaction");
             displayOption(GREEN_BOLD + "1. " + RESET + "View Service Transactions");
             displayOption(GREEN_BOLD + "2. " + RESET + "Update Vehicle Status");
@@ -47,7 +45,7 @@ public class MechanicMenu extends EmployeeBaseMenu {
             displayOption(GREEN_BOLD + "5. " + RESET + "View Parts Inventory");
             displayOption(GREEN_BOLD + "6. " + RESET + "Back to Main Menu");
             displayOption(GREEN_BOLD + "7. " + RESET + "Exit");
-            Divider.printDivider();
+            Divider.printDivider(46);
 
             System.out.print("Enter Selection (0-7): ");
             choice = getValidatedChoice(0, 7);

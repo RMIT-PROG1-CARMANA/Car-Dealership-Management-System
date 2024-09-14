@@ -31,7 +31,7 @@ public class Car implements Serializable {
 
 
         public Car() {
-            this.carID = "c-000";
+            this.carID = "c-0000";
             this.make = "Unknown";
             this.year = 2000;
             this.mileage = 0;

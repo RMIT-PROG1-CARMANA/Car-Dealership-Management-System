@@ -10,8 +10,6 @@ public class Main {
     private static User loggedUser = null;
 
     public static void main(String[] args) {
-        Menu appMenu = null;
-        Scanner input = new Scanner(System.in);
 
         do {
             displayWelcomeScreen();  // Display welcome screen again after logout

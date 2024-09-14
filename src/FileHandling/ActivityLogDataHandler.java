@@ -9,7 +9,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class ActivityLogDataHandler {
-    private static final String FILE_PATH = "src/database/Activity_Log.txt";
+    private static final String FILE_PATH = "src/database/activitylog.txt";
     private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 
     // Read all activity logs from the file
@@ -41,5 +41,9 @@ public class ActivityLogDataHandler {
             System.err.println("Failed to write logs to file: " + FILE_PATH);
             e.printStackTrace(); // Consider logging this in production
         }
+    }
+    public boolean doesLogIDExist(String logID) {
+        List<ActivityLog> logs = loadLogs();
+        return logs.stream().anyMatch(log -> log.getLogID().equals(logID));
     }
 }

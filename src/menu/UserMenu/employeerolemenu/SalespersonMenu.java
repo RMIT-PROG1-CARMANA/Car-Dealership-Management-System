@@ -1,15 +1,14 @@
-package menu.UserMenu.EmployeeRolesMenu;
+package menu.usermenu.employeerolemenu;
 
 import interfaces.TransactionInterfaces;
 import interfaces.statistics.RevenueStatisticsInterfaces;
 import interfaces.statistics.TransactionStatisticsInterfaces;
-import menu.UserMenu.EmployeeBaseMenu;
+import menu.usermenu.EmployeeBaseMenu;
 import operations.TransactionService;
 import operations.statistics.RevenueStatistics;
 import operations.statistics.TransactionStatistics;
 import user.Authenticator;
 import utils.*;
-import java.util.*;
 
 import static menu.MenuStyle.*;
 
@@ -27,14 +26,14 @@ public class SalespersonMenu extends EmployeeBaseMenu {
 
             System.out.println(CYAN_BOLD + "=====================================" + RESET);
             System.out.println(CYAN_BOLD + "     Welcome, Salesperson!" + RESET);
-            displayMenuHeader("Salesperson Menu", 53);
+            displayMenuHeader("Salesperson Menu", 46);
             displayOption(GREEN_BOLD + "0. " + RESET + "Add Sales Transaction");
             displayOption(GREEN_BOLD + "1. " + RESET + "View Sales Transactions");
             displayOption(GREEN_BOLD + "2. " + RESET + "Calculate Revenue (Day/Week/Month)");
             displayOption(GREEN_BOLD + "3. " + RESET + "List Number of Sales Transaction(Day/Week/Month)");
             displayOption(GREEN_BOLD + "4. " + RESET + "Back to Main Menu");
             displayOption(GREEN_BOLD + "5. " + RESET + "Exit");
-            Divider.printDivider();
+            Divider.printDivider(43);
 
             choice = getValidatedChoice(0, 7);
 

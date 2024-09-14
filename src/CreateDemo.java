@@ -4,10 +4,10 @@ import java.util.Scanner;
 
 public class CreateDemo {
     // Service references
-    static CarInterfaces carService = new CarService();
-    static AutoPartInterfaces autoPartService = new AutoPartService();
-    static ServiceInterfaces serviceService = new ServiceService();
-    static TransactionInterfaces transactionService = new TransactionService();
+//    static CarInterfaces carService = new CarService();
+//    static AutoPartInterfaces autoPartService = new AutoPartService();
+//    static ServiceInterfaces serviceService = new ServiceService();
+//    static TransactionInterfaces transactionService = new TransactionService();
     static UserInterfaces userService = new UserService();
 
     public static void main(String[] args) {
@@ -31,16 +31,16 @@ public class CreateDemo {
                     userService.createUser();
                     break;
                 case 2:
-                    carService.createCar();
+//                    carService.createCar();
                     break;
                 case 3:
-                    autoPartService.addPart();
+//                    autoPartService.addPart();
                     break;
                 case 4:
-                    serviceService.addService();
+//                    serviceService.addService();
                     break;
                 case 5:
-                    transactionService.addTransaction();
+//                    transactionService.addTransaction();
                     break;
                 case 6:
                     continueRunning = false;
