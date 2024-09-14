@@ -30,7 +30,6 @@ public class SalespersonMenu extends EmployeeBaseMenu {
             displayOption(GREEN_BOLD + "5. " + RESET + "Update Customer Information");
             displayOption(GREEN_BOLD + "6. " + RESET + "Back to Main Menu");
             displayOption(GREEN_BOLD + "7. " + RESET + "Exit");
-            displayOption(GREEN_BOLD + "7. " + RESET + "Exit");
             Divider.printDivider();
 
             System.out.print("Enter Selection (0-7): ");
