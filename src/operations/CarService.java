@@ -13,16 +13,6 @@ import static user.Authenticator.loggedUser;
 public class CarService implements CarInterfaces {
     static CarCRUD carCRUD = new CarCRUD("");
 
-//    @Override
-//    public void displayCarByID(){
-//        List<Car> carsByID = carCRUD.getCarsOrderedByID(CarCRUD.OrderType.CarID, true);
-//        for (Car car : carsByID) {
-//            if (!car.isDeleted()) {
-//                car.displayInfo();
-//                System.out.println();  // Add blank line between cars
-//            }
-//        }
-//    }
 
     @Override
     public void createCar() {
@@ -95,24 +85,40 @@ public class CarService implements CarInterfaces {
         carCRUD.softDeleteCarByID(deleteCarID);
     }
 
-//    @Override
-//    public void displayCarByPrice(){
-//        List<Car> carsByPrice = carCRUD.getCarsOrderedByID(CarCRUD.OrderType.Price, true);
-//        for (Car car : carsByPrice) {
-//            car.displayInfo();
-//
-//            String logID = ActivityLog.generateLogID();
-//            ActivityLogService.logActivity(
-//                    logID,
-//                    new Date(),
-//                    loggedUser.getUsername(),
-//                    loggedUser.getUserID(),
-//                    "Display car by price"
-//            );
-//
-//            System.out.println();  // Add blank line between cars
-//        }
-//    }
+    @Override
+    public void displayCarByPrice(){
+        System.out.format("%-15s %-15s %-15s %-10s %-10s %-15s %-15s %-12s %-25s %s%n",
+                "Car ID", "Make", "Model", "Year", "Mileage", "Color", "Status", "Price", "Notes", "Deleted");
+        System.out.println("----------------------------------------------------------------------------------------------------------------------------------------------------------");
+        // Print each car's details in a formatted way with adjusted gaps
+        carCRUD.getCarsOrderedByID(CarCRUD.OrderType.Price, true)
+                .stream()
+                .filter(car -> !car.isDeleted() && car.getStatus())
+                .forEach(car -> {
+                    System.out.format("%-15s %-15s %-15s %-10d %-10d %-15s %-15s %-12.2f %-25s %b%n",
+                            car.getCarID(),
+                            car.getMake(),
+                            car.getModel(),
+                            car.getYear(),
+                            car.getMileage(),
+                            car.getColor(),
+                            car.getStatus() ? "Available" : "Sold",
+                            car.getPrice(),
+                            car.getNotes(),
+                            car.isDeleted());
+                });
+
+            String logID = ActivityLog.generateLogID();
+            ActivityLogService.logActivity(
+                    logID,
+                    new Date(),
+                    loggedUser.getUsername(),
+                    loggedUser.getUserID(),
+                    "Display car by price"
+            );
+
+            System.out.println();  // Add blank line between cars
+        }
 
     @Override
     public void displayAllCar() {

@@ -26,7 +26,7 @@ public class ClientMenu extends Menu {
         do {
             // Clear the screen
             ClearScreen.clear();
-
+//            displayCarByPrice
             System.out.println(CYAN_BOLD + "=====================================" + RESET);
             System.out.println(CYAN_BOLD + "           Client Menu" + RESET);
             System.out.println(CYAN_BOLD + "=====================================" + RESET);
@@ -35,8 +35,10 @@ public class ClientMenu extends Menu {
             System.out.println(GREEN_BOLD + "0. " + RESET + "View Transaction History");
             System.out.println(GREEN_BOLD + "1. " + RESET + "View Membership Details");
             System.out.println(GREEN_BOLD + "2. " + RESET + "View Service History");
-            System.out.println(GREEN_BOLD + "3. " + RESET + "Back to Main Menu");
-            System.out.println(GREEN_BOLD + "4. " + RESET + "Exit");
+            System.out.println(GREEN_BOLD + "3. " + RESET + "View Exist Car ");
+            System.out.println(GREEN_BOLD + "4. " + RESET + "View Exist Part ");
+            System.out.println(GREEN_BOLD + "5. " + RESET + "Back to Main Menu");
+            System.out.println(GREEN_BOLD + "6. " + RESET + "Exit");
             System.out.println(CYAN_BOLD + "=====================================" + RESET);
 
             System.out.print("Enter Selection (0-5) ");

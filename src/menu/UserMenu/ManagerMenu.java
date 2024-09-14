@@ -114,8 +114,8 @@ public class ManagerMenu extends Menu {
             displayOption(GREEN_BOLD + "0. " + RESET + "Add Cars");
             displayOption(GREEN_BOLD + "1. " + RESET + "Update Cars");
             displayOption(GREEN_BOLD + "2. " + RESET + "Delete Cars");
-            displayOption(GREEN_BOLD + "3. " + RESET + "Search Cars");
-            displayOption(GREEN_BOLD + "4. " + RESET + "View All Cars");
+            displayOption(GREEN_BOLD + "3. " + RESET + "View All Cars");
+            displayOption(GREEN_BOLD + "4. " + RESET + "View Car Sorted By Price");
             displayOption(GREEN_BOLD + "5. " + RESET + "Back");
             Divider.printDivider(46);
 
@@ -135,14 +135,11 @@ public class ManagerMenu extends Menu {
                     break;
 
                 case 3:
-                    String carID = InputValidation.validateCarIDFormat("Enter Car ID to search (format: C-XXXX where XXXX is a number): ");
-                    if (isCarIDExists(carID)) {
-                        System.out.println("Car ID: " + carID);
-                    }
+                    carService.displayAllCar(); // View all available cars
                     break;
 
                 case 4:
-                    carService.displayAllCar(); // View all available cars
+                    carService.displayCarByPrice();
                     break;
 
                 case 5:

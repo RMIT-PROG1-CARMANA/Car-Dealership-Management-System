@@ -99,23 +99,6 @@ public class CarCRUDMethodHandler {
         }
     }
 
-    // Display car by ID
-    public void displayCarByID(String carID) {
-        boolean carFound = false;  // Flag to track if the car is found
-
-        for (Car c : cdl.getCars()) {
-            if (Objects.equals(c.getCarID(), carID) && !c.isDeleted()) {
-                c.toString();
-                carFound = true;
-                break;  // Exit the loop once the car is found and displayed
-            }
-        }
-
-        if (!carFound) {
-            System.out.println("Car not found or has been deleted.");
-        }
-    }
-
     // Find a car by its ID
     public Car findCarByID(String carID) {
         for (Car c : cdl.getCars()) {

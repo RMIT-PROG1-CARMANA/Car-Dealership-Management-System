@@ -46,9 +46,7 @@ public class CarCRUD {
     public void softDeleteCarByID(String carID) {
         methodHandler.softDeleteCarByID(carID);
     }
-    public void displayCarByID(String carID) {
-        methodHandler.displayCarByID(carID);
-    }
+
 
 
 }
