@@ -1,13 +1,13 @@
 package operations;
 
 import FileHandling.CarDataHandler;
+import FileHandling.UserDataHandler;
 import interfaces.TransactionInterfaces;
 import logsystem.ActivityLog;
 import part.AutoPart;
 import sales.SalesTransaction;
 import user.Client;
 import utils.InputValidation;
-import FileHandling.UserDataHandler;
 import crudHandlers.CarCRUDMethodHandler;
 import crudHandlers.SalesTransactionCRUD;
 import sales.PurchasedItem;
@@ -19,26 +19,23 @@ import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
 
-import static crudHandlers.SalesTransactionCRUD.OrderType.clientID;
-import static crudHandlers.SalesTransactionCRUD.OrderType.transactionID;
 import static user.Authenticator.loggedUser;
-
 
 public class TransactionService implements TransactionInterfaces {
 
     Scanner scanner = new Scanner(System.in);
     static UserDataHandler userDataHandler = new UserDataHandler();
     private static CarCRUDMethodHandler methodHandler;
+    SalesTransactionCRUD salesTransactionCRUD = new SalesTransactionCRUD();
 
     public TransactionService() {
-        // Initialize CarDataHandler and CarCRUDMethodHandler here
+        // Initialize CarDataHandler and CarCRUDMethodHandler correctly
         CarDataHandler carDataHandler = new CarDataHandler();
-        carDataHandler.loadCarDatabase("src/DataBase/SalesTransactionDatabase.ser"); // Adjust the file path as needed
-        methodHandler = new CarCRUDMethodHandler(carDataHandler); // Proper initialization
+        carDataHandler.loadCarDatabase("src/DataBase/CarDatabase.ser"); // Adjust the file path as needed for cars
+        methodHandler = new CarCRUDMethodHandler(carDataHandler);
     }
 
-
-    SalesTransactionCRUD salesTransactionCRUD = new SalesTransactionCRUD();
+    // Calculate total amount, applying membership discount
     private static double totalAmountCalculation(List<PurchasedItem> purchaseItems, Membership membership) {
         double sum = purchaseItems.stream()
                 .mapToDouble(PurchasedItem::getItemPrice)
@@ -46,10 +43,9 @@ public class TransactionService implements TransactionInterfaces {
 
         // Apply membership discount
         double discount = membership.getDiscount();
-        double totalAmount = sum * (1 - discount);  // Apply discount
-
-        return totalAmount;
+        return sum * (1 - discount);
     }
+
     @Override
     public void addTransaction() {
         // Add a new transaction
@@ -57,6 +53,7 @@ public class TransactionService implements TransactionInterfaces {
         Date transactionDate = InputValidation.validateDate("Transaction Date (DD/MM/YYYY): ");
         String clientID = InputValidation.validateExistingUserID("Client ID (format: CL-XXXX): ");
         String salespersonID = InputValidation.validateExistingUserID("Salesperson ID (format: SP-XXXX): ");
+
         // Collect PurchasedItem details
         List<PurchasedItem> purchaseItems = new ArrayList<>();
         boolean addMoreItems = true;
@@ -66,20 +63,17 @@ public class TransactionService implements TransactionInterfaces {
             String carID = scanner.nextLine();
             Car car = null;
             if (!carID.isEmpty()) {
-                // Retrieve the car from the database
                 car = methodHandler.findCarByID(carID);
                 if (car == null) {
                     System.out.println("Car with ID " + carID + " not found.");
                 }
             }
 
-            // Since AutoPart is optional, we'll ask for part details similarly
             System.out.print("Enter part ID (or leave blank if none): ");
             String partID = scanner.nextLine();
-
             AutoPart part = null;
             if (!partID.isEmpty()) {
-                part = AutoPartService.findAutoPartByID(partID);
+                part = AutoPartService.findAutoPartByID(partID);  // Ensure this method exists
                 if (part == null) {
                     System.out.println("Part with ID " + partID + " not found.");
                 }
@@ -89,24 +83,23 @@ public class TransactionService implements TransactionInterfaces {
             PurchasedItem purchasedItem = new PurchasedItem(car, part);
             purchaseItems.add(purchasedItem);
 
-            // Ask the user if they want to add more items
             System.out.print("Do you want to add another item? (yes/no): ");
             addMoreItems = scanner.nextLine().equalsIgnoreCase("yes");
         }
+
         String notes = InputValidation.validateString("Notes: ");
 
         // Calculate total amount based on client's membership
         Client client = userDataHandler.findClientByID(clientID);
-        Membership membership = client.getMembership();  // Retrieve the Membership object
+        Membership membership = client.getMembership();
         double totalAmount = totalAmountCalculation(purchaseItems, membership);
-
 
         SalesTransaction newTransaction = new SalesTransaction(transactionID, transactionDate, clientID, salespersonID, purchaseItems, membership.getDiscount(), totalAmount, notes);
         salesTransactionCRUD.addTransaction(newTransaction);
+
         System.out.println("New transaction added successfully.");
 
-
-        // Optionally log the activity
+        // Log the activity
         String logID = ActivityLog.generateLogID();
         ActivityLogService.logActivity(
                 logID,
@@ -115,20 +108,40 @@ public class TransactionService implements TransactionInterfaces {
                 loggedUser.getUserID(),
                 "Created new sales transaction: " + transactionID
         );
-
-        System.out.println("Transaction added successfully.");
     }
 
     // Display all transactions sorted by TransactionID
     @Override
-    public void displayAllTransactions(){
+    public void displayAllTransactions() {
         List<SalesTransaction> transactionsByID = salesTransactionCRUD.getTransactionsOrderedByID(SalesTransactionCRUD.OrderType.transactionID, true);
+
+        // Adjusted Table headers with more spacing
+        System.out.printf("%-20s %-30s %-20s %-20s %-18s %-10s %-12s %-15s %-10s%n",
+                "Transaction ID", "Transaction Date", "Client ID", "Salesperson ID", "Items Purchased",
+                "Discount", "Total", "Notes", "Deleted");
+
+        System.out.println("----------------------------------------------------------------------------------------------------------------------------");
+
+        // Loop through the transactions and print them in a table format
         for (SalesTransaction transaction : transactionsByID) {
             if (!transaction.isDeleted()) {
-                transaction.displayTransactionDetails();
-                System.out.println();  // Add blank line between transactions
+                String transactionID = transaction.getTransactionID();
+                Date transactionDate = transaction.getTransactionDate();
+                String clientID = transaction.getClientID();
+                String salespersonID = transaction.getSalespersonID();
+                int itemsPurchased = transaction.getPurchaseItems().size();
+                double discount = transaction.getDiscount();
+                double totalAmount = transaction.getTotalAmount();
+                String notes = transaction.getNotes();
+                boolean deleted = transaction.isDeleted();
+
+                // Display transaction details with adjusted formatting for wider gaps
+                System.out.printf("%-20s %-30s %-20s %-20s %-18d %-10.2f %-12.2f %-15s %-10s%n",
+                        transactionID, transactionDate, clientID, salespersonID,
+                        itemsPurchased, discount, totalAmount, notes, deleted ? "Yes" : "No");
             }
         }
+
         // Log the activity
         String logID = ActivityLog.generateLogID();
         ActivityLogService.logActivity(
@@ -137,15 +150,15 @@ public class TransactionService implements TransactionInterfaces {
                 loggedUser.getUsername(),
                 loggedUser.getUserID(),
                 "Retrieved transactions ordered by " + transactionsByID
-                // + (ascending ? " in ascending order." : " in descending order.")
         );
     }
-    // Soft delete a transaction
+
     @Override
     public void deleteTransaction() {
         String deleteTransactionID = InputValidation.validateExistingTransactionID("Transaction ID (format: t-XXXX): ");
-        salesTransactionCRUD.deleteTransaction(deleteTransactionID);  // Call the soft delete method
+        salesTransactionCRUD.deleteTransaction(deleteTransactionID);
         System.out.println("Transaction deleted successfully.");
+
         // Log the activity
         String logID = ActivityLog.generateLogID();
         ActivityLogService.logActivity(
@@ -153,29 +166,28 @@ public class TransactionService implements TransactionInterfaces {
                 new Date(),
                 loggedUser.getUsername(),
                 loggedUser.getUserID(),
-                "Deleted transaction with ID: " + transactionID
+                "Deleted transaction with ID: " + deleteTransactionID
         );
     }
 
-    // Display all transactions sorted by Total Amount
     @Override
-    public void displayTransactionsSortByPrice(){
-
+    public void displayTransactionsSortByPrice() {
         List<SalesTransaction> transactionsByAmount = salesTransactionCRUD.getTransactionsOrderedByID(SalesTransactionCRUD.OrderType.totalAmount, true);
         for (SalesTransaction transaction : transactionsByAmount) {
-            transaction.displayTransactionDetails();
-            System.out.println();  // Add blank line between transactions
+            displayTransactionDetails(transaction);
+            System.out.println();
         }
     }
+
     @Override
-    public void displayTransactionsByClientID(){
-        // Display transactions for a specific client ID
+    public void displayTransactionsByClientID() {
         String displayClientID = InputValidation.validateExistingUserID("Client ID (format: CL-XXXX): ");
         salesTransactionCRUD.getTransactionsByClientID(displayClientID)
                 .forEach(transaction -> {
-                    transaction.displayTransactionDetails();
-                    System.out.println();  // Add blank line between transactions
+                    displayTransactionDetails(transaction);
+                    System.out.println();
                 });
+
         // Log the activity
         String logID = ActivityLog.generateLogID();
         ActivityLogService.logActivity(
@@ -183,22 +195,36 @@ public class TransactionService implements TransactionInterfaces {
                 new Date(),
                 loggedUser.getUsername(),
                 loggedUser.getUserID(),
-                "Retrieved transactions for client ID: " + clientID
-        );
-    }
-    @Override
-    public void displayTransactionsByID(){
-        String displayTransactionID = InputValidation.validateExistingTransactionID("Transaction ID (format: t-XXXX): ");
-        salesTransactionCRUD.displayTransactionByID(displayTransactionID);
-        // Log the activity
-        String logID = ActivityLog.generateLogID();
-        ActivityLogService.logActivity(
-                logID,
-                new Date(),
-                loggedUser.getUsername(),
-                loggedUser.getUserID(),
-                "Displayed transaction details for ID: " + transactionID
+                "Retrieved transactions for client ID: " + displayClientID
         );
     }
 
+    @Override
+    public void displayTransactionsByID() {
+        String displayTransactionID = InputValidation.validateExistingTransactionID("Transaction ID (format: t-XXXX): ");
+        salesTransactionCRUD.displayTransactionByID(displayTransactionID);
+
+        // Log the activity
+        String logID = ActivityLog.generateLogID();
+        ActivityLogService.logActivity(
+                logID,
+                new Date(),
+                loggedUser.getUsername(),
+                loggedUser.getUserID(),
+                "Displayed transaction details for ID: " + displayTransactionID
+        );
+    }
+
+    // Method to display the details of a SalesTransaction
+    public void displayTransactionDetails(SalesTransaction transaction) {
+        System.out.println("Transaction ID: " + transaction.getTransactionID());
+        System.out.println("Transaction Date: " + transaction.getTransactionDate());
+        System.out.println("Client ID: " + transaction.getClientID());
+        System.out.println("Salesperson ID: " + transaction.getSalespersonID());
+        System.out.println("Purchased Items: " + transaction.getPurchaseItems().size() + " items");
+        System.out.println("Discount: " + transaction.getDiscount());
+        System.out.println("Total Amount: " + transaction.getTotalAmount());
+        System.out.println("Notes: " + transaction.getNotes());
+        System.out.println("Deleted Status: " + transaction.isDeleted());
+    }
 }

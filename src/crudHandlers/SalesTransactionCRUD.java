@@ -1,6 +1,8 @@
 package crudHandlers;
 
+
 import FileHandling.SalesTransactionDataHandler;
+import operations.TransactionService;
 import sales.SalesTransaction;
 
 import java.util.ArrayList;
@@ -92,7 +94,8 @@ public class SalesTransactionCRUD {
 
         for (SalesTransaction transaction : stdl.transactions) {
             if (transaction.getTransactionID().equals(id)) {
-                transaction.displayTransactionDetails();
+                TransactionService transactionService = new TransactionService();
+                transactionService.displayTransactionDetails(transaction);  // Call TransactionService method
                 transactionFound = true;
                 break;
             }
@@ -102,3 +105,5 @@ public class SalesTransactionCRUD {
         }
     }
 }
+
+

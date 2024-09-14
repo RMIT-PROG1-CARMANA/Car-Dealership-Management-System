@@ -101,17 +101,7 @@ public class SalesTransaction implements Serializable {
         this.deleted = deleted;
     }
 
-    public void displayTransactionDetails() {
-        System.out.println("Transaction ID: " + transactionID);
-        System.out.println("Transaction Date: " + transactionDate);
-        System.out.println("Client ID: " + clientID);
-        System.out.println("Salesperson ID: " + salespersonID);
-        System.out.println("Purchased Items: " + purchaseItems.size() + " items");
-        System.out.println("Discount: " + discount);
-        System.out.println("Total Amount: " + totalAmount);
-        System.out.println("Notes: " + notes);
-        System.out.println("Deleted Status: " + deleted);
-    }
+
 
     @Override
     public String toString() {
