@@ -8,4 +8,6 @@ public interface TransactionInterfaces {
     void displayTransactionsSortByPrice();
     void displayTransactionsByClientID();
     void displayTransactionsByID();
+
+    void displayClientTransactionHistory();
 }

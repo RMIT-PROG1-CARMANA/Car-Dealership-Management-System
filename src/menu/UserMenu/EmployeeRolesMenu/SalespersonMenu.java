@@ -27,8 +27,6 @@ public class SalespersonMenu extends EmployeeBaseMenu {
 
             System.out.println(CYAN_BOLD + "=====================================" + RESET);
             System.out.println(CYAN_BOLD + "     Welcome, Salesperson!" + RESET);
-
-
             displayMenuHeader("Salesperson Menu", 53);
             displayOption(GREEN_BOLD + "0. " + RESET + "Add Sales Transaction");
             displayOption(GREEN_BOLD + "1. " + RESET + "View Sales Transactions");
@@ -38,7 +36,6 @@ public class SalespersonMenu extends EmployeeBaseMenu {
             displayOption(GREEN_BOLD + "5. " + RESET + "Exit");
             Divider.printDivider();
 
-            System.out.print("Enter Selection (0-7): ");
             choice = getValidatedChoice(0, 7);
 
             switch (choice) {
@@ -82,8 +79,6 @@ public class SalespersonMenu extends EmployeeBaseMenu {
                         System.exit(0);
                     }
                     break;
-
-
                 default:
                     System.err.println("\n**Please, Enter a Valid Input**");
                     break;

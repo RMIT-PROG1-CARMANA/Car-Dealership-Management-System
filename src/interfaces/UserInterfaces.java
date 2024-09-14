@@ -7,5 +7,8 @@ public interface UserInterfaces {
     void displayAllUsers();
     void displayInfoUsers();
     void deleteUser();
+
+    void displayInfoUsersMembership();
+
     void editProfile(User loggedUser);
 }

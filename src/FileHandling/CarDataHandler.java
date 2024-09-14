@@ -47,7 +47,6 @@ public class CarDataHandler {
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(carDatabaseFile))) {
             oos.writeObject(newCars);  // Serialize the new list of cars
             oos.flush();
-            System.out.println("Car database overwritten successfully in " + carDatabaseFile);
         } catch (IOException e) {
             System.err.println("Error overwriting car database: " + e.getMessage());
             e.printStackTrace();

@@ -14,6 +14,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import static menu.MenuStyle.*;
+import static user.Authenticator.loggedClient;
 import static user.Authenticator.loggedUser;
 
 
@@ -125,6 +126,17 @@ public class UserService implements UserInterfaces {
         Divider.printDivider();
     }
 
+    @Override
+    public void displayInfoUsersMembership() {
+        Divider.printDivider();
+        System.out.println("User Information:");
+        // Print user profile details in a formatted way
+        System.out.println(CYAN_BOLD + "User Membership Details" + RESET);
+        System.out.println(CYAN_BOLD + "===================================" + RESET);
+        System.out.printf(GREEN_BOLD + "%-20s" + RESET + ": %s%n", "User Type", loggedClient.getMembership());
+        System.out.println(CYAN_BOLD + "===================================" + RESET);
+        Divider.printDivider();
+    }
     @Override
     public void editProfile(User loggedUser) {
         if (loggedUser == null) {

@@ -88,7 +88,7 @@ public class Menu  {
             System.out.println(YELLOW_BOLD + "Please choose an option:" + RESET);
             System.out.println();
             System.out.println(GREEN_BOLD + "0. " + RESET + "View Profile");
-            System.out.println(GREEN_BOLD + "1. " + RESET + "Edit User");
+            System.out.println(GREEN_BOLD + "1. " + RESET + "Edit User Profile");
             System.out.println(GREEN_BOLD + "2. " + RESET + "Go to " + displayUserRole() + " Main Menu");
             System.out.println(GREEN_BOLD + "3. " + RESET + "Log Out");
             System.out.println(GREEN_BOLD + "4. " + RESET + "Exit");
@@ -101,7 +101,7 @@ public class Menu  {
                     userService.displayInfoUsers();
                     break;
                 case 1:
-                    userService.createUser();
+                    userService.editProfile(loggedUser);
                     break;
                 case 2:
                     // Navigate to the appropriate menu based on the user's role

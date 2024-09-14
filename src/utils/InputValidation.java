@@ -560,7 +560,7 @@ public class InputValidation {
             boolean isDuplicate = existingServices.stream()
                     .anyMatch(service -> service.getServiceID().equals(finalServoceID));
 
-            if (!isDuplicate) {
+            if (isDuplicate) {
                 break;
             } else {
                 System.out.println(RED + "Invalid Service ID . Please enter a exist Service ID." + RESET);

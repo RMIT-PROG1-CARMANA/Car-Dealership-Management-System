@@ -169,19 +169,6 @@ public class Car implements Serializable {
             this.notes = newNotes;
         }
 
-        public void displayInfo() {
-            System.out.println("Car ID: " + carID);
-            System.out.println("Make: " + make);
-            System.out.println("Model: " + model);
-            System.out.println("Year: " + year);
-            System.out.println("Mileage: " + mileage);
-            System.out.println("Color: " + color);
-            System.out.println("Status: " + (status ? "Available" : "Sold"));
-            System.out.println("Price: " + price);
-            System.out.println("Notes: " + notes);
-            System.out.println("Service History: " + serviceHistory.size() + " services");
-            System.out.println("Deleted: " + deleted);
-        }
 
         @Override
         public String toString() {

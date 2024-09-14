@@ -11,6 +11,7 @@ import utils.InputValidation;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static user.Authenticator.loggedUser;
 
@@ -67,9 +68,10 @@ public class ServiceService implements ServiceInterfaces {
         // Save the updated service list to the file
         ServiceFileHandler.saveServices(serviceList);
     }
+
     @Override
     public void getServiceByID() {
-        String serviceID = InputValidation.validateExistingServiceID("Enter Service ID: ",serviceList);
+        String serviceID = InputValidation.validateExistingServiceID("Enter Service ID: ", serviceList);
 
         Service service = findServiceByID(serviceID);
         if (service != null) {
@@ -86,9 +88,10 @@ public class ServiceService implements ServiceInterfaces {
             System.out.println("Service not found with ID: " + serviceID);
         }
     }
+
     @Override
     public void updateService() {
-        String serviceID = InputValidation.validateExistingServiceID("Enter Service ID to Update: ",serviceList);
+        String serviceID = InputValidation.validateExistingServiceID("Enter Service ID to Update: ", serviceList);
 
         Service service = findServiceByID(serviceID);
         if (service == null) {
@@ -148,9 +151,10 @@ public class ServiceService implements ServiceInterfaces {
         // Save the updated service list to the file
         ServiceFileHandler.saveServices(serviceList);
     }
+
     @Override
-    public  void deleteService() {
-        String serviceID = InputValidation.validateExistingServiceID("Enter Service ID to Delete: ",serviceList);
+    public void deleteService() {
+        String serviceID = InputValidation.validateExistingServiceID("Enter Service ID to Delete: ", serviceList);
 
         Service service = findServiceByID(serviceID);
         if (service != null) {
@@ -171,9 +175,10 @@ public class ServiceService implements ServiceInterfaces {
             System.out.println("Service not found with ID: " + serviceID);
         }
     }
+
     @Override
     public void addPartToService() {
-        String serviceID = InputValidation.validateExistingServiceID("Enter Service ID: ",serviceList);
+        String serviceID = InputValidation.validateExistingServiceID("Enter Service ID: ", serviceList);
         String partID = InputValidation.validateExistingPartID("Enter Part ID");
         Service service = findServiceByID(serviceID);
         if (service == null) {
@@ -196,14 +201,15 @@ public class ServiceService implements ServiceInterfaces {
                 new Date(),
                 loggedUser.getUsername(),
                 loggedUser.getUserID(),
-                "Adding part: " + partID +" to service " + serviceID
+                "Adding part: " + partID + " to service " + serviceID
         );
         // Save the updated service list to the file
         ServiceFileHandler.saveServices(serviceList);
     }
+
     @Override
     public void removePartFromService() {
-        String serviceID = InputValidation.validateExistingServiceID("Enter Service ID: ",serviceList);
+        String serviceID = InputValidation.validateExistingServiceID("Enter Service ID: ", serviceList);
         String partID = InputValidation.validateExistingPartID("Enter Part ID");
 
         Service service = findServiceByID(serviceID);
@@ -227,7 +233,7 @@ public class ServiceService implements ServiceInterfaces {
                     new Date(),
                     loggedUser.getUsername(),
                     loggedUser.getUserID(),
-                    "Remove part: " + partID +" from service " + serviceID
+                    "Remove part: " + partID + " from service " + serviceID
             );
             System.out.println("Part " + partID + " removed from service " + serviceID);
         } else {
@@ -271,6 +277,7 @@ public class ServiceService implements ServiceInterfaces {
         }
         return null;
     }
+
     @Override
     public void listAllServices() {
         if (serviceList.isEmpty()) {
@@ -301,7 +308,7 @@ public class ServiceService implements ServiceInterfaces {
                     for (AutoPart part : replacedParts) {
                         replacedPartsInfo.append(part.getPartID()).append(" (")
                                 .append(part.getPartName()).append(" - $")
-                                .append(String.format("%.2f", part.getPrice())).append(")") .append(" | ");
+                                .append(String.format("%.2f", part.getPrice())).append(")").append(" | ");
 
                     }
                 } else {
@@ -321,16 +328,79 @@ public class ServiceService implements ServiceInterfaces {
             }
         }
     }
-        public String getReplacedPartsInfo(List<AutoPart> replacedParts) {
-            String replacedPartsInfo = (replacedParts != null && !replacedParts.isEmpty())
-                    ? replacedParts.stream()
-                    .map(part -> String.format("Part ID: %s, Part Name: %s, Price: $%.2f",
-                            part.getPartID(), part.getPartName(), part.getPrice()))
-                    .reduce((part1, part2) -> part1 + "\n               " + part2)
-                    .orElse("No replaced parts.")
-                    : "No replaced parts.";
 
-            return replacedPartsInfo;
+    @Override
+    public void listClientServiceHistory() {
+        // Get the client ID from the logged-in client
+        String clientID = loggedUser.getUserID();
+
+        // Filter services for the logged-in client
+        List<Service> clientServices = serviceList.stream()
+                .filter(service -> service.getClientID().equals(clientID))
+                .collect(Collectors.toList());
+
+        // If no services found for the client, show a message
+        if (clientServices.isEmpty()) {
+            System.out.println("You have no service history.");
+        } else {
+            String logID = ActivityLog.generateLogID();
+            ActivityLogService.logActivity(
+                    logID,
+                    new Date(),
+                    loggedUser.getUsername(),
+                    loggedUser.getUserID(),
+                    "Viewed personal service history"
+            );
+
+            // Define table headers and column widths
+            String headerFormat = "%-15s %-15s %-15s %-15s %-20s %-15s %-30s%n";
+            String rowFormat = "%-15s %-15s %-15s %-15s %-20s %-15.2f %-30s%n";
+
+            // Print table header
+            System.out.printf(headerFormat, "Service ID", "Service Date", "Client ID", "Mechanic ID", "Service Type", "Service Cost", "Replaced Parts");
+
+            // Print each service for the logged-in client
+            for (Service service : clientServices) {
+                // Format replaced parts with prices for the row
+                StringBuilder replacedPartsInfo = new StringBuilder();
+                List<AutoPart> replacedParts = service.getReplacedParts();
+                if (replacedParts != null && !replacedParts.isEmpty()) {
+                    for (AutoPart part : replacedParts) {
+                        replacedPartsInfo.append(part.getPartID()).append(" (")
+                                .append(part.getPartName()).append(" - $")
+                                .append(String.format("%.2f", part.getPrice())).append(")").append(" | ");
+                    }
+                } else {
+                    replacedPartsInfo.append("None");
+                }
+
+                // Print service details
+                System.out.printf(rowFormat,
+                        service.getServiceID(),
+                        DATE_FORMAT.format(service.getServiceDate()),
+                        service.getClientID(),
+                        service.getMechanicID(),
+                        service.getServiceType(),
+                        service.getServiceCost(),
+                        replacedPartsInfo.toString()
+                );
+            }
+        }
+    }
+
+    public String getReplacedPartsInfo(List<AutoPart> replacedParts) {
+        if (replacedParts == null) {
+            return "0";
         }
 
+        String replacedPartsInfo = replacedParts.isEmpty()
+                ? "No replaced parts."
+                : replacedParts.stream()
+                .map(part -> String.format("Part ID: %s, Part Name: %s, Price: $%.2f",
+                        part.getPartID(), part.getPartName(), part.getPrice()))
+                .reduce((part1, part2) -> part1 + "\n               " + part2)
+                .orElse("No replaced parts.");
+
+        return replacedPartsInfo;
     }
+}

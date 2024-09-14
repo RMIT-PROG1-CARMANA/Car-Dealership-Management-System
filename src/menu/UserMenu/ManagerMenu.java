@@ -34,10 +34,7 @@ public class ManagerMenu extends Menu {
     Scanner input = new Scanner(System.in);
 
     public ManagerMenu() {
-
-
         this.activityLogService = new ActivityLogService();
-
     }
 
 
@@ -58,10 +55,10 @@ public class ManagerMenu extends Menu {
         displayOption(GREEN_BOLD + "6. " + RESET + "Statistics");
         displayOption(GREEN_BOLD + "7. " + RESET + "Go Main Menu");
         displayOption(GREEN_BOLD + "8. " + RESET + "Exit");
-        Divider.printDivider();
+        Divider.printDivider(46);
 
         System.out.print("Enter Selection (0-8): ");
-        choice = getValidatedChoice(0, 7);
+        choice = getValidatedChoice(0, 8);
 
         switch (choice) {
             case 0:
@@ -107,55 +104,61 @@ public class ManagerMenu extends Menu {
     }
     public void displayManagerCarMenu(){
         ClearScreen.clear();
-        System.out.println(CYAN_BOLD + "=====================================" + RESET);
-        System.out.println(CYAN_BOLD + "       Manager Car Menu" + RESET);
-        System.out.println(CYAN_BOLD + "=====================================" + RESET);
+        boolean exit = false;
+        while (!exit) {
+            System.out.println(CYAN_BOLD + "=====================================" + RESET);
+            System.out.println(CYAN_BOLD + "       Manager Car Menu" + RESET);
+            System.out.println(CYAN_BOLD + "=====================================" + RESET);
+            System.out.println();
+            displayMenuHeader("MANAGER CAR MENU", 43);
+            displayOption(GREEN_BOLD + "0. " + RESET + "Add Cars");
+            displayOption(GREEN_BOLD + "1. " + RESET + "Update Cars");
+            displayOption(GREEN_BOLD + "2. " + RESET + "Delete Cars");
+            displayOption(GREEN_BOLD + "3. " + RESET + "Search Cars");
+            displayOption(GREEN_BOLD + "4. " + RESET + "View All Cars");
+            displayOption(GREEN_BOLD + "5. " + RESET + "Back");
+            Divider.printDivider(46);
 
-        displayMenuHeader("MANAGER CAR MENU", 53);
-        displayOption(GREEN_BOLD + "0. " + RESET + "Add Cars");
-        displayOption(GREEN_BOLD + "1. " + RESET + "Update Cars");
-        displayOption(GREEN_BOLD + "2. " + RESET + "Delete Cars");
-        displayOption(GREEN_BOLD + "3. " + RESET + "Search Cars");
-        displayOption(GREEN_BOLD + "4. " + RESET + "View All Cars");
-        displayOption(GREEN_BOLD + "5. " + RESET + "Back");
-        Divider.printDivider();
+            System.out.print("Enter Selection (0-5): ");
+            choice = getValidatedChoice(0, 5);
+            switch (choice) {
+                case 0:
+                    carService.createCar(); // Add a new car
+                    break;
 
-        System.out.print("Enter Selection (0-5): ");
-        choice = getValidatedChoice(0, 5);
-        switch (choice) {
-            case 0:
-                carService.createCar(); // Add a new car
-                break;
+                case 1:
+                    carService.updateCar(); // Update an existing car
+                    break;
 
-            case 1:
-                carService.updateCar(); // Update an existing car
-                break;
+                case 2:
+                    carService.deleteCar(); // Delete a car
+                    break;
 
-            case 2:
-                carService.deleteCar(); // Delete a car
-                break;
+                case 3:
+                    String carID = InputValidation.validateCarIDFormat("Enter Car ID to search (format: C-XXXX where XXXX is a number): ");
+                    if (isCarIDExists(carID)) {
+                        System.out.println("Car ID: " + carID);
+                    }
+                    break;
 
-            case 3:
-                String carID = InputValidation.validateCarIDFormat("Enter Car ID to search (format: C-XXXX where XXXX is a number): ");
-                if (isCarIDExists(carID)) {
-                    System.out.println("Car ID: " + carID);
-                }
-                break;
+                case 4:
+                    carService.displayAllCar(); // View all available cars
+                    break;
 
-            case 4:
-                carService.displayAllCar(); // View all available cars
-                break;
-
-            case 5:
-                displayManagerMenu(); // Go back to the main menu
-                break;
-            default:
-                System.err.println("\n**Please, Enter a Valid Input**");
-                System.out.println();
+                case 5:
+                    displayManagerMenu(); // Go back to the main menu
+                    exit = true;
+                    break;
+                default:
+                    System.err.println("\nPlease, Enter a Valid Input");
+                    System.out.println();
+            }
         }
     }
     public void displayManagerAutoPartMenu(){
         ClearScreen.clear();
+        boolean exit = false;
+        while (!exit){
 
         System.out.println(CYAN_BOLD + "=====================================" + RESET);
         System.out.println(CYAN_BOLD + "    Manager Auto Parts Menu" + RESET);
@@ -191,14 +194,18 @@ public class ManagerMenu extends Menu {
                 break;
             case 5:
                 displayManagerMenu(); // Go back to the main menu
+                exit = true;
                 break;
             default:
                 System.err.println("\n**Please, Enter a Valid Input**");
                 System.out.println();
         }
+        }
     }
     public void displayManagerSaleTransactionsMenu() {
         ClearScreen.clear();
+        boolean exit = false;
+        while (!exit){
         System.out.println(CYAN_BOLD + "=====================================" + RESET);
         System.out.println(CYAN_BOLD + "Manager Sale Transactions Menu" + RESET);
         System.out.println(CYAN_BOLD + "=====================================" + RESET);
@@ -242,13 +249,17 @@ public class ManagerMenu extends Menu {
 
             case 6:
                 displayManagerMenu(); // Go back to the main menu
+                exit = true;
                 break;
             default:
                 System.err.println("\n**Please, Enter a Valid Input**");
                 System.out.println();
         }
     }
+    }
     public void displayManagerUsersMenu(){
+        boolean exit = false;
+        while (!exit){
         ClearScreen.clear();
         System.out.println(CYAN_BOLD + "=====================================" + RESET);
         System.out.println(CYAN_BOLD + "       Manager Users Menu" + RESET);
@@ -285,199 +296,211 @@ public class ManagerMenu extends Menu {
                 break;
             case 5:
                 displayManagerMenu(); // Go back to the main menu
+                exit = true;
                 break;
             default:
                 System.err.println("\n**Please, Enter a Valid Input**");
                 System.out.println();
         }
+    }
     }
     public void displayManagerServicesMenu(){
-        ClearScreen.clear();
-        System.out.println(CYAN_BOLD + "=====================================" + RESET);
-        System.out.println(CYAN_BOLD + "      Manager Services Menu" + RESET);
-        System.out.println(CYAN_BOLD + "=====================================" + RESET);
+        boolean exit = false;
+        while (!exit) {
+            ClearScreen.clear();
+            System.out.println(CYAN_BOLD + "=====================================" + RESET);
+            System.out.println(CYAN_BOLD + "      Manager Services Menu" + RESET);
+            System.out.println(CYAN_BOLD + "=====================================" + RESET);
 
-        displayMenuHeader("MANAGER SERVICE MENU", 53);
-        displayOption(GREEN_BOLD + "0. " + RESET + "Add Services");
-        displayOption(GREEN_BOLD + "1. " + RESET + "Get Service by ID");
-        displayOption(GREEN_BOLD + "2. " + RESET + "Update Service");
-        displayOption(GREEN_BOLD + "3. " + RESET + "Delete Service");
-        displayOption(GREEN_BOLD + "4. " + RESET + "Add Part to Service");
-        displayOption(GREEN_BOLD + "5. " + RESET + "Remove Part from Service");
-        displayOption(GREEN_BOLD + "6. " + RESET + "List All Services");
-        displayOption(GREEN_BOLD + "7. " + RESET + "Back");
-        Divider.printDivider();
+            displayMenuHeader("MANAGER SERVICE MENU", 53);
+            displayOption(GREEN_BOLD + "0. " + RESET + "Add Services");
+            displayOption(GREEN_BOLD + "1. " + RESET + "Get Service by ID");
+            displayOption(GREEN_BOLD + "2. " + RESET + "Update Service");
+            displayOption(GREEN_BOLD + "3. " + RESET + "Delete Service");
+            displayOption(GREEN_BOLD + "4. " + RESET + "Add Part to Service");
+            displayOption(GREEN_BOLD + "5. " + RESET + "Remove Part from Service");
+            displayOption(GREEN_BOLD + "6. " + RESET + "List All Services");
+            displayOption(GREEN_BOLD + "7. " + RESET + "Back");
+            Divider.printDivider();
 
-        System.out.print("Enter Selection (0-7): ");
-        choice = getValidatedChoice(0, 7);
+            System.out.print("Enter Selection (0-7): ");
+            choice = getValidatedChoice(0, 7);
 
-        switch (choice) {
-            case 0:
-                serviceService.addService();
-                break;
-            case 1:
-                serviceService.getServiceByID();
-                break;
-            case 2:
-                serviceService.updateService();
-                break;
-            case 3:
-                serviceService.deleteService();
-                break;
-            case 4:
-                serviceService.addPartToService();
-                break;
-            case 5:
-                serviceService.removePartFromService();
-                break;
-            case 6:
-                serviceService.listAllServices();
-                break;
-            case 7:
-                displayManagerMenu(); // Go back to the main menu
-                break;
-            default:
-                System.err.println("\n**Please, Enter a Valid Input**");
-                System.out.println();
+            switch (choice) {
+                case 0:
+                    serviceService.addService();
+                    break;
+                case 1:
+                    serviceService.getServiceByID();
+                    break;
+                case 2:
+                    serviceService.updateService();
+                    break;
+                case 3:
+                    serviceService.deleteService();
+                    break;
+                case 4:
+                    serviceService.addPartToService();
+                    break;
+                case 5:
+                    serviceService.removePartFromService();
+                    break;
+                case 6:
+                    serviceService.listAllServices();
+                    break;
+                case 7:
+                    displayManagerMenu(); // Go back to the main menu
+                    exit = true;
+                    break;
+                default:
+                    System.err.println("\n**Please, Enter a Valid Input**");
+                    System.out.println();
+            }
         }
 
-
     }
-    public void displayManagerActivityLog(){
+    public void displayManagerActivityLog() {
         ClearScreen.clear();
-        System.out.println(CYAN_BOLD + "=====================================" + RESET);
-        System.out.println(CYAN_BOLD + "       Manager Activity log" + RESET);
-        System.out.println(CYAN_BOLD + "=====================================" + RESET);
+        boolean exit = false;
+        while (!exit) {
+            System.out.println(CYAN_BOLD + "=====================================" + RESET);
+            System.out.println(CYAN_BOLD + "       Manager Activity log" + RESET);
+            System.out.println(CYAN_BOLD + "=====================================" + RESET);
 
-        displayMenuHeader("ACTIVITY LOG MENU", 53);
-        displayOption(GREEN_BOLD + "0. " + RESET + "View All Logs");
-        displayOption(GREEN_BOLD + "1. " + RESET + "Search by Log ID");
-        displayOption(GREEN_BOLD + "2. " + RESET + "Search by Username");
-        displayOption(GREEN_BOLD + "3. " + RESET + "Search by User ID");
-        displayOption(GREEN_BOLD + "4. " + RESET + "Search by Date");
-        displayOption(GREEN_BOLD + "5. " + RESET + "Back");
-        Divider.printDivider();
+            displayMenuHeader("ACTIVITY LOG MENU", 53);
+            displayOption(GREEN_BOLD + "0. " + RESET + "View All Logs");
+            displayOption(GREEN_BOLD + "1. " + RESET + "Search by Log ID");
+            displayOption(GREEN_BOLD + "2. " + RESET + "Search by Username");
+            displayOption(GREEN_BOLD + "3. " + RESET + "Search by User ID");
+            displayOption(GREEN_BOLD + "4. " + RESET + "Search by Date");
+            displayOption(GREEN_BOLD + "5. " + RESET + "Back");
+            Divider.printDivider();
 
-        System.out.print("Enter Selection (0-5): ");
-        choice = getValidatedChoice(0, 5);
-        switch (choice) {
-            case 0:
-                List<ActivityLog> allLogs = activityLogService.viewAllLogs();
-                activityLogService.displayLogs(allLogs);
-                break;
+            System.out.print("Enter Selection (0-5): ");
+            choice = getValidatedChoice(0, 5);
+            switch (choice) {
+                case 0:
+                    List<ActivityLog> allLogs = activityLogService.viewAllLogs();
+                    activityLogService.displayLogs(allLogs);
+                    break;
 
-            case 1:
-                String logID = InputValidation.validateString("Enter Log ID: ");
-                List<ActivityLog> logById = activityLogService.viewLogById(logID);
-                activityLogService.displayLogs(logById);
-                break;
+                case 1:
+                    String logID = InputValidation.validateString("Enter Log ID: ");
+                    List<ActivityLog> logById = activityLogService.viewLogById(logID);
+                    activityLogService.displayLogs(logById);
+                    break;
 
-            case 2:
-                String username = InputValidation.validateUsernameFormat("Enter Username: ");
-                List<ActivityLog> logsByUsername = activityLogService.viewLogsByUsername(username);
-                activityLogService.displayLogs(logsByUsername);
-                break;
+                case 2:
+                    String username = InputValidation.validateUsernameFormat("Enter Username: ");
+                    List<ActivityLog> logsByUsername = activityLogService.viewLogsByUsername(username);
+                    activityLogService.displayLogs(logsByUsername);
+                    break;
 
-            case 3:
-                String userID = InputValidation.validateUserIDFormat("Enter User ID: ");
-                List<ActivityLog> logsByUserID = activityLogService.viewLogsByUserID(userID);
-                activityLogService.displayLogs(logsByUserID);
-                break;
+                case 3:
+                    String userID = InputValidation.validateUserIDFormat("Enter User ID: ");
+                    List<ActivityLog> logsByUserID = activityLogService.viewLogsByUserID(userID);
+                    activityLogService.displayLogs(logsByUserID);
+                    break;
 
-            case 4:
-                Date date = InputValidation.validateDate("Enter Date (dd/MM/yyyy): ");
-                List<ActivityLog> logsByDate = activityLogService.viewLogsByDate(date);
-                activityLogService.displayLogs(logsByDate);
-                break;
+                case 4:
+                    Date date = InputValidation.validateDate("Enter Date (dd/MM/yyyy): ");
+                    List<ActivityLog> logsByDate = activityLogService.viewLogsByDate(date);
+                    activityLogService.displayLogs(logsByDate);
+                    break;
 
-            case 5:
-                displayManagerMenu(); // Go back to the main menu
-                break;
-            default:
-                System.err.println("\n**Please, Enter a Valid Input**");
-                System.out.println();
+                case 5:
+                    displayManagerMenu(); // Go back to the main menu
+                    exit = true;
+                    break;
+                default:
+                    System.err.println("\n**Please, Enter a Valid Input**");
+                    System.out.println();
+            }
         }
     }
     public void displayManagerStatisticsMenu(){
         ClearScreen.clear();
-        System.out.println(CYAN_BOLD + "=====================================" + RESET);
-        System.out.println(CYAN_BOLD + "   Manager Statistics Menu" + RESET);
-        System.out.println(CYAN_BOLD + "=====================================" + RESET);
+        boolean exit = false;
+        while (!exit) {
+            System.out.println(CYAN_BOLD + "=====================================" + RESET);
+            System.out.println(CYAN_BOLD + "   Manager Statistics Menu" + RESET);
+            System.out.println(CYAN_BOLD + "=====================================" + RESET);
 
-        displayMenuHeader("MANAGER STATISTICS MENU", 53);
-        displayOption(GREEN_BOLD + "0. " + RESET + "View Cars Statistics");
-        displayOption(GREEN_BOLD + "1. " + RESET + "View Auto Part Statistics");
-        displayOption(GREEN_BOLD + "2. " + RESET + "View Service Statistics");
-        displayOption(GREEN_BOLD + "3. " + RESET + "View Transaction Statistics");
-        displayOption(GREEN_BOLD + "4. " + RESET + "View Revenue");
-        displayOption(GREEN_BOLD + "5. " + RESET + "Back");
-        Divider.printDivider();
+            displayMenuHeader("MANAGER STATISTICS MENU", 53);
+            displayOption(GREEN_BOLD + "0. " + RESET + "View Cars Statistics");
+            displayOption(GREEN_BOLD + "1. " + RESET + "View Auto Part Statistics");
+            displayOption(GREEN_BOLD + "2. " + RESET + "View Service Statistics");
+            displayOption(GREEN_BOLD + "3. " + RESET + "View Transaction Statistics");
+            displayOption(GREEN_BOLD + "4. " + RESET + "View Revenue");
+            displayOption(GREEN_BOLD + "5. " + RESET + "Back");
+            Divider.printDivider();
 
-        System.out.print("Enter Selection (0-5): ");
-        choice = getValidatedChoice(0, 5);
+            System.out.print("Enter Selection (0-5): ");
+            choice = getValidatedChoice(0, 5);
 
-        switch (choice) {
-            case 0 ->{
-                carStatistics.calculateCarsSoldInMonth();
-                System.out.println();
-                carStatistics.calculateRevenueFromCars();
-                System.out.println();
-                carStatistics.getSoldCarsByDay();
-                System.out.println();
-                carStatistics.getSoldCarsByWeek();
-                System.out.println();
-                carStatistics.getSoldCarsByMonth();
-            }
+            switch (choice) {
+                case 0 -> {
+                    carStatistics.calculateCarsSoldInMonth();
+                    System.out.println();
+                    carStatistics.calculateRevenueFromCars();
+                    System.out.println();
+                    carStatistics.getSoldCarsByDay();
+                    System.out.println();
+                    carStatistics.getSoldCarsByWeek();
+                    System.out.println();
+                    carStatistics.getSoldCarsByMonth();
+                }
 
-            case 1 -> {
-                autoPartStatistics.getSoldPartsByDay();
-                System.out.println();
-                autoPartStatistics.getSoldPartsByWeek();
-                System.out.println();
-                autoPartStatistics.getSoldPartsByMonth();
-            }
-
-
-            case 2 -> {
-                serviceStatistics.getServicesByDay();
-                System.out.println();
-                serviceStatistics.getServicesByWeek();
-                System.out.println();
-                serviceStatistics.getServicesByMonth();
-                System.out.println();
-                serviceStatistics.calculateRevenueFromServices();
-            }
+                case 1 -> {
+                    autoPartStatistics.getSoldPartsByDay();
+                    System.out.println();
+                    autoPartStatistics.getSoldPartsByWeek();
+                    System.out.println();
+                    autoPartStatistics.getSoldPartsByMonth();
+                }
 
 
-            case 3 -> {
-                transactionStatistics.getTransactionsByDay();
-                System.out.println();
-                transactionStatistics.getTransactionsByWeek();
-                System.out.println();
-                transactionStatistics.getTransactionsByMonth();
-            }
+                case 2 -> {
+                    serviceStatistics.getServicesByDay();
+                    System.out.println();
+                    serviceStatistics.getServicesByWeek();
+                    System.out.println();
+                    serviceStatistics.getServicesByMonth();
+                    System.out.println();
+                    serviceStatistics.calculateRevenueFromServices();
+                }
 
 
-            case 4 -> {
-                revenueStatistics.calculateTotalRevenueForDay();
-                System.out.println();
-                revenueStatistics.calculateTotalRevenueByWeek();
-                System.out.println();
-                revenueStatistics.calculateTotalRevenueByMonth();
-            }
+                case 3 -> {
+                    transactionStatistics.getTransactionsByDay();
+                    System.out.println();
+                    transactionStatistics.getTransactionsByWeek();
+                    System.out.println();
+                    transactionStatistics.getTransactionsByMonth();
+                }
 
 
-            case 5 -> {
-                // Go back to the main menu
-                displayManagerMenu();
-                break;
-            }
+                case 4 -> {
+                    revenueStatistics.calculateTotalRevenueForDay();
+                    System.out.println();
+                    revenueStatistics.calculateTotalRevenueByWeek();
+                    System.out.println();
+                    revenueStatistics.calculateTotalRevenueByMonth();
+                }
 
-            default -> {
-                System.err.println("\n**Please, Enter a Valid Input**");
-                System.out.println();
+
+                case 5 -> {
+                    // Go back to the main menu
+                    displayManagerMenu();
+                    exit = true;
+                    break;
+                }
+
+                default -> {
+                    System.err.println("\n**Please, Enter a Valid Input**");
+                    System.out.println();
+                }
             }
         }
-
     }
 }

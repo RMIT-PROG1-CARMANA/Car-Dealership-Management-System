@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 import static crudhandlers.SalesTransactionCRUD.OrderType.clientID;
 import static crudhandlers.SalesTransactionCRUD.OrderType.transactionID;
@@ -213,5 +214,37 @@ public class TransactionService implements TransactionInterfaces {
                 "Displayed transaction details for ID: " + transactionID
         );
     }
+    @Override
+    public void displayClientTransactionHistory() {
+        // Get the client ID from the logged-in client
+        String clientID = loggedUser.getUserID();
+
+        // Retrieve transactions for the logged-in client, ordered by transaction ID
+        List<SalesTransaction> clientTransactions = salesTransactionCRUD.getTransactionsOrderedByID(SalesTransactionCRUD.OrderType.transactionID, true)
+                .stream()
+                .filter(transaction -> transaction.getClientID().equals(clientID) && !transaction.isDeleted())
+                .collect(Collectors.toList());
+
+        // Display the transactions
+        if (clientTransactions.isEmpty()) {
+            System.out.println("No transactions found for your account.");
+        } else {
+            for (SalesTransaction transaction : clientTransactions) {
+                transaction.displayTransactionDetails();
+                System.out.println();  // Add blank line between transactions for readability
+            }
+        }
+
+        // Log the activity
+        String logID = ActivityLog.generateLogID();
+        ActivityLogService.logActivity(
+                logID,
+                new Date(),
+                loggedUser.getUsername(),
+                loggedUser.getUserID(),
+                "Viewed personal transaction history."
+        );
+    }
+
 
 }

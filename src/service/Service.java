@@ -84,6 +84,9 @@ public class Service implements Serializable {
         this.notes = notes;
     }
 
+    public ServiceService service = new ServiceService();
+
+
     public void addPartService(AutoPart part) {
         if (this.replacedParts == null) {
             this.replacedParts = new ArrayList<>();
@@ -102,12 +105,15 @@ public class Service implements Serializable {
         }
         return false;
     }
-ServiceService service = new ServiceService();
+
     @Override
     public String toString() {
         // If replacedParts is not null and contains parts, format each part's ID, Name, and Price
+        if (service == null) {
+            service = new ServiceService();  // Ensure service is instantiated
+        }
 
-
+        String replacedPartsInfo = service.getReplacedPartsInfo(replacedParts);
         return String.format("Service Details:%n" +
                         "Service ID    : %s%n" +
                         "Service Date  : %s%n" +
@@ -124,7 +130,7 @@ ServiceService service = new ServiceService();
                 serviceType,
                 serviceCost,
                 notes,
-                service.getReplacedPartsInfo(replacedParts)
+                replacedPartsInfo
         );
     }
 }

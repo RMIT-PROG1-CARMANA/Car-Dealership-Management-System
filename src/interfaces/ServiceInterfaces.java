@@ -9,4 +9,5 @@ public interface ServiceInterfaces {
     void removePartFromService();
     void listAllServices();
 
+    void listClientServiceHistory();
 }

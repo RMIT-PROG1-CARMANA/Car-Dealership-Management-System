@@ -7,6 +7,7 @@ public class Authenticator {
 
     // Static field to hold the currently logged-in user
     public static User loggedUser;
+    public static Client loggedClient;
     private static UserDataHandler userDAO = new UserDataHandler();
     public Authenticator() {
         this.userDAO = new UserDataHandler();

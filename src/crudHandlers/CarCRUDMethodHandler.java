@@ -105,7 +105,7 @@ public class CarCRUDMethodHandler {
 
         for (Car c : cdl.getCars()) {
             if (Objects.equals(c.getCarID(), carID) && !c.isDeleted()) {
-                c.displayInfo();
+                c.toString();
                 carFound = true;
                 break;  // Exit the loop once the car is found and displayed
             }

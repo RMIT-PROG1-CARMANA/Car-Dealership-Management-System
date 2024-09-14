@@ -30,22 +30,21 @@ public class MenuStyle {
 
     // Method to print a menu header
     public void printMenuHeader(String menuName, int totalWidth) {
-        int remainingWidth = totalWidth - menuName.length() - 2; // Subtract 2 for spaces around the name
+        // Ensure at least enough width to fit the menu name with two dashes
+        int minimumWidth = menuName.length() + 4; // 2 spaces for padding and 2 dashes on either side
+        if (totalWidth < minimumWidth) {
+            totalWidth = minimumWidth;
+        }
+
+        // Calculate remaining space for dashes on both sides
+        int remainingWidth = totalWidth - menuName.length();
         int halfWidth = remainingWidth / 2;
 
-        // Print left border
-        printSeparator(halfWidth, '-');
+        // Print dashes, title, and additional dashes if needed
+        String leftDashes = "-".repeat(halfWidth - 1); // Subtract 1 for space before the title
+        String rightDashes = "-".repeat(halfWidth - 1 + (remainingWidth % 2)); // Adjust for odd lengths
 
-        // Print centered title
-        printStyledText(" " + menuName + " ", BOLD + GREEN);
-
-        // Print right border
-        printSeparator(halfWidth + menuName.length() + 2, '-');
-    }
-
-    // Method to print a logout message with style
-    public void printLogoutMessage() {
-        printStyledText("Logging out...\n", RED);
-        System.out.println("Thank you for using our system!");
+        // Print the header with the menu name inline with dashes
+        System.out.println(leftDashes + " " +  GREEN + menuName + RESET +  " " + rightDashes);
     }
 }
