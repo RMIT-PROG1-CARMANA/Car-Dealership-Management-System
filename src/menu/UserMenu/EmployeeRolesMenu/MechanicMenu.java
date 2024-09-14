@@ -1,7 +1,17 @@
 package menu.UserMenu.EmployeeRolesMenu;
 
 
+import interfaces.AutoPartInterfaces;
+import interfaces.TransactionInterfaces;
+import interfaces.statistics.RevenueStatisticsInterfaces;
+import interfaces.statistics.ServiceStatisticsInterfaces;
+import interfaces.statistics.TransactionStatisticsInterfaces;
 import menu.UserMenu.EmployeeBaseMenu;
+import operations.AutoPartService;
+import operations.TransactionService;
+import operations.statistics.RevenueStatistics;
+import operations.statistics.ServiceStatistics;
+import operations.statistics.TransactionStatistics;
 import user.Authenticator;
 import utils.Divider;
 import utils.*;
@@ -10,6 +20,11 @@ import java.util.*;
 import static menu.MenuStyle.*;
 
 public class MechanicMenu extends EmployeeBaseMenu {
+    static AutoPartInterfaces autoPartService = new AutoPartService();
+    static TransactionInterfaces transactionService = new TransactionService();
+    static RevenueStatisticsInterfaces revenueStatistics = new RevenueStatistics();
+    static ServiceStatisticsInterfaces serviceStatistics = new ServiceStatistics();
+
     @Override
     public void displayEmployeeMenu() {
         int choice;
@@ -39,21 +54,33 @@ public class MechanicMenu extends EmployeeBaseMenu {
 
             switch (choice) {
                 case 0:
+                    transactionService.addTransaction();
                     break;
-
                 case 1:
+                    transactionService.displayAllTransactions();
                     break;
-
                 case 2:
+                    System.out.println("Revenue in specific day");
+                    revenueStatistics.calculateTotalRevenueForDay();
+                    System.out.println("Revenue in specific week");
+                    revenueStatistics.calculateTotalRevenueByWeek();
+                    System.out.println("Revenue in specific month");
+                    revenueStatistics.calculateTotalRevenueByMonth();
                     break;
-
                 case 3:
-                    break;
 
+                    break;
                 case 4:
+                    System.out.println("Number of service in specific day");
+                    serviceStatistics.getServicesByDay();
+                    System.out.println("Number of service in specific week");
+                    serviceStatistics.getServicesByWeek();
+                    System.out.println("Number of service in specific month");
+                    serviceStatistics.getServicesByMonth();
                     break;
 
                 case 5:
+                    autoPartService.listAllParts();
                     break;
 
                 case 6:

@@ -117,15 +117,15 @@ public class SalesTransaction implements Serializable {
         for (PurchasedItem item : purchaseItems) {
             AutoPart part = item.getPart();
             Car car = item.getCar();
-            int qualityCar = item.getCarQuantity();
-            int qualityPart = item.getPartQuantity();
+            int quantityCar = item.getCarQuantity();
+            int quantityPart = item.getPartQuantity();
 
             // Print the part and car details
             if (part != null) {
-                System.out.println("Part Name: " + part.getPartName() + ", Part Quality: " + qualityPart);
+                System.out.println("Part Name: " + part.getPartName() + ", Part Quality: " + quantityPart);
             }
             if (car != null) {
-                System.out.println("Car Model: " + car.getModel() + ", Car Quality: " + qualityCar);
+                System.out.println("Car Model: " + car.getModel() + ", Car Quality: " + quantityCar);
             }
         }
         // Print the rest of the transaction details

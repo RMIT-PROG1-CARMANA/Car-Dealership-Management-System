@@ -237,24 +237,6 @@ public class ServiceService implements ServiceInterfaces {
         // Save the updated service list to the file
         ServiceFileHandler.saveServices(serviceList);
     }
-    @Override
-    public  void listAllServices() {
-        if (serviceList.isEmpty()) {
-            System.out.println("No services available.");
-        } else {
-            String logID = ActivityLog.generateLogID();
-            ActivityLogService.logActivity(
-                    logID,
-                    new Date(),
-                    loggedUser.getUsername(),
-                    loggedUser.getUserID(),
-                    "View all service"
-            );
-            for (Service service : serviceList) {
-                System.out.println(service);
-            }
-        }
-    }
 
     private static Service findServiceByID(String serviceID) {
         for (Service service : serviceList) {
@@ -289,7 +271,56 @@ public class ServiceService implements ServiceInterfaces {
         }
         return null;
     }
+    @Override
+    public void listAllServices() {
+        if (serviceList.isEmpty()) {
+            System.out.println("No services available.");
+        } else {
+            String logID = ActivityLog.generateLogID();
+            ActivityLogService.logActivity(
+                    logID,
+                    new Date(),
+                    loggedUser.getUsername(),
+                    loggedUser.getUserID(),
+                    "View all services"
+            );
 
+            // Define table headers and column widths
+            String headerFormat = "%-15s %-15s %-15s %-15s %-20s %-15s %-30s%n";
+            String rowFormat = "%-15s %-15s %-15s %-15s %-20s %-15.2f %-30s%n";
+
+            // Print table header
+            System.out.printf(headerFormat, "Service ID", "Service Date", "Client ID", "Mechanic ID", "Service Type", "Service Cost", "Replaced Parts");
+
+            // Print table rows
+            for (Service service : serviceList) {
+                // Format replaced parts with prices for the row
+                StringBuilder replacedPartsInfo = new StringBuilder();
+                List<AutoPart> replacedParts = service.getReplacedParts();
+                if (replacedParts != null && !replacedParts.isEmpty()) {
+                    for (AutoPart part : replacedParts) {
+                        replacedPartsInfo.append(part.getPartID()).append(" (")
+                                .append(part.getPartName()).append(" - $")
+                                .append(String.format("%.2f", part.getPrice())).append(")") .append(" | ");
+
+                    }
+                } else {
+                    replacedPartsInfo.append("None");
+                }
+
+                // Print service details
+                System.out.printf(rowFormat,
+                        service.getServiceID(),
+                        DATE_FORMAT.format(service.getServiceDate()),
+                        service.getClientID(),
+                        service.getMechanicID(),
+                        service.getServiceType(),
+                        service.getServiceCost(),
+                        replacedPartsInfo.toString()
+                );
+            }
+        }
+    }
         public String getReplacedPartsInfo(List<AutoPart> replacedParts) {
             String replacedPartsInfo = (replacedParts != null && !replacedParts.isEmpty())
                     ? replacedParts.stream()

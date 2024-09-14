@@ -1,6 +1,8 @@
 package menu.UserMenu;
 
+import interfaces.statistics.TransactionStatisticsInterfaces;
 import menu.Menu;
+import operations.statistics.TransactionStatistics;
 import utils.InputValidation;
 import utils.*;
 import java.util.*;
@@ -8,9 +10,8 @@ import java.util.*;
 import static menu.MenuStyle.*;
 
 public class ClientMenu extends Menu {
-    private final InputValidation inputValidation = new InputValidation();
 
-
+    static TransactionStatisticsInterfaces transactionStatistics = new TransactionStatistics();
     public void displayClientMenu() {
         int choice;
 
@@ -25,10 +26,9 @@ public class ClientMenu extends Menu {
             displayMenuHeader("CLIENT MENU", 53);
             System.out.println(GREEN_BOLD + "0. " + RESET + "View Transaction History");
             System.out.println(GREEN_BOLD + "1. " + RESET + "View Membership Details");
-            System.out.println(GREEN_BOLD + "2. " + RESET + "Schedule Service Appointment");
-            System.out.println(GREEN_BOLD + "3. " + RESET + "View Service History");
-            System.out.println(GREEN_BOLD + "4. " + RESET + "Back to Main Menu");
-            System.out.println(GREEN_BOLD + "5. " + RESET + "Exit");
+            System.out.println(GREEN_BOLD + "2. " + RESET + "View Service History");
+            System.out.println(GREEN_BOLD + "3. " + RESET + "Back to Main Menu");
+            System.out.println(GREEN_BOLD + "4. " + RESET + "Exit");
             System.out.println(CYAN_BOLD + "=====================================" + RESET);
 
             System.out.print("Enter Selection (0-5) ");
@@ -36,6 +36,7 @@ public class ClientMenu extends Menu {
 
             switch (choice) {
                 case 0:
+
                     break;
 
                 case 1:
@@ -45,15 +46,14 @@ public class ClientMenu extends Menu {
                     break;
 
                 case 3:
-                    break;
-
-                case 4:
                     boolean confirmBack = InputValidation.validateBoolean("Are you sure you want to back to Main Menu? (yes/no): ");
                     if (confirmBack) {
                         System.out.println("Returning to main menu...");
                     }
                     return;
-                case 5:
+
+
+                case 4:
                     boolean confirmExit = InputValidation.validateBoolean("Are you sure you want to exit? (yes/no): ");
                     if (confirmExit) {
                         scanner.close();

@@ -1,6 +1,12 @@
 package menu.UserMenu.EmployeeRolesMenu;
 
+import interfaces.TransactionInterfaces;
+import interfaces.statistics.RevenueStatisticsInterfaces;
+import interfaces.statistics.TransactionStatisticsInterfaces;
 import menu.UserMenu.EmployeeBaseMenu;
+import operations.TransactionService;
+import operations.statistics.RevenueStatistics;
+import operations.statistics.TransactionStatistics;
 import user.Authenticator;
 import utils.*;
 import java.util.*;
@@ -8,10 +14,12 @@ import java.util.*;
 import static menu.MenuStyle.*;
 
 public class SalespersonMenu extends EmployeeBaseMenu {
+    static TransactionInterfaces transactionService = new TransactionService();
+    static RevenueStatisticsInterfaces revenueStatistics = new RevenueStatistics();
+    static TransactionStatisticsInterfaces transactionStatistics = new TransactionStatistics();
     @Override
     public void displayEmployeeMenu() {
         int choice;
-        Scanner scanner = new Scanner(System.in);
 
         do {
             // Clear the screen
@@ -25,12 +33,9 @@ public class SalespersonMenu extends EmployeeBaseMenu {
             displayOption(GREEN_BOLD + "0. " + RESET + "Add Sales Transaction");
             displayOption(GREEN_BOLD + "1. " + RESET + "View Sales Transactions");
             displayOption(GREEN_BOLD + "2. " + RESET + "Calculate Revenue (Day/Week/Month)");
-            displayOption(GREEN_BOLD + "3. " + RESET + "List Number of Services(Day/Week/Month)");
-            displayOption(GREEN_BOLD + "4. " + RESET + "");
-            displayOption(GREEN_BOLD + "5. " + RESET + "Update Customer Information");
-            displayOption(GREEN_BOLD + "6. " + RESET + "Back to Main Menu");
-            displayOption(GREEN_BOLD + "7. " + RESET + "Exit");
-            displayOption(GREEN_BOLD + "7. " + RESET + "Exit");
+            displayOption(GREEN_BOLD + "3. " + RESET + "List Number of Sales Transaction(Day/Week/Month)");
+            displayOption(GREEN_BOLD + "4. " + RESET + "Back to Main Menu");
+            displayOption(GREEN_BOLD + "5. " + RESET + "Exit");
             Divider.printDivider();
 
             System.out.print("Enter Selection (0-7): ");
@@ -38,24 +43,30 @@ public class SalespersonMenu extends EmployeeBaseMenu {
 
             switch (choice) {
                 case 0:
+                    transactionService.addTransaction();
                     break;
-
                 case 1:
+                    transactionService.displayAllTransactions();
                     break;
-
                 case 2:
+                    System.out.println("Number of transaction in specific day");
+                    revenueStatistics.calculateTotalRevenueForDay();
+                    System.out.println("Number of transaction in specific week");
+                    revenueStatistics.calculateTotalRevenueByWeek();
+                    System.out.println("Number of transaction in specific month");
+                    revenueStatistics.calculateTotalRevenueByMonth();
                     break;
 
                 case 3:
+                    System.out.println("Revenue in specific day");
+                    transactionStatistics.getTransactionsByDay();
+                    System.out.println("Revenue in specific day");
+                    transactionStatistics.getTransactionsByWeek();
+                    System.out.println("Revenue in specific day");
+                    transactionStatistics.getTransactionsByMonth();
                     break;
 
                 case 4:
-                    break;
-
-                case 5:
-                    break;
-
-                case 6:
                     // Return to main menu
                     boolean confirmBack = InputValidation.validateBoolean("Are you sure you want to back to Main Menu? (yes/no): ");
                     if (confirmBack) {
@@ -63,8 +74,7 @@ public class SalespersonMenu extends EmployeeBaseMenu {
                     }
                     return; // Exits the current menu loop and returns to the Menu class
 
-
-                case 7:
+                case 5:
                     boolean confirmExit = InputValidation.validateBoolean("Are you sure you want to exit? (yes/no): ");
                     if (confirmExit) {
                         System.out.println("Exiting the application... Goodbye!");
@@ -73,11 +83,12 @@ public class SalespersonMenu extends EmployeeBaseMenu {
                     }
                     break;
 
+
                 default:
                     System.err.println("\n**Please, Enter a Valid Input**");
                     break;
             }
-        } while (choice != 7);
+        } while (choice != 5);
     }
 
    
