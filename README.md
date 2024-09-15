@@ -23,7 +23,7 @@ The development of the Car Dealership Management System is driven by the collabo
 
 ## Team Members
 - Pham Le Gia Huy (s3975371)
-- Nguyen Tien Hai (s3979239)
+- Nguyen Pham Tien Hai (s3979239)
 - Nguyen Thach Khanh Dzi (s3980883)
 - Lam Quang Tram Anh (s4023681)
 
