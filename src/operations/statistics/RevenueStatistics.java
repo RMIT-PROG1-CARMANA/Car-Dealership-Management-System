@@ -31,7 +31,7 @@ public class RevenueStatistics implements RevenueStatisticsInterfaces {
     }
     @Override
     public void calculateTotalRevenueForDay() {
-        Date userInputDate = InputValidation.validateDate("Enter the date:");
+        Date userInputDate = InputValidation.validateDate("Enter the date(dd/mm/yy): ");
         Date[] dayRange = dateRange.getDayRange(userInputDate);
         Date startOfDay = dayRange[0];
         Date endOfDay = dayRange[1];
@@ -44,7 +44,7 @@ public class RevenueStatistics implements RevenueStatisticsInterfaces {
     }
     @Override
     public void calculateTotalRevenueByWeek() {
-        Date userInputDate = InputValidation.validateDate("Enter the date:");
+        Date userInputDate = InputValidation.validateDate("Enter the date(dd/mm/yy): ");
         Date[] weekRange = dateRange.getWeekRange(userInputDate);
         Date startOfWeek = weekRange[0];
         Date endOfWeek = weekRange[1];
@@ -62,7 +62,7 @@ public class RevenueStatistics implements RevenueStatisticsInterfaces {
     }
     @Override
     public void calculateTotalRevenueByMonth() {
-        Date userInputDate = InputValidation.validateDate("Enter the date:");
+        Date userInputDate = InputValidation.validateDate("Enter the date(dd/mm/yy): ");
         Date[] monthRange = dateRange.getMonthRange(userInputDate);
         Date startOfMonth = monthRange[0];
         Date endOfMonth = monthRange[1];

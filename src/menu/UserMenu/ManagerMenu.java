@@ -50,7 +50,6 @@ public class ManagerMenu extends Menu {
         displayOption(GREEN_BOLD + "8. " + RESET + "Exit");
         Divider.printDivider(46);
 
-        System.out.print("Enter Selection (0-8): ");
         choice = getValidatedChoice(8);
 
         switch (choice) {
@@ -113,7 +112,6 @@ public class ManagerMenu extends Menu {
             displayOption(GREEN_BOLD + "6. " + RESET + "Back");
             Divider.printDivider(46);
 
-            System.out.print("Enter Selection (0-6): ");
             choice = getValidatedChoice(6);
             switch (choice) {
                 case 0:
@@ -165,7 +163,6 @@ public class ManagerMenu extends Menu {
         displayOption(GREEN_BOLD + "5. " + RESET + "Back");
         Divider.printDivider(46);
 
-        System.out.print("Enter Selection (0-5): ");
         choice = getValidatedChoice(5);
 
         switch (choice) {
@@ -212,7 +209,6 @@ public class ManagerMenu extends Menu {
         displayOption(GREEN_BOLD + "6. " + RESET + "Back");
         Divider.printDivider(46);
 
-        System.out.print("Enter Selection (0-5): ");
         int choice = getValidatedChoice(6);
 
         switch (choice) {
@@ -267,7 +263,6 @@ public class ManagerMenu extends Menu {
             displayOption(GREEN_BOLD + "5. " + RESET + "Back");
             Divider.printDivider(46);
 
-            System.out.print("Enter Selection (0-5): ");
             choice = getValidatedChoice(5);
 
             switch (choice) {
@@ -363,14 +358,13 @@ public class ManagerMenu extends Menu {
             displayMenuHeader("ACTIVITY LOG MENU", 43);
             displayOption(GREEN_BOLD + "0. " + RESET + "View All Logs");
             displayOption(GREEN_BOLD + "1. " + RESET + "Search by Log ID");
-            displayOption(GREEN_BOLD + "2. " + RESET + "Search by Username");
-            displayOption(GREEN_BOLD + "3. " + RESET + "Search by User ID");
-            displayOption(GREEN_BOLD + "4. " + RESET + "Search by Date");
-            displayOption(GREEN_BOLD + "5. " + RESET + "Back");
+            displayOption(GREEN_BOLD + "2. " + RESET + "Search by User ID");
+            displayOption(GREEN_BOLD + "3. " + RESET + "Search by Date");
+            displayOption(GREEN_BOLD + "4. " + RESET + "Back");
             Divider.printDivider(46);
 
-            System.out.print("Enter Selection (0-5): ");
-            choice = getValidatedChoice(5);
+            System.out.print("Enter Selection (0-4): ");
+            choice = getValidatedChoice(4);
             switch (choice) {
                 case 0:
                     List<ActivityLog> allLogs = activityLogService.viewAllLogs();
@@ -378,30 +372,24 @@ public class ManagerMenu extends Menu {
                     break;
 
                 case 1:
-                    String logID = InputValidation.validateExistingUserID("Enter Log ID: ");
+                    String logID = InputValidation.validateLogID("Enter Log ID: ");
                     List<ActivityLog> logById = activityLogService.viewLogById(logID);
                     activityLogService.displayLogs(logById);
                     break;
 
                 case 2:
-                    String username = InputValidation.validateExistingUsername("Enter Username: ");
-                    List<ActivityLog> logsByUsername = activityLogService.viewLogsByUsername(username);
-                    activityLogService.displayLogs(logsByUsername);
-                    break;
-
-                case 3:
-                    String userID = InputValidation.validateUserIDFormat("Enter User ID: ");
+                    String userID = InputValidation.validateExistingUserID("Enter User ID: ");
                     List<ActivityLog> logsByUserID = activityLogService.viewLogsByUserID(userID);
                     activityLogService.displayLogs(logsByUserID);
                     break;
 
-                case 4:
+                case 3:
                     Date date = InputValidation.validateDate("Enter Date (dd/MM/yyyy): ");
                     List<ActivityLog> logsByDate = activityLogService.viewLogsByDate(date);
                     activityLogService.displayLogs(logsByDate);
                     break;
 
-                case 5:
+                case 4:
                     displayManagerMenu(); // Go back to the main menu
                     exit = true;
                     break;
@@ -428,7 +416,6 @@ public class ManagerMenu extends Menu {
             displayOption(GREEN_BOLD + "5. " + RESET + "Back");
             Divider.printDivider(46);
 
-            System.out.print("Enter Selection (0-5): ");
             choice = getValidatedChoice(5);
 
             switch (choice) {

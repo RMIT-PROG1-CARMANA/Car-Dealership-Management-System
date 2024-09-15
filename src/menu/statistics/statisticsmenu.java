@@ -31,7 +31,7 @@ public class statisticsmenu extends Menu {
             displayOption(GREEN_BOLD + "5. " + RESET + "Back");
             Divider.printDivider(46);
 
-            System.out.print("Enter Selection (0-5): ");
+
             int choice = getValidatedChoice(5);
 
             switch (choice) {
@@ -62,7 +62,7 @@ public class statisticsmenu extends Menu {
             displayOption(GREEN_BOLD + "3. " + RESET + "Back");
             Divider.printDivider(46);
 
-            System.out.print("Enter Selection (0-3): ");
+
             int choice = getValidatedChoice(3);
 
             switch (choice) {
@@ -92,7 +92,7 @@ public class statisticsmenu extends Menu {
             displayOption(GREEN_BOLD + "4. " + RESET + "Back");
             Divider.printDivider(46);
 
-            System.out.print("Enter Selection (0-4): ");
+
             int choice = getValidatedChoice(4);
 
             switch (choice) {
@@ -121,7 +121,7 @@ public class statisticsmenu extends Menu {
             displayOption(GREEN_BOLD + "3. " + RESET + "Back");
             Divider.printDivider(46);
 
-            System.out.print("Enter Selection (0-3): ");
+
             int choice = getValidatedChoice(3);
             switch (choice) {
                 case 0: transactionStatistics.getTransactionsByDay(); break;
@@ -148,7 +148,7 @@ public class statisticsmenu extends Menu {
             displayOption(GREEN_BOLD + "3. " + RESET + "Back");
             Divider.printDivider(46);
 
-            System.out.print("Enter Selection (0-3): ");
+
             int choice = getValidatedChoice(3);
             switch (choice) {
                 case 0: revenueStatistics.calculateTotalRevenueForDay(); break;

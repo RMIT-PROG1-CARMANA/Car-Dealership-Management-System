@@ -75,7 +75,7 @@ public class CarStatistics implements CarStatisticsInterfaces {
 
     @Override
     public void getSoldCarsByWeek() {
-        Date userInputDate = InputValidation.validateDate("Enter the date");
+        Date userInputDate = InputValidation.validateDate("Enter the date(dd/mm/yy): ");
         Date[] range = dateRange.getMonthRange(userInputDate);
         List<SalesTransaction> weekTransactions = getTransactionsByDateRange(range[0], range[1]);
         List<Car> soldCars = getSoldCarsInTransactions(weekTransactions);
@@ -84,7 +84,7 @@ public class CarStatistics implements CarStatisticsInterfaces {
 
     @Override
     public void getSoldCarsByMonth() {
-        Date userInputDate = InputValidation.validateDate("Enter the date");
+        Date userInputDate = InputValidation.validateDate("Enter the date(dd/mm/yy): ");
         Date[] range = dateRange.getMonthRange(userInputDate);
         List<SalesTransaction> monthTransactions = getTransactionsByDateRange(range[0], range[1]);
         List<Car> soldCars = getSoldCarsInTransactions(monthTransactions);

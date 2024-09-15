@@ -44,7 +44,6 @@ public class ClientMenu extends Menu {
             System.out.println(GREEN_BOLD + "5. " + RESET + "Exit");
             System.out.println(CYAN_BOLD + "=====================================" + RESET);
 
-            System.out.print("Enter Selection (0-5) ");
             choice = getValidatedChoice(5);
 
             switch (choice) {

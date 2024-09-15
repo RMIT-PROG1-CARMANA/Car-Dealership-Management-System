@@ -22,7 +22,7 @@ public class AutoPartStatistics implements AutoPartStatisticsInterfaces {
     @Override
     public void getSoldPartsByDay() {
 
-        Date userInputDate = InputValidation.validateDate("Enter the date");
+        Date userInputDate = InputValidation.validateDate("Enter the date(dd/mm/yy): ");
         Date[] range = dateRange.getDayRange(userInputDate);
         List<SalesTransaction> dayTransactions = getTransactionsByDateRange(range[0], range[1]);
         List<AutoPart> soldParts = getSoldPartsInTransactions(dayTransactions);
@@ -32,7 +32,7 @@ public class AutoPartStatistics implements AutoPartStatisticsInterfaces {
     @Override
     public void getSoldPartsByWeek() {
 
-        Date userInputDate = InputValidation.validateDate("Enter the date");
+        Date userInputDate = InputValidation.validateDate("Enter the date(dd/mm/yy): ");
         Date[] range = dateRange.getWeekRange(userInputDate);
         List<SalesTransaction> weekTransactions = getTransactionsByDateRange(range[0], range[1]);
         List<AutoPart> soldParts = getSoldPartsInTransactions(weekTransactions);
@@ -42,7 +42,7 @@ public class AutoPartStatistics implements AutoPartStatisticsInterfaces {
     @Override
     public void getSoldPartsByMonth() {
 
-        Date userInputDate = InputValidation.validateDate("Enter the date");
+        Date userInputDate = InputValidation.validateDate("Enter the date(dd/mm/yy): ");
         Date[] range = dateRange.getMonthRange(userInputDate);
         List<SalesTransaction> monthTransactions = getTransactionsByDateRange(range[0], range[1]);
         List<AutoPart> soldParts = getSoldPartsInTransactions(monthTransactions);

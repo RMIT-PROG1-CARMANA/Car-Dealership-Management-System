@@ -20,7 +20,7 @@ public class TransactionStatistics implements TransactionStatisticsInterfaces {
 
     @Override
     public void getTransactionsByDay() {
-        Date userInputDate = InputValidation.validateDate("Enter the date for the day:");
+        Date userInputDate = InputValidation.validateDate("Enter the date for the day(dd/mm/yy):");
         Date[] range = dateRange.getDayRange(userInputDate);
         List<SalesTransaction> dayTransactions = getTransactionsByDateRange(range[0], range[1]);
         displayTransactions(dayTransactions);
@@ -28,7 +28,7 @@ public class TransactionStatistics implements TransactionStatisticsInterfaces {
 
     @Override
     public void getTransactionsByWeek() {
-        Date userInputDate = InputValidation.validateDate("Enter the date for the week start :");
+        Date userInputDate = InputValidation.validateDate("Enter the date for the week start(dd/mm/yy):");
         Date[] range = dateRange.getWeekRange(userInputDate);
         List<SalesTransaction> weekTransactions = getTransactionsByDateRange(range[0], range[1]);
         displayTransactions(weekTransactions);
@@ -36,7 +36,7 @@ public class TransactionStatistics implements TransactionStatisticsInterfaces {
 
     @Override
     public void getTransactionsByMonth() {
-        Date userInputDate = InputValidation.validateDate("Enter the date for the month start:");
+        Date userInputDate = InputValidation.validateDate("Enter the date for the month start(dd/mm/yy):");
         Date[] range = dateRange.getMonthRange(userInputDate);
         List<SalesTransaction> monthTransactions = getTransactionsByDateRange(range[0], range[1]);
         displayTransactions(monthTransactions);

@@ -27,22 +27,22 @@ public class ServiceStatistics implements ServiceStatisticsInterfaces {
     public void calculateRevenueFromServices() {
         double totalRevenue = 0.0;
 
-        for (Service service : services) {
+        for (Service service : serviceList) { // Use serviceList instead of services
             // Check if the service's mechanic matches the given ID
-            if (service.getMechanicID().equals(mechanicID)) {
+
                 // Sum up the service cost
                 totalRevenue += service.getServiceCost();
-            }
+
         }
         // Print the total revenue
-        System.out.println("Total revenue from services done by mechanic ID " + mechanicID + ": " + totalRevenue);
+        System.out.println("Total revenue from services done by mechanic " + totalRevenue);
     }
 
 
     // Get services by day based on user input
     @Override
     public void getServicesByDay() {
-        Date userInputDate = InputValidation.validateDate("Enter the date");
+        Date userInputDate = InputValidation.validateDate("Enter the date(dd/mm/yy): ");
         Date[] range = dateRange.getDayRange(userInputDate);
         List<Service> dayServices = filterServicesByDateRange(range[0], range[1]);
         displayServices(dayServices);
@@ -51,7 +51,7 @@ public class ServiceStatistics implements ServiceStatisticsInterfaces {
     // Get services by week based on user input
     @Override
     public void getServicesByWeek() {
-        Date userInputDate = InputValidation.validateDate("Enter the date");
+        Date userInputDate = InputValidation.validateDate("Enter the date(dd/mm/yy): ");
         Date[] range = dateRange.getDayRange(userInputDate);
         List<Service> weekServices = filterServicesByDateRange(range[0], range[1]);
         displayServices(weekServices);
@@ -60,7 +60,7 @@ public class ServiceStatistics implements ServiceStatisticsInterfaces {
     // Get services by month based on user input
     @Override
     public void getServicesByMonth() {
-        Date userInputDate = InputValidation.validateDate("Enter the date");
+        Date userInputDate = InputValidation.validateDate("Enter the date(dd/mm/yy): ");
         Date[] range = dateRange.getDayRange(userInputDate);
         List<Service> monthServices = filterServicesByDateRange(range[0], range[1]);
         displayServices(monthServices);
