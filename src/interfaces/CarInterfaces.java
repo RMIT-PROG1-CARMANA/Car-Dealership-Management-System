@@ -5,7 +5,10 @@ public interface CarInterfaces {
     void updateCar();        // Method to update an existing car
     void deleteCar();        // Method to delete a car
 
-
     void displayCarByPrice(); // Method to display cars ordered by price
     void displayAllCar();     // Method to display all available cars
+
+    void displayAllAvailableCar();
+
+    void searchCarByID();
 }

@@ -3,14 +3,13 @@ package filehandling;
 import logsystem.ActivityLog;
 
 import java.io.*;
-import java.text.SimpleDateFormat;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 public class ActivityLogDataHandler {
     private static final String FILE_PATH = "src/database/activitylog.txt";
-    private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 
     // Read all activity logs from the file
     // Load logs from the file

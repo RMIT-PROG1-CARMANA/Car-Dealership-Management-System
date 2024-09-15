@@ -1,7 +1,9 @@
 package logsystem;
 
+import filehandling.ActivityLogDataHandler;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Random;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class ActivityLog implements Serializable {
@@ -37,10 +39,24 @@ public class ActivityLog implements Serializable {
     public void setUserID(String userID) { this.userID = userID; }
     public void setAction(String action) { this.action = action; }
 
+    private static final ActivityLogDataHandler logDAO = new ActivityLogDataHandler();
+
     // Static method to generate a new log ID
     public static String generateLogID() {
-        return ID_PREFIX + String.format("%04d", idCounter.incrementAndGet());
+        String logID;
+        do {
+            logID = ID_PREFIX + generateRandomNumber(4);
+        } while (logDAO.doesLogIDExist(logID));
+        return logID;
     }
+
+    // Generate a random 5-digit number
+    private static String generateRandomNumber(int length) {
+        Random random = new Random();
+        int number = random.nextInt((int) Math.pow(10, length));
+        return String.format("%0" + length + "d", number);
+    }
+
 
     @Override
     public String toString() {

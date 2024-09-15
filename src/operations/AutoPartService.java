@@ -54,7 +54,7 @@ public class AutoPartService implements AutoPartInterfaces {
 
     // Method to view part details with validation
     @Override
-    public void displayPartDetails() {
+    public void searchPartByID() {
         // Deserialize parts before operation
         loadPartsData();
 
@@ -225,4 +225,6 @@ public class AutoPartService implements AutoPartInterfaces {
         }
         return null;  // Return null if the part is not found
     }
+
+
 }

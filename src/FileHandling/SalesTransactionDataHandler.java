@@ -31,7 +31,7 @@ public class SalesTransactionDataHandler {
         }
     }
 
-    // Overwrite the transactions to the .ser file using serialization
+    // Overwrite the transactions to the file using serialization
     public void overwriteDatabase(List<SalesTransaction> transactions) {
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(transactionDatabaseFile))) {
             oos.writeObject(transactions);

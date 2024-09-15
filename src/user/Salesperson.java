@@ -8,11 +8,6 @@ public class Salesperson extends Employee {
         super(userID, fullName, dateOfBirth, address, phoneNumber, email, status, password, username,Position.SALESPERSON);
     }
 
-//    public void processTransaction(sales.SalesTransaction transaction) {
-//        // Implementation for processing a transaction
-//    }
-
-
 }
 
 

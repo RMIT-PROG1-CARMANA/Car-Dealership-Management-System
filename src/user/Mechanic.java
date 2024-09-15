@@ -9,8 +9,5 @@ public class Mechanic extends Employee {
         super(userID, fullName, dateOfBirth, address, phoneNumber, email, status, password, username,Position.MECHANIC);
     }
 
-//    public void processService(service.Service service) {
-//        // Implementation for processing a service
-//    }
 
 }

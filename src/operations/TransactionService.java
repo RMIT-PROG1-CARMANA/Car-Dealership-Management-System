@@ -1,6 +1,4 @@
 package operations;
-
-
 import filehandling.CarDataHandler;
 import interfaces.TransactionInterfaces;
 import logsystem.ActivityLog;
@@ -31,6 +29,7 @@ public class TransactionService implements TransactionInterfaces {
     static UserDataHandler userDataHandler = new UserDataHandler();
     private static CarCRUDMethodHandler methodHandler;
     AutoPartService autoPartService = new AutoPartService();
+    UserService userService = new UserService();
 
     public TransactionService() {
         // Initialize CarDataHandler and CarCRUDMethodHandler here
@@ -38,7 +37,6 @@ public class TransactionService implements TransactionInterfaces {
         carDataHandler.loadCarDatabase("src/database/transaction.txt"); // Adjust the file path as needed
         methodHandler = new CarCRUDMethodHandler(carDataHandler); // Proper initialization
     }
-
 
     SalesTransactionCRUD salesTransactionCRUD = new SalesTransactionCRUD();
     private static double totalAmountCalculation(List<PurchasedItem> purchaseItems, Membership membership) {
@@ -116,7 +114,7 @@ public class TransactionService implements TransactionInterfaces {
         salesTransactionCRUD.addTransaction(newTransaction);
         System.out.println("New transaction added successfully.");
 
-
+        updateClientSpending(clientID);
         // Optionally log the activity
         String logID = ActivityLog.generateLogID();
         ActivityLogService.logActivity(
@@ -199,7 +197,7 @@ public class TransactionService implements TransactionInterfaces {
         );
     }
     @Override
-    public void displayTransactionsByID(){
+    public void searchTransactionsByID(){
         String displayTransactionID = InputValidation.validateExistingTransactionID("Transaction ID (format: t-XXXX): ");
         salesTransactionCRUD.displayTransactionByID(displayTransactionID);
         // Log the activity
@@ -244,5 +242,14 @@ public class TransactionService implements TransactionInterfaces {
         );
     }
 
+    private void updateClientSpending(String clientID) {
+        Client client = userDataHandler.findClientByID(clientID);
+
+        if (client != null) {
+            double totalSpending = salesTransactionCRUD.totalSpendingByClient(clientID);
+            client.setTotalSpending(totalSpending);
+            userService.updateClient(client);
+        }
+    }
 
 }

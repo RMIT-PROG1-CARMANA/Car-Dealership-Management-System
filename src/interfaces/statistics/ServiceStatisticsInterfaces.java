@@ -1,9 +1,5 @@
 package interfaces.statistics;
 
-import service.Service;
-
-import java.util.Date;
-import java.util.List;
 
 public interface ServiceStatisticsInterfaces {
 

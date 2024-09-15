@@ -65,7 +65,7 @@ public class ServiceService implements ServiceInterfaces {
     }
 
     @Override
-    public void getServiceByID() {
+    public void searchServiceByID() {
         String serviceID = InputValidation.validateExistingServiceID("Enter Service ID: ", serviceList);
 
         Service service = findServiceByID(serviceID);

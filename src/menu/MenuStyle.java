@@ -4,7 +4,6 @@ public class MenuStyle {
 
     // ANSI escape codes for styling
     public static final String RESET = "\u001B[0m";
-    public static final String BOLD = "\u001B[1m";
     public static final String GREEN = "\u001B[32m";
     public static final String RED = "\u001B[31m";
     public static final String CYAN_BOLD = "\033[1;36m"; // Cyan

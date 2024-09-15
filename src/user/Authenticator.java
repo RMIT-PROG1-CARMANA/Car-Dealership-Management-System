@@ -58,13 +58,4 @@ public class Authenticator {
         }
     }
 
-
-    /**
-     Checks if a user is currently logged in.
-
-     @return true if a user is logged in, false otherwise.
-     */
-    public boolean isUserLoggedIn() {
-        return loggedUser != null;
-    }
 }

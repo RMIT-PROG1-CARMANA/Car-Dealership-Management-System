@@ -2,7 +2,6 @@ package crudhandlers;
 
 import filehandling.CarDataHandler;
 import vehicle.Car;
-
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -23,7 +22,7 @@ public class CarCRUDMethodHandler {
         cdl.overwriteDatabase(cdl.getCars());
     }
 
-    // Read
+    // Read and sort each value
     public List<Car> getCarsOrderedByID(CarCRUD.OrderType type, boolean ascending) {
         ArrayList<Car> sortedCars = new ArrayList<>(cdl.getCars().stream().filter(c -> !c.isDeleted()).toList());
         switch (type) {
@@ -107,5 +106,22 @@ public class CarCRUDMethodHandler {
             }
         }
         return null;  // Return null if the car is not found or is deleted
+    }
+
+    // Display car by ID
+    public void displayCarByID(String carID) {
+        boolean carFound = false;  // Flag to track if the car is found
+
+        for (Car c : cdl.getCars()) {
+            if (Objects.equals(c.getCarID(), carID) && !c.isDeleted()) {
+                System.out.println(c);
+                carFound = true;
+                break;  // Exit the loop once the car is found and displayed
+            }
+        }
+
+        if (!carFound) {
+            System.out.println("Car not found or has been deleted.");
+        }
     }
 }

@@ -269,7 +269,7 @@ public class InputValidation {
 
     // Validate username format and check if it exists in one method
     public static String validateUsername(String question) {
-        Scanner input = new Scanner(System.in);
+
         String username;
 
         while (true) {
@@ -318,7 +318,7 @@ public class InputValidation {
 
     // Check if the user ID already exists in the database
     public static String validateExistingUsername(String question) {
-        Scanner input = new Scanner(System.in);
+
         String username;
 
         while (true) {
@@ -349,41 +349,13 @@ public class InputValidation {
         }
     }
 
-    // Method to check the username format (you can define your own format or use a regex)
-    public static String validateUsernameFormat(String question) {
-        Scanner input = new Scanner(System.in);
-        String username;
-
-        while (true) {
-            System.out.print(question);  // Prompt user for input
-            username = input.nextLine(); // Retrieve user input
-
-            // Check if the username format is correct
-            if (username.matches("[a-zA-Z0-9_]{5,15}")) {
-                return username;  // Return valid username
-            } else {
-                System.out.println(RED + "Invalid Username format. Please ensure it follows the correct format." + RESET);
-            }
-        }
-    }
-
-    // Check if the username already exists in the database
-    private static boolean isUsernameExist(String username) {
-        for (User user : userDAO.readAllUsers()) {
-            if (user.getUsername().equals(username)) {
-                System.out.println(RED + "Username already exists. Please choose a different one." + RESET);
-                return true;
-            }
-        }
-        return false;
-    }
 
     public static String validateCarID(String question) {
-        Scanner input = new Scanner(System.in);
+
         String carID;
 
         // Load the car database before checking for existing car IDs
-//        carDAO.loadCarDatabase("src/DataBase/car.txt");
+        carDAO.loadCarDatabase("src/DataBase/car.txt");
 
         while (true) {
             carID = InputValidation.validateString(question); // Retrieve user input
@@ -406,11 +378,11 @@ public class InputValidation {
     }
 
     public static String validateExistingCarID(String question) {
-        Scanner input = new Scanner(System.in);
+
         String carID;
 
         // Load the car database before checking for existing car IDs
-//        carDAO.loadCarDatabase("src/DataBase/car.txt");
+        carDAO.loadCarDatabase("src/DataBase/car.txt");
 
         while (true) {
             carID = InputValidation.validateString(question); // Retrieve user input
@@ -441,21 +413,6 @@ public class InputValidation {
             }
         }
         return false;
-    }
-
-    public static String validateCarIDFormat(String question) {
-        Scanner input = new Scanner(System.in);
-        String carID;
-
-        while (true) {
-            carID = InputValidation.validateString(question); // Retrieve user input
-
-            // Check if the Car ID format is correct
-            if (!carID.matches("C-\\d{4}")) {  // Example format: C-XXXX
-                System.out.println(RED + "Invalid Car ID format. It should be 'C-XXXX', where 'XXXX' is a number." + RESET);
-                continue;  // Re-prompt the user
-            }
-        }
     }
 
     public static String validatePartID(String question) {
@@ -522,27 +479,6 @@ public class InputValidation {
         }
     }
 
-    public static boolean validatePartIDFormat(String question) {
-        Scanner input = new Scanner(System.in);
-        String partID;
-
-        while (true) {
-            System.out.print(question);
-            partID = input.nextLine().trim();
-
-            // Validate the format of the partID (should be in the form p-xxxx, where xxxx is a number)
-            if (!partID.matches("p-\\d{4}")) {
-                System.out.println(RED + "Invalid Part ID format. It should be 'p-XXXX', where 'XXXX' is a number." + RESET);
-                continue;  // Re-prompt for user input
-            }
-
-        }
-    }
-
-    public static boolean doesPartIDExist(String partID, List<AutoPart> existingParts) {
-        return existingParts.stream()
-                .anyMatch(part -> part.getPartID().equals(partID));
-    }
 
     public static String validateServiceID(String question, List<Service> existingServices) {
         Scanner scanner = new Scanner(System.in);
@@ -596,25 +532,6 @@ public class InputValidation {
             }
         }
         return serviceID;
-    }
-
-    public static String validateServiceIDFormat(String promptMessage, List<Service> existingServices) {
-        Scanner scanner = new Scanner(System.in);
-        String serviceID;
-        while (true) {
-            System.out.print(promptMessage);
-            serviceID = scanner.nextLine().trim();
-            // Check if input matches a valid format (e.g., S-XXXX where XXXX is a number)
-            if (!serviceID.matches("^S-\\d{4}$")) {
-                System.out.println(RED + "Invalid Service ID format. It should be in the format 'S-XXXX' where 'XXXX' are digits." + RESET);
-                continue;
-            }
-        }
-    }
-
-    public static boolean doesServiceIDExist(String serviceID, List<Service> existingServices) {
-        return existingServices.stream()
-                .anyMatch(service -> service.getServiceID().equals(serviceID));
     }
 
     public static String validateLogID(String question) {

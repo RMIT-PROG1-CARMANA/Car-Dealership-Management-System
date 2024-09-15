@@ -48,7 +48,7 @@ public class MechanicMenu extends EmployeeBaseMenu {
             Divider.printDivider(46);
 
             System.out.print("Enter Selection (0-7): ");
-            choice = getValidatedChoice(0, 7);
+            choice = getValidatedChoice(7);
 
             switch (choice) {
                 case 0:

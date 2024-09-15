@@ -7,7 +7,7 @@ public interface TransactionInterfaces {
     void deleteTransaction();
     void displayTransactionsSortByPrice();
     void displayTransactionsByClientID();
-    void displayTransactionsByID();
+    void searchTransactionsByID();
 
     void displayClientTransactionHistory();
 }

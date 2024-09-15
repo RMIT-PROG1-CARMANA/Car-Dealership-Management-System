@@ -21,8 +21,6 @@ public class CarDataHandler {
             cars = (ArrayList<Car>) ois.readObject();  // Deserialize the list of cars
             if (cars.isEmpty()) {
                 System.out.println("The car database is empty.");
-            } else {
-                System.out.println("Car database loaded successfully from " + carDatabaseFile);
             }
         } catch (FileNotFoundException e) {
             System.err.println("File not found: " + carDatabaseFile);

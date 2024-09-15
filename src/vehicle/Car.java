@@ -172,18 +172,17 @@ public class Car implements Serializable {
 
         @Override
         public String toString() {
-            return "Car{" +
-                    "carID='" + carID + '\'' +
-                    ", make='" + make + '\'' +
-                    ", model='" + model + '\'' +
-                    ", year=" + year +
-                    ", mileage=" + mileage +
-                    ", color='" + color + '\'' +
-                    ", status=" + (status ? "Available" : "Sold") +
-                    ", price=" + price +
-                    ", notes='" + notes + '\'' +
-                    ", serviceHistory=" + serviceHistory + " services" +
-                    ", deleted=" + deleted +
-                    "}";
+            return "Car:\n" +
+                    "    carID: '" + carID + "'\n" +
+                    "    make: '" + make + "'\n" +
+                    "    model: '" + model + "'\n" +
+                    "    year: " + year + "\n" +
+                    "    mileage: " + mileage + "\n" +
+                    "    color: '" + color + "'\n" +
+                    "    status: " + (status ? "Available" : "Sold") + "\n" +
+                    "    price: $" + String.format("%.2f", price) + "\n" +
+                    "    notes: '" + notes + "'\n" +
+                    "    serviceHistory: " + serviceHistory.size() + " services\n" +
+                    "    deleted: " + (deleted ? "Yes" : "No");
         }
     }

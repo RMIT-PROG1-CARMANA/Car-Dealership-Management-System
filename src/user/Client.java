@@ -1,46 +1,47 @@
 package user;
 
-import sales.SalesTransaction;
+import crudhandlers.SalesTransactionCRUD;
+
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
+
 
 public class Client extends User implements Serializable {
+    private static final long serialVersionUID = 7922721516029818164L;
+
     private Membership membership;
-    private final List<SalesTransaction> transactions;
+    private double totalSpending;
 
-    public Client(String userID, String fullName, Date dateOfBirth, String address, long phoneNumber, String email, boolean status, String password, String username, List<SalesTransaction> transactions) {
+    public void setMembership(Membership membership) {
+        this.membership = membership;
+    }
+
+    public double getTotalSpending() {
+        return totalSpending;
+    }
+
+    public Client(String userID, String fullName, Date dateOfBirth, String address, long phoneNumber, String email, boolean status, String password, String username, double totalSpending) {
         super(userID, fullName, dateOfBirth, address, phoneNumber, email, UserType.CLIENT, status, password, username);
-        this.transactions = (transactions != null) ? transactions : new ArrayList<>();
-        updateMembership();  // Initialize membership based on existing transactions
-    }
-
-    // Calculate the total spending from all transactions
-    public double calculateTotalSpending() {
-        return transactions.stream().mapToDouble(SalesTransaction::getTotalAmount).sum();
-    }
-
-    // Update membership based on total spending
-    private void updateMembership() {
-        double totalSpending = calculateTotalSpending();
-        this.membership = new Membership(totalSpending);
+        this.totalSpending = totalSpending;
+        updateMembership();
     }
 
     // Get the current membership level
     public Membership getMembership() {
         return membership;
     }
+    private void updateMembership() {
+        this.membership = new Membership(totalSpending);
+    }
 
-    // Add a new transaction and update membership accordingly
-    public void addTransaction(SalesTransaction transaction) {
-        transactions.add(transaction);
-        updateMembership();  // Recalculate membership level after adding a transaction
+    public void setTotalSpending(double totalSpending) {
+        this.totalSpending = totalSpending;
+        updateMembership();  // Recalculate membership based on updated total spending
     }
 
     @Override
     public String toString() {
-        return super.toString() + ", Membership: " + membership + ", TotalSpending: " + calculateTotalSpending();
+        return super.toString() + membership + ", TotalSpending: " + totalSpending;
     }
 }

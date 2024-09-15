@@ -47,11 +47,11 @@ public class Menu  {
         System.out.printf("| %-53s |\n", option);
     }
 
-    protected int getValidatedChoice(int min, int max) {
+    protected int getValidatedChoice(int max) {
         return InputValidation.validateInt(
-                v -> v >= min && v <= max, // Validate that input is within the specified range
+                v -> v >= 0 && v <= max, // Validate that input is within the specified range
                 "Enter Selection: ",       // Prompt message
-                "Invalid input. Please enter a number between " + min + " and " + max + "." // Error message
+                "Invalid input. Please enter a number between " + 0 + " and " + max + "." // Error message
         );
     }
 
@@ -90,7 +90,7 @@ public class Menu  {
             System.out.println(GREEN_BOLD + "4. " + RESET + "Exit");
             System.out.println(CYAN_BOLD + "=====================================" + RESET);
 
-            choice = getValidatedChoice(0, 4);
+            choice = getValidatedChoice(4);
             // Handle menu options
             switch (choice) {
                 case 0:

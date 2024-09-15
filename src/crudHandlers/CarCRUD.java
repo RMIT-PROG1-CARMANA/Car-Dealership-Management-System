@@ -23,7 +23,7 @@ public class CarCRUD {
     // Constructor
     public CarCRUD(String carDB) {
         CarDataHandler cdl = new CarDataHandler();
-//        cdl.loadCarDatabase(carDB);
+        cdl.loadCarDatabase(carDB);
         methodHandler = new CarCRUDMethodHandler(cdl);
     }
 
@@ -47,6 +47,12 @@ public class CarCRUD {
         methodHandler.softDeleteCarByID(carID);
     }
 
-
+    public void searchCarByID(String carID){
+        methodHandler.displayCarByID(carID);
+    }
+    // Find Car by ID
+    public Car findCarByID(String carID) {
+        return methodHandler.findCarByID(carID);
+    }
 
 }

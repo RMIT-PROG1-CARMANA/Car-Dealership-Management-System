@@ -2,7 +2,6 @@ package crudhandlers;
 
 import filehandling.SalesTransactionDataHandler;
 import sales.SalesTransaction;
-
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -84,8 +83,6 @@ public class SalesTransactionCRUD {
 
         return clientTransactions;
     }
-
-
     //Display transaction by transaction ID
     public void displayTransactionByID(String id) {
         boolean transactionFound = false;
@@ -101,4 +98,20 @@ public class SalesTransactionCRUD {
             System.out.println("Unable to find transaction with ID " + id);
         }
     }
+    public double totalSpendingByClient(String clientID) {
+        double totalSpending = 0;
+
+        // Get all transactions for the provided client ID
+        List<SalesTransaction> clientTransactions = getTransactionsByClientID(clientID);
+
+        // Sum up the total amount for each transaction
+        for (SalesTransaction transaction : clientTransactions) {
+            totalSpending += transaction.getTotalAmount();
+        }
+
+        // Return the total spending for the client
+        return totalSpending;
+    }
+
+
 }

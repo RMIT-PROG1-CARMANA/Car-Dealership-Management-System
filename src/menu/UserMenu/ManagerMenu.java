@@ -1,16 +1,14 @@
 package menu.usermenu;
 
 import interfaces.*;
-import interfaces.statistics.*;
 import logsystem.*;
 import menu.Menu;
 import menu.statistics.statisticsmenu;
 import operations.*;
-import operations.statistics.*;
 import utils.*;
 import java.util.*;
 import static menu.MenuStyle.*;
-import static user.Authenticator.loggedUser;
+
 
 public class ManagerMenu extends Menu {
     int choice;
@@ -21,11 +19,6 @@ public class ManagerMenu extends Menu {
     static ServiceInterfaces serviceService = new ServiceService();
     static TransactionInterfaces transactionService = new TransactionService();
     static UserInterfaces userService = new UserService();
-    static CarStatisticsInterfaces carStatistics = new CarStatistics();
-    static AutoPartStatisticsInterfaces autoPartStatistics = new AutoPartStatistics();
-    static ServiceStatisticsInterfaces serviceStatistics = new ServiceStatistics();
-    static TransactionStatisticsInterfaces transactionStatistics = new TransactionStatistics();
-    static RevenueStatisticsInterfaces revenueStatistics = new RevenueStatistics();
     statisticsmenu statisticsMenu = new statisticsmenu();
 
 
@@ -45,7 +38,7 @@ public class ManagerMenu extends Menu {
         System.out.println(CYAN_BOLD + "         Manager Main Menu" + RESET);
         System.out.println(CYAN_BOLD + "=====================================" + RESET);
 
-        displayMenuHeader("MANAGER MENU", 53);
+        displayMenuHeader("MANAGER MENU", 43);
         displayOption(GREEN_BOLD + "0. " + RESET + "Manage Cars");
         displayOption(GREEN_BOLD + "1. " + RESET + "Manage Auto Parts");
         displayOption(GREEN_BOLD + "2. " + RESET + "Manage Sale Transactions");
@@ -58,7 +51,7 @@ public class ManagerMenu extends Menu {
         Divider.printDivider(46);
 
         System.out.print("Enter Selection (0-8): ");
-        choice = getValidatedChoice(0, 8);
+        choice = getValidatedChoice(8);
 
         switch (choice) {
             case 0:
@@ -114,13 +107,14 @@ public class ManagerMenu extends Menu {
             displayOption(GREEN_BOLD + "0. " + RESET + "Add Cars");
             displayOption(GREEN_BOLD + "1. " + RESET + "Update Cars");
             displayOption(GREEN_BOLD + "2. " + RESET + "Delete Cars");
-            displayOption(GREEN_BOLD + "3. " + RESET + "View All Cars");
-            displayOption(GREEN_BOLD + "4. " + RESET + "View Car Sorted By Price");
-            displayOption(GREEN_BOLD + "5. " + RESET + "Back");
+            displayOption(GREEN_BOLD + "3. " + RESET + "Search Car");
+            displayOption(GREEN_BOLD + "4. " + RESET + "View All Cars");
+            displayOption(GREEN_BOLD + "5. " + RESET + "View Car Sorted By Price");
+            displayOption(GREEN_BOLD + "6. " + RESET + "Back");
             Divider.printDivider(46);
 
-            System.out.print("Enter Selection (0-5): ");
-            choice = getValidatedChoice(0, 5);
+            System.out.print("Enter Selection (0-6): ");
+            choice = getValidatedChoice(6);
             switch (choice) {
                 case 0:
                     carService.addCar(); // Add a new car
@@ -135,14 +129,15 @@ public class ManagerMenu extends Menu {
                     break;
 
                 case 3:
+                    carService.searchCarByID(); // search car
+                    break;
+                case 4:
                     carService.displayAllCar(); // View all available cars
                     break;
-
-                case 4:
+                case 5:
                     carService.displayCarByPrice();
                     break;
-
-                case 5:
+                case 6:
                     displayManagerMenu(); // Go back to the main menu
                     exit = true;
                     break;
@@ -161,17 +156,17 @@ public class ManagerMenu extends Menu {
         System.out.println(CYAN_BOLD + "    Manager Auto Parts Menu" + RESET);
         System.out.println(CYAN_BOLD + "=====================================" + RESET);
 
-        displayMenuHeader("MANAGER AUTO PARTS MENU", 53);
+        displayMenuHeader("MANAGER AUTO PARTS MENU", 43);
         displayOption(GREEN_BOLD + "0. " + RESET + "Add Auto Parts");
         displayOption(GREEN_BOLD + "1. " + RESET + "Update Auto Parts");
         displayOption(GREEN_BOLD + "2. " + RESET + "Delete Auto Parts");
         displayOption(GREEN_BOLD + "3. " + RESET + "Search Auto Parts");
         displayOption(GREEN_BOLD + "4. " + RESET + "View All Auto Parts");
         displayOption(GREEN_BOLD + "5. " + RESET + "Back");
-        Divider.printDivider();
+        Divider.printDivider(46);
 
         System.out.print("Enter Selection (0-5): ");
-        choice = getValidatedChoice(0, 5);
+        choice = getValidatedChoice(5);
 
         switch (choice) {
             case 0:
@@ -184,7 +179,7 @@ public class ManagerMenu extends Menu {
                 autoPartService.deletePart();
                 break;
             case 3:
-                autoPartService.displayPartDetails();
+                autoPartService.searchPartByID();
                 break;
             case 4:
                 autoPartService.listAllParts();
@@ -207,7 +202,7 @@ public class ManagerMenu extends Menu {
         System.out.println(CYAN_BOLD + "Manager Sale Transactions Menu" + RESET);
         System.out.println(CYAN_BOLD + "=====================================" + RESET);
 
-        displayMenuHeader("MANAGER SALE TRANSACTION MENU", 53);
+        displayMenuHeader("MANAGER SALE TRANSACTION MENU", 43);
         displayOption(GREEN_BOLD + "0. " + RESET + "Add Sale Transaction");
         displayOption(GREEN_BOLD + "1. " + RESET + "Delete Sale Transaction");
         displayOption(GREEN_BOLD + "2. " + RESET + "Search Sale Transactions by Client ID");
@@ -215,10 +210,10 @@ public class ManagerMenu extends Menu {
         displayOption(GREEN_BOLD + "4. " + RESET + "View Transaction Details by ID");
         displayOption(GREEN_BOLD + "5. " + RESET + "Sort Transaction by total price");
         displayOption(GREEN_BOLD + "6. " + RESET + "Back");
-        Divider.printDivider();
+        Divider.printDivider(46);
 
         System.out.print("Enter Selection (0-5): ");
-        int choice = getValidatedChoice(0, 6);
+        int choice = getValidatedChoice(6);
 
         switch (choice) {
             case 0:
@@ -237,7 +232,7 @@ public class ManagerMenu extends Menu {
                 break;
 
             case 4:
-                transactionService.displayTransactionsByID();
+                transactionService.searchTransactionsByID();
                 break;
 
             case 5:
@@ -262,21 +257,21 @@ public class ManagerMenu extends Menu {
         System.out.println(CYAN_BOLD + "       Manager Users Menu" + RESET);
         System.out.println(CYAN_BOLD + "=====================================" + RESET);
 
-        displayMenuHeader("MANAGER USERS MENU", 53);
+        displayMenuHeader("MANAGER USERS MENU", 43);
         displayOption(GREEN_BOLD + "0. " + RESET + "Add User");
         displayOption(GREEN_BOLD + "1. " + RESET + "Update User");
         displayOption(GREEN_BOLD + "2. " + RESET + "Delete User");
         displayOption(GREEN_BOLD + "3. " + RESET + "Search User");
         displayOption(GREEN_BOLD + "4. " + RESET + "View All Users");
         displayOption(GREEN_BOLD + "5. " + RESET + "Back");
-        Divider.printDivider();
+        Divider.printDivider(46);
 
         System.out.print("Enter Selection (0-5): ");
-        choice = getValidatedChoice(0, 5);
+        choice = getValidatedChoice(5);
 
         switch (choice) {
             case 0:
-                userService.createUser();
+                userService.addUser();
                 break;
 
             case 1:
@@ -286,7 +281,7 @@ public class ManagerMenu extends Menu {
                 userService.deleteUser();
                 break;
             case 3:
-
+                userService.searchUserByID();
                 break;
             case 4:
                 userService.displayAllUsers();
@@ -309,7 +304,7 @@ public class ManagerMenu extends Menu {
             System.out.println(CYAN_BOLD + "      Manager Services Menu" + RESET);
             System.out.println(CYAN_BOLD + "=====================================" + RESET);
 
-            displayMenuHeader("MANAGER SERVICE MENU", 53);
+            displayMenuHeader("MANAGER SERVICE MENU", 43);
             displayOption(GREEN_BOLD + "0. " + RESET + "Add Services");
             displayOption(GREEN_BOLD + "1. " + RESET + "Get Service by ID");
             displayOption(GREEN_BOLD + "2. " + RESET + "Update Service");
@@ -318,17 +313,17 @@ public class ManagerMenu extends Menu {
             displayOption(GREEN_BOLD + "5. " + RESET + "Remove Part from Service");
             displayOption(GREEN_BOLD + "6. " + RESET + "List All Services");
             displayOption(GREEN_BOLD + "7. " + RESET + "Back");
-            Divider.printDivider();
+            Divider.printDivider(46);
 
             System.out.print("Enter Selection (0-7): ");
-            choice = getValidatedChoice(0, 7);
+            choice = getValidatedChoice(7);
 
             switch (choice) {
                 case 0:
                     serviceService.addService();
                     break;
                 case 1:
-                    serviceService.getServiceByID();
+                    serviceService.searchServiceByID();
                     break;
                 case 2:
                     serviceService.updateService();
@@ -364,17 +359,17 @@ public class ManagerMenu extends Menu {
             System.out.println(CYAN_BOLD + "       Manager Activity log" + RESET);
             System.out.println(CYAN_BOLD + "=====================================" + RESET);
 
-            displayMenuHeader("ACTIVITY LOG MENU", 53);
+            displayMenuHeader("ACTIVITY LOG MENU", 43);
             displayOption(GREEN_BOLD + "0. " + RESET + "View All Logs");
             displayOption(GREEN_BOLD + "1. " + RESET + "Search by Log ID");
             displayOption(GREEN_BOLD + "2. " + RESET + "Search by Username");
             displayOption(GREEN_BOLD + "3. " + RESET + "Search by User ID");
             displayOption(GREEN_BOLD + "4. " + RESET + "Search by Date");
             displayOption(GREEN_BOLD + "5. " + RESET + "Back");
-            Divider.printDivider();
+            Divider.printDivider(46);
 
             System.out.print("Enter Selection (0-5): ");
-            choice = getValidatedChoice(0, 5);
+            choice = getValidatedChoice(5);
             switch (choice) {
                 case 0:
                     List<ActivityLog> allLogs = activityLogService.viewAllLogs();
@@ -423,17 +418,17 @@ public class ManagerMenu extends Menu {
             System.out.println(CYAN_BOLD + "   Manager Statistics Menu" + RESET);
             System.out.println(CYAN_BOLD + "=====================================" + RESET);
 
-            displayMenuHeader("MANAGER STATISTICS MENU", 53);
+            displayMenuHeader("MANAGER STATISTICS MENU", 43);
             displayOption(GREEN_BOLD + "0. " + RESET + "View Cars Statistics");
             displayOption(GREEN_BOLD + "1. " + RESET + "View Auto Part Statistics");
             displayOption(GREEN_BOLD + "2. " + RESET + "View Service Statistics");
             displayOption(GREEN_BOLD + "3. " + RESET + "View Transaction Statistics");
             displayOption(GREEN_BOLD + "4. " + RESET + "View Revenue");
             displayOption(GREEN_BOLD + "5. " + RESET + "Back");
-            Divider.printDivider();
+            Divider.printDivider(46);
 
             System.out.print("Enter Selection (0-5): ");
-            choice = getValidatedChoice(0, 5);
+            choice = getValidatedChoice(5);
 
             switch (choice) {
                 case 0 -> {

@@ -3,7 +3,7 @@ package interfaces;
 import user.User;
 
 public interface UserInterfaces {
-    void createUser();
+    void addUser();
     void displayAllUsers();
     void displayInfoUsers();
 
@@ -14,4 +14,6 @@ public interface UserInterfaces {
     void displayInfoUsersMembership();
 
     void updateProfile(User loggedUser);
+
+    void searchUserByID();
 }

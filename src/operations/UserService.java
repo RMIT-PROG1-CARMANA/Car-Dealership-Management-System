@@ -1,5 +1,6 @@
 package operations;
 
+import crudhandlers.SalesTransactionCRUD;
 import filehandling.UserDataHandler;
 import interfaces.UserInterfaces;
 import logsystem.*;
@@ -20,19 +21,19 @@ import static user.Authenticator.loggedUser;
 
 
 public class UserService implements UserInterfaces {
-
-    public static void addUser(User newUserManager) {
+    public static void createUserToFile(User newUserManager) {
         List<User> managersList = userDAO.fetchManagerFromDatabase();
         managersList.add(newUserManager);
         userDAO.writeUsersToFile(managersList.toArray(new User[0]));
     }
 
     private static final UserDataHandler userDAO = new UserDataHandler();
+    private static final SalesTransactionCRUD salseDAO = new SalesTransactionCRUD();
 
     // manager can add user
     @Override
-    public void createUser() {
-        String userID = InputValidation.validateUserID("Enter User ID (uXXXX format): ");
+    public void addUser() {
+        String userID = InputValidation.validateUserID("Enter User ID (u-XXXX format): ");
         String fullName = InputValidation.validateString("Enter Full Name: ");
         Date dateOfBirth = InputValidation.validateDate("Enter Date of Birth (dd/MM/yyyy): ");
         String address = InputValidation.validateString("Enter Address: ");
@@ -42,41 +43,32 @@ public class UserService implements UserInterfaces {
         String password = InputValidation.validateString("Enter Password: ");
         Boolean status = InputValidation.validateBoolean("Enter Status (true/false): ");
         int userTypeChoice = InputValidation.validateInt("Select User Type (1 for Manager, 2 for Employee, 3 for Client): ");
-        User.UserType userType;
-        switch (userTypeChoice) {
-            case 1:
-                userType = User.UserType.MANAGER;
-                break;
-            case 2:
-                userType = User.UserType.EMPLOYEE;
-                break;
-            case 3:
-                userType = User.UserType.CLIENT;
-                break;
-            default:
-                throw new IllegalArgumentException("Invalid user type choice");
-        }
+        User.UserType userType = switch (userTypeChoice) {
+            case 1 -> User.UserType.MANAGER;
+            case 2 -> User.UserType.EMPLOYEE;
+            case 3 -> User.UserType.CLIENT;
+            default -> throw new IllegalArgumentException("Invalid user type choice");
+        };
         User user;
         if (userType == User.UserType.EMPLOYEE) {
             int positionChoice = InputValidation.validateInt("Select Position (1 for Salesperson, 2 for Mechanic): ");
             Employee.Position position;
-            switch (positionChoice) {
-                case 1:
+            user = switch (positionChoice) {
+                case 1 -> {
                     position = Employee.Position.SALESPERSON;
-                    user = new Salesperson(userID, fullName, dateOfBirth, address, phoneNumber, email, status, password, username);
-                    break;
-                case 2:
+                    yield new Salesperson(userID, fullName, dateOfBirth, address, phoneNumber, email, status, password, username);
+                }
+                case 2 -> {
                     position = Employee.Position.MECHANIC;
-                    user = new Mechanic(userID, fullName, dateOfBirth, address, phoneNumber, email, status, password, username);
-                    break;
-                default:
-                    throw new IllegalArgumentException("Invalid position choice");
-            }
+                    yield new Mechanic(userID, fullName, dateOfBirth, address, phoneNumber, email, status, password, username);
+                }
+                default -> throw new IllegalArgumentException("Invalid position choice");
+            };
         } else if (userType == User.UserType.MANAGER) {
             user = new Manager(userID, fullName, dateOfBirth, address, phoneNumber, email, status, password, username);
         } else {
-            List<SalesTransaction> transactions = new ArrayList<>();  // Use empty list if no transactions
-            user = new Client(userID, fullName, dateOfBirth, address, phoneNumber, email, status, password, username,transactions ); // Adjust Client constructor
+            double totalSpending = 0;
+            user = new Client(userID, fullName, dateOfBirth, address, phoneNumber, email, status, password, username,totalSpending ); // Adjust Client constructor
         }
 
 
@@ -88,7 +80,7 @@ public class UserService implements UserInterfaces {
                 loggedUser.getUserID(),
                 "Created User with ID: " + userID + " Username :" + username
         );
-        addUser(user);
+        createUserToFile(user);
         System.out.println("User created successfully.");
     }
 
@@ -144,9 +136,6 @@ public class UserService implements UserInterfaces {
             return;
         }
 
-        // Update User ID
-        String newUserID = InputValidation.validateUserID("Enter new user ID: ");
-        loggedUser.setUserID(newUserID);
 
         // Update full name
         String newFullName = InputValidation.validateString("Enter new full name: ");
@@ -195,7 +184,7 @@ public class UserService implements UserInterfaces {
                 new Date(),
                 loggedUser.getUsername(),
                 loggedUser.getUserID(),
-                "Update profile : " + loggedUser.getUserID() + "  to" + newUserID
+                "Update profile : " + loggedUser.getUserID()
         );
 
         System.out.println("Your information has been updated successfully!");
@@ -330,6 +319,72 @@ public class UserService implements UserInterfaces {
             System.out.println("No user found with the given username.");
         }
 
+    }
+    // search user function
+    @Override
+    public void searchUserByID() {
+
+        String userID = InputValidation.validateExistingUserID("Enter the UserID to search: ");
+        System.out.println();
+        User[] users = userDAO.readAllUsers();
+        boolean found = false;
+
+        for (User user : users) {
+            if (user.getUserID().equals(userID)) {
+                System.out.println("User found:");
+                System.out.println(user); // Assuming User class has a meaningful toString() method
+                found = true;
+                break;
             }
+        }
+        // Log the activity
+        String logID = ActivityLog.generateLogID();
+        ActivityLogService.logActivity(
+                logID,
+                new Date(),
+                loggedUser.getUsername(),
+                loggedUser.getUserID(),
+                "Displayed user details for ID: " + userID
+        );
+        if (!found) {
+            System.out.println("User with ID " + userID + " not found.");
+        }
+    }
+
+    public void updateClient(Client updatedClient) {
+        // Read all users from the file
+        User[] usersArray = userDAO.readAllUsers();
+        if (usersArray == null || usersArray.length == 0) {
+            System.err.println("No users to update. The user data is empty or null.");
+            return;
+        }
+
+        // Convert the array to a list for easier manipulation
+        List<User> usersList = new ArrayList<>(Arrays.asList(usersArray));
+
+        // Find and update the client in the list
+        boolean clientUpdated = false;
+        for (int i = 0; i < usersList.size(); i++) {
+            User user = usersList.get(i);
+            if (user instanceof Client && user.getUserID().equals(updatedClient.getUserID())) {
+                usersList.set(i, updatedClient);  // Replace the old client with the updated one
+                clientUpdated = true;
+                break;
+            }
+        }
+
+        if (!clientUpdated) {
+            System.err.println("Client with ID " + updatedClient.getUserID() + " not found. No update performed.");
+            return;
+        }
+
+        // Convert the list back to an array
+        User[] updatedUsersArray = usersList.toArray(new User[0]);
+
+        // Write the updated array of users back to the file
+        userDAO.writeUsersToFile(updatedUsersArray);
+    }
+
+
 
 }

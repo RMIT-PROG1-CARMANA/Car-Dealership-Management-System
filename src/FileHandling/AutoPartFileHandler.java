@@ -1,8 +1,6 @@
 package filehandling;
 
 import part.AutoPart;
-import operations.*;
-
 import java.io.*;
 import java.util.*;
 
@@ -12,7 +10,7 @@ public class AutoPartFileHandler {
     private static final String FILE_PATH = "src/database/parts.txt";
 
 
-    // Serialize parts to a binary file
+    // write parts to a binary file
     public static void savePartsData() {
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(FILE_PATH))) {
             oos.writeObject(AutoPart.getAllParts());
@@ -22,7 +20,7 @@ public class AutoPartFileHandler {
         }
     }
 
-    // Deserialize parts from a binary file
+    // read parts from a binary file
     @SuppressWarnings("unchecked")
     public static void loadPartsData() {
         try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(FILE_PATH))) {

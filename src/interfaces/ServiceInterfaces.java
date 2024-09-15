@@ -1,9 +1,8 @@
 package interfaces;
 
 public interface ServiceInterfaces {
-
     void addService();
-    void getServiceByID();
+    void searchServiceByID();
     void updateService();
     void deleteService();
     void addPartToService();

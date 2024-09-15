@@ -26,16 +26,18 @@ public class SalespersonMenu extends EmployeeBaseMenu {
 
             System.out.println(CYAN_BOLD + "=====================================" + RESET);
             System.out.println(CYAN_BOLD + "     Welcome, Salesperson!" + RESET);
-            displayMenuHeader("Salesperson Menu", 46);
+            System.out.println(CYAN_BOLD + "=====================================" + RESET);
+            System.out.println();
+            displayMenuHeader("Salesperson Menu", 43);
             displayOption(GREEN_BOLD + "0. " + RESET + "Add Sales Transaction");
             displayOption(GREEN_BOLD + "1. " + RESET + "View Sales Transactions");
             displayOption(GREEN_BOLD + "2. " + RESET + "Calculate Revenue (Day/Week/Month)");
             displayOption(GREEN_BOLD + "3. " + RESET + "List Number of Sales Transaction(Day/Week/Month)");
             displayOption(GREEN_BOLD + "4. " + RESET + "Back to Main Menu");
             displayOption(GREEN_BOLD + "5. " + RESET + "Exit");
-            Divider.printDivider(43);
+            Divider.printDivider(46);
 
-            choice = getValidatedChoice(0, 7);
+            choice = getValidatedChoice(7);
 
             switch (choice) {
                 case 0:
@@ -68,7 +70,7 @@ public class SalespersonMenu extends EmployeeBaseMenu {
                     if (confirmBack) {
                         System.out.println("Returning to main menu...");
                     }
-                    return; // Exits the current menu loop and returns to the Menu class
+                    return;
 
                 case 5:
                     boolean confirmExit = InputValidation.validateBoolean("Are you sure you want to exit? (yes/no): ");

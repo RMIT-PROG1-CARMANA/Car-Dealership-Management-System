@@ -1,9 +1,5 @@
 package interfaces.statistics;
 
-import vehicle.Car;
-
-import java.util.Date;
-import java.util.List;
 
 public interface CarStatisticsInterfaces {
 

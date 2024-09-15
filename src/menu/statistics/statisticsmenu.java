@@ -32,7 +32,7 @@ public class statisticsmenu extends Menu {
             Divider.printDivider(46);
 
             System.out.print("Enter Selection (0-5): ");
-            int choice = getValidatedChoice(0, 5);
+            int choice = getValidatedChoice(5);
 
             switch (choice) {
                 case 0: carStatistics.calculateCarsSoldInMonth(); break;
@@ -63,7 +63,7 @@ public class statisticsmenu extends Menu {
             Divider.printDivider(46);
 
             System.out.print("Enter Selection (0-3): ");
-            int choice = getValidatedChoice(0, 3);
+            int choice = getValidatedChoice(3);
 
             switch (choice) {
                 case 0: autoPartStatistics.getSoldPartsByDay(); break;
@@ -93,7 +93,7 @@ public class statisticsmenu extends Menu {
             Divider.printDivider(46);
 
             System.out.print("Enter Selection (0-4): ");
-            int choice = getValidatedChoice(0, 4);
+            int choice = getValidatedChoice(4);
 
             switch (choice) {
                 case 0: serviceStatistics.getServicesByDay(); break;
@@ -122,7 +122,7 @@ public class statisticsmenu extends Menu {
             Divider.printDivider(46);
 
             System.out.print("Enter Selection (0-3): ");
-            int choice = getValidatedChoice(0, 3);
+            int choice = getValidatedChoice(3);
             switch (choice) {
                 case 0: transactionStatistics.getTransactionsByDay(); break;
                 case 1: transactionStatistics.getTransactionsByWeek(); break;
@@ -149,7 +149,7 @@ public class statisticsmenu extends Menu {
             Divider.printDivider(46);
 
             System.out.print("Enter Selection (0-3): ");
-            int choice = getValidatedChoice(0, 3);
+            int choice = getValidatedChoice(3);
             switch (choice) {
                 case 0: revenueStatistics.calculateTotalRevenueForDay(); break;
                 case 1: revenueStatistics.calculateTotalRevenueByWeek(); break;

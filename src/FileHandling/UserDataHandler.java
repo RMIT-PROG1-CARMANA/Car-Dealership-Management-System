@@ -83,18 +83,33 @@ public class UserDataHandler {
             }
         }
     public Client findClientByID(String clientID) {
-        // Read all users from the file
-        User[] usersArray = readAllUsers();
+        try {
+            // Read all users from the file
+            User[] usersArray = readAllUsers();
 
-        // Loop through the users and find the client with the given ID
-        for (User user : usersArray) {
-            if (user instanceof Client && user.getUserID().equals(clientID)) {
-                return (Client) user;  // Cast to Client and return
+            // Check if usersArray is null or empty
+            if (usersArray == null || usersArray.length == 0) {
+                throw new Exception("User data is empty or null.");
             }
+
+            // Loop through the users and find the client with the given ID
+            for (User user : usersArray) {
+                if (user instanceof Client && user.getUserID().equals(clientID)) {
+                    return (Client) user;  // Cast to Client and return
+                }
+            }
+
+            System.out.println("Client with ID " + clientID + " not found.");
+            return null;  // Return null if the client is not found
+
+        } catch (NullPointerException e) {
+            System.err.println("Error: Client ID is null.");
+        } catch (Exception e) {
+            System.err.println("Error occurred: " + e.getMessage());
         }
 
-        System.out.println("Client with ID " + clientID + " not found.");
-        return null;  // Return null if the client is not found
+        // Return null if any exception occurs
+        return null;
     }
 
 }
