@@ -17,7 +17,6 @@ public class SalesTransactionDataHandler {
         if (file.exists()) {
             try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(file))) {
                 transactions = (List<SalesTransaction>) ois.readObject();
-                System.out.println("Transaction database loaded successfully.");
             } catch (FileNotFoundException e) {
                 System.out.println("Database file not found: " + e.getMessage());
             } catch (IOException e) {

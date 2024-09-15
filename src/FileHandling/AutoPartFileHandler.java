@@ -27,8 +27,6 @@ public class AutoPartFileHandler {
             // Replace the existing parts list with the deserialized one
             List<AutoPart> loadPartsData = (List<AutoPart>) ois.readObject();
             AutoPart.setPartsList(loadPartsData);  // Replace the parts list with deserialized data
-
-            System.out.println("Parts loaded from file successfully.");
         } catch (IOException | ClassNotFoundException e) {
             System.out.println("Error deserializing parts: " + e.getMessage());
         }

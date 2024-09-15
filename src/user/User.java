@@ -129,17 +129,16 @@ public abstract class User implements Serializable {
 
     @Override
     public String toString() {
-        return "User{" +
-                "status=" + status +
-                ", userType=" + userType +
-                ", email='" + email + '\'' +
-                ", phoneNumber='" + phoneNumber + '\'' +
-                ", address='" + address + '\'' +
-                ", dateOfBirth=" + dateOfBirth +
-                ", fullName='" + fullName + '\'' +
-                ", userID='" + userID + '\'' +
-                ", username='" + username + '\'' +
-                ", password='" + password + '\'' +
-                '}';
+        return "User\n" +
+                "    status: " + status + "\n" +
+                "    userType: " + userType + "\n" +
+                "    email: '" + email + "'\n" +
+                "    phoneNumber: '" + phoneNumber + "'\n" +
+                "    address: '" + address + "'\n" +
+                "    dateOfBirth: " + dateOfBirth + "\n" +
+                "    fullName: '" + fullName + "'\n" +
+                "    userID: '" + userID + "'\n" +
+                "    username: '" + username + "'\n" +
+                "    password: '" + password + "'";
     }
 }

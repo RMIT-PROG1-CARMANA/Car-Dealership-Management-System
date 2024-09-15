@@ -55,14 +55,14 @@ public class TransactionService implements TransactionInterfaces {
         // Add a new transaction
         String transactionID = InputValidation.validateTransactionID("Transaction ID (format: t-XXXX): ");
         Date transactionDate = InputValidation.validateDate("Transaction Date (DD/MM/YYYY): ");
-        String clientID = InputValidation.validateExistingUserID("Client ID (format: CL-XXXX): ");
-        String salespersonID = InputValidation.validateExistingUserID("Salesperson ID (format: SP-XXXX): ");
+        String clientID = InputValidation.validateExistingUserID("Client ID (format: u-XXXX): ");
+        String salespersonID = InputValidation.validateExistingUserID("Salesperson ID (format: u-XXXX): ");
         // Collect PurchasedItem details
         List<PurchasedItem> purchaseItems = new ArrayList<>();
         boolean addMoreItems = true;
 
         while (addMoreItems) {
-            System.out.print("Enter car ID (or leave blank if none): ");
+            System.out.print("Enter car ID : ");
             String carID = scanner.nextLine();
             Car car = null;
             Integer carQuality = null;
@@ -73,13 +73,13 @@ public class TransactionService implements TransactionInterfaces {
                     System.out.println("Car with ID " + carID + " not found.");
                 } else {
                     // Ask for the quality if the car is selected
-                    System.out.print("Enter quality for car (number of units): ");
+                    System.out.print("Enter quantity for car (number of units,if none type: '0'): ");
                     carQuality = Integer.parseInt(scanner.nextLine());
                 }
             }
 
             // Since AutoPart is optional, we'll ask for part details similarly
-            System.out.print("Enter part ID (or leave blank if none): ");
+            System.out.print("Enter part ID (if none type: '0'): ");
             String partID = scanner.nextLine();
             AutoPart part = null;
             Integer partQuality = null;
@@ -89,7 +89,7 @@ public class TransactionService implements TransactionInterfaces {
                     System.out.println("Part with ID " + partID + " not found.");
                 } else {
                     // Ask for the quality if the part is selected
-                    System.out.print("Enter quality for part (number of units): ");
+                    System.out.print("Enter quantity for part (number of units,if none type: '0'): ");
                     partQuality = Integer.parseInt(scanner.nextLine());
                 }
             }
