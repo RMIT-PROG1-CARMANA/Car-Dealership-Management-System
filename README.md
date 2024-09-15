@@ -32,6 +32,7 @@ The development of the Car Dealership Management System is driven by the collabo
 ## Table of Contents
 - [Installation](#installation)
 - [Usage](#usage)
+- [User Account](#useraccount)
 - [Documentation](#documentation)
 - [Video Demonstration](#video-demonstration)
 - [License](#license)
@@ -56,31 +57,60 @@ The development of the Car Dealership Management System is driven by the collabo
    ```bash
    java Main
 
-<hr>
+
 
 <h2 id="usage">Usage</h2>
 
 <p>Follow the on-screen prompts to navigate through the various functionalities of the car dealership management system.</p>
 
-<hr>
+
+<h2 id="useraccount">User Account</h2>
+
+## Manager
+**Username**: aliceManager  
+**Password**: password123
+
+## Client
+**Username**: carol789  
+**Password**: carol78
+
+**Username**: alice85  
+**Password**: alice123
+
+**Username**: ebrown92  
+**Password**: emilyB
+
+## Mechanic
+**Username**: HaiMech  
+**Password**: haiPass
+
+**Username**: charlieMech  
+**Password**: charliePass
+
+## Sales Person
+**Username**: bobSales  
+**Password**: bobPass
+
+**Username**: dziSales  
+**Password**: dziPass
+
 
 <h2 id="documentation">Documentation</h2><br>
 
 You can view the full documentation [here](https://docs.google.com/document/d/1h8TlfPHYGuv-r4O6T3_COMHmVhv3RUYB0CAX34bX7X8/edit).
 
-<hr>
+
 
 <h2 id="video-demonstration">Video Demonstration</h2><br>
 
-A demonstration video of the project can be found [here](#).
+A demonstration video of the project can be found [here](https://youtu.be/3Pvw2FWVWIk).
 
-<hr>
 
 <h2 id="license">License</h2>
 
 This project is licensed under [MIT License](LICENSE.md).
 
-<hr>
+
 
 For any additional information or queries, please contact **s3975371@rmit.edu.vn**.
 
