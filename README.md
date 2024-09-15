@@ -61,12 +61,14 @@
 
 <hr>
 
-<h2 id="documentation">Documentation</h2>
+<h2 id="documentation">Documentation</h2><br>
+
 You can view the full documentation [here](https://docs.google.com/document/d/1h8TlfPHYGuv-r4O6T3_COMHmVhv3RUYB0CAX34bX7X8/edit).
 
 <hr>
 
-<h2 id="video-demonstration">Video Demonstration</h2>
+<h2 id="video-demonstration">Video Demonstration</h2><br>
+
 A demonstration video of the project can be found [here](#).
 
 <hr>
