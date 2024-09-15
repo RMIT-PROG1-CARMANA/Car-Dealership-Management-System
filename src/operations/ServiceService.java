@@ -416,7 +416,7 @@ public class ServiceService implements ServiceInterfaces {
             }
         }
     }
-    public String getReplacedPartsInfo(List<AutoPart> replacedParts) {
+    public static String getReplacedPartsInfo(List<AutoPart> replacedParts) {
         if (replacedParts == null) {
             return "0";
         }

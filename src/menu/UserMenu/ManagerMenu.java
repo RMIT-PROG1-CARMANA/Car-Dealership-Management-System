@@ -246,60 +246,61 @@ public class ManagerMenu extends Menu {
             default:
                 System.err.println("\n**Please, Enter a Valid Input**");
                 System.out.println();
+            }
         }
-    }
     }
     public void displayManagerUsersMenu(){
+        ClearScreen.clear();
         boolean exit = false;
         while (!exit){
-        ClearScreen.clear();
-        System.out.println(CYAN_BOLD + "=====================================" + RESET);
-        System.out.println(CYAN_BOLD + "       Manager Users Menu" + RESET);
-        System.out.println(CYAN_BOLD + "=====================================" + RESET);
 
-        displayMenuHeader("MANAGER USERS MENU", 43);
-        displayOption(GREEN_BOLD + "0. " + RESET + "Add User");
-        displayOption(GREEN_BOLD + "1. " + RESET + "Update User");
-        displayOption(GREEN_BOLD + "2. " + RESET + "Delete User");
-        displayOption(GREEN_BOLD + "3. " + RESET + "Search User");
-        displayOption(GREEN_BOLD + "4. " + RESET + "View All Users");
-        displayOption(GREEN_BOLD + "5. " + RESET + "Back");
-        Divider.printDivider(46);
+            System.out.println(CYAN_BOLD + "=====================================" + RESET);
+            System.out.println(CYAN_BOLD + "       Manager Users Menu" + RESET);
+            System.out.println(CYAN_BOLD + "=====================================" + RESET);
 
-        System.out.print("Enter Selection (0-5): ");
-        choice = getValidatedChoice(5);
+            displayMenuHeader("MANAGER USERS MENU", 43);
+            displayOption(GREEN_BOLD + "0. " + RESET + "Add User");
+            displayOption(GREEN_BOLD + "1. " + RESET + "Update User");
+            displayOption(GREEN_BOLD + "2. " + RESET + "Delete User");
+            displayOption(GREEN_BOLD + "3. " + RESET + "Search User");
+            displayOption(GREEN_BOLD + "4. " + RESET + "View All Users");
+            displayOption(GREEN_BOLD + "5. " + RESET + "Back");
+            Divider.printDivider(46);
 
-        switch (choice) {
-            case 0:
-                userService.addUser();
-                break;
+            System.out.print("Enter Selection (0-5): ");
+            choice = getValidatedChoice(5);
 
-            case 1:
-                userService.updateUser();
-                break;
-            case 2:
-                userService.deleteUser();
-                break;
-            case 3:
-                userService.searchUserByID();
-                break;
-            case 4:
-                userService.displayAllUsers();
-                break;
-            case 5:
-                displayManagerMenu(); // Go back to the main menu
-                exit = true;
-                break;
-            default:
-                System.err.println("\n**Please, Enter a Valid Input**");
-                System.out.println();
+            switch (choice) {
+                case 0:
+                    userService.addUser();
+                    break;
+                case 1:
+                    userService.updateUser();
+                    break;
+                case 2:
+                    userService.deleteUser();
+                    break;
+                case 3:
+                    userService.searchUserByID();
+                    break;
+                case 4:
+                    userService.displayAllUsers();
+                    break;
+                case 5:
+                    displayManagerMenu(); // Go back to the main menu
+                    exit = true;
+                    break;
+                default:
+                    System.err.println("\nPlease, Enter a Valid Input");
+                    System.out.println();
+            }
         }
     }
-    }
     public void displayManagerServicesMenu(){
+        ClearScreen.clear();
         boolean exit = false;
         while (!exit) {
-            ClearScreen.clear();
+
             System.out.println(CYAN_BOLD + "=====================================" + RESET);
             System.out.println(CYAN_BOLD + "      Manager Services Menu" + RESET);
             System.out.println(CYAN_BOLD + "=====================================" + RESET);
@@ -315,7 +316,7 @@ public class ManagerMenu extends Menu {
             displayOption(GREEN_BOLD + "7. " + RESET + "Back");
             Divider.printDivider(46);
 
-            System.out.print("Enter Selection (0-7): ");
+
             choice = getValidatedChoice(7);
 
             switch (choice) {
@@ -345,7 +346,7 @@ public class ManagerMenu extends Menu {
                     exit = true;
                     break;
                 default:
-                    System.err.println("\n**Please, Enter a Valid Input**");
+                    System.err.println("\nPlease, Enter a Valid Input");
                     System.out.println();
             }
         }

@@ -19,14 +19,13 @@ public class Service implements Serializable {
     private double serviceCost;
     private String notes;
 
-
-    public Service(){
+    public Service() {
         this.serviceID = "s-0000";
         this.serviceDate = null;
         this.clientID = "u-0001";
         this.mechanicID = "u-0002";
         this.serviceType = "Default";
-        this.replacedParts = new ArrayList<AutoPart>();
+        this.replacedParts = new ArrayList<>();
         this.serviceCost = 1000;
         this.notes = "Default";
     }
@@ -40,7 +39,6 @@ public class Service implements Serializable {
         this.serviceCost = serviceCost;
         this.notes = notes;
     }
-
 
     // Getters and Setters
     public String getServiceID() {
@@ -107,15 +105,13 @@ public class Service implements Serializable {
         this.notes = notes;
     }
 
-    public ServiceService service = new ServiceService();
+    // Marking the ServiceService as transient to avoid serialization issues
+    private transient ServiceService serviceService = new ServiceService();
 
     @Override
     public String toString() {
-        if (service == null) {
-            service = new ServiceService();  // Ensure service is instantiated
-        }
-
-        String replacedPartsInfo = service.getReplacedPartsInfo(replacedParts);
+        // Create a method to generate replaced parts info without relying on ServiceService
+        String replacedPartsInfo = ServiceService.getReplacedPartsInfo(replacedParts);
         return String.format("Service Details:%n" +
                         "Service ID    : %s%n" +
                         "Service Date  : %s%n" +
@@ -135,4 +131,6 @@ public class Service implements Serializable {
                 replacedPartsInfo
         );
     }
+
+
 }
