@@ -1,6 +1,7 @@
 package operations;
 
 
+import filehandling.AutoPartFileHandler;
 import filehandling.ServiceFileHandler;
 import interfaces.ServiceInterfaces;
 import logsystem.*;
@@ -45,14 +46,8 @@ public class ServiceService implements ServiceInterfaces {
 
         String notes = InputValidation.validateString("Enter Notes: ");
 
-        Service newService = new Service();
-        newService.setServiceID(serviceID);
-        newService.setServiceDate(serviceDate);
-        newService.setClientID(clientID);
-        newService.setMechanicID(mechanicID);
-        newService.setServiceType(serviceType);
-        newService.setServiceCost(serviceCost);
-        newService.setNotes(notes);
+        Service newService = new Service(serviceID, serviceDate, clientID, mechanicID,serviceType, serviceCost, notes);
+
 
         serviceList.add(newService);
         String logID = ActivityLog.generateLogID();
@@ -178,8 +173,13 @@ public class ServiceService implements ServiceInterfaces {
 
     @Override
     public void addPartToService() {
+        // Reload parts to ensure the latest data
+        autoPartsList = new ArrayList<>(ServiceFileHandler.loadParts().values());
+
+        AutoPartFileHandler.loadPartsData();
+
         String serviceID = InputValidation.validateExistingServiceID("Enter Service ID: ", serviceList);
-        String partID = InputValidation.validateExistingPartID("Enter Part ID");
+        String partID = InputValidation.validateExistingPartID("Enter Part ID: ");
         Service service = findServiceByID(serviceID);
         if (service == null) {
             System.out.println("Service not found.");
@@ -193,7 +193,7 @@ public class ServiceService implements ServiceInterfaces {
         }
 
         // Add part to the service
-        service.addPartService(part);
+        addReplacedPart(service, part);
         System.out.println("Part " + partID + " added to service " + serviceID);
         String logID = ActivityLog.generateLogID();
         ActivityLogService.logActivity(
@@ -205,12 +205,18 @@ public class ServiceService implements ServiceInterfaces {
         );
         // Save the updated service list to the file
         ServiceFileHandler.saveServices(serviceList);
+        // Save the updated parts list to the file
+        ServiceFileHandler.saveParts(autoPartsList);
     }
-
     @Override
     public void removePartFromService() {
+        // Reload parts to ensure the latest data
+        autoPartsList = new ArrayList<>(ServiceFileHandler.loadParts().values());
+
+        AutoPartFileHandler.loadPartsData();
+
         String serviceID = InputValidation.validateExistingServiceID("Enter Service ID: ", serviceList);
-        String partID = InputValidation.validateExistingPartID("Enter Part ID");
+        String partID = InputValidation.validateExistingPartID("Enter Part ID: ");
 
         Service service = findServiceByID(serviceID);
         if (service == null) {
@@ -225,7 +231,7 @@ public class ServiceService implements ServiceInterfaces {
         }
 
         // Remove part from the service
-        boolean removed = service.removePartService(partID);
+        boolean removed = removeReplacedPartByID(service, partID);
         if (removed) {
             String logID = ActivityLog.generateLogID();
             ActivityLogService.logActivity(
@@ -242,6 +248,8 @@ public class ServiceService implements ServiceInterfaces {
 
         // Save the updated service list to the file
         ServiceFileHandler.saveServices(serviceList);
+        // Save the updated parts list to the file
+        ServiceFileHandler.saveParts(autoPartsList);
     }
 
     private static Service findServiceByID(String serviceID) {
@@ -279,7 +287,7 @@ public class ServiceService implements ServiceInterfaces {
     }
 
     @Override
-    public void listAllServices() {
+    public void displayAllServices() {
         if (serviceList.isEmpty()) {
             System.out.println("No services available.");
         } else {
@@ -328,9 +336,30 @@ public class ServiceService implements ServiceInterfaces {
             }
         }
     }
+    public void addReplacedPart(Service service, AutoPart part) {
+        if (service.getReplacedParts() == null) {
+            service.setReplacedParts(new ArrayList<>());
+        }
+        service.getReplacedParts().add(part);
+
+    }
+
+    public boolean removeReplacedPartByID(Service service, String partID) {
+        List<AutoPart> replacedParts = service.getReplacedParts();
+        if (replacedParts != null) {
+            for (AutoPart part : replacedParts) {
+                if (part.getPartID().equals(partID)) {
+                    replacedParts.remove(part);
+                    return true;
+                }
+            }
+        }
+        System.out.println("Part " + partID + " not found in service " + service.getServiceID());
+        return false;
+    }
 
     @Override
-    public void listClientServiceHistory() {
+    public void displayClientServiceHistory() {
         // Get the client ID from the logged-in client
         String clientID = loggedUser.getUserID();
 
@@ -387,7 +416,6 @@ public class ServiceService implements ServiceInterfaces {
             }
         }
     }
-
     public String getReplacedPartsInfo(List<AutoPart> replacedParts) {
         if (replacedParts == null) {
             return "0";

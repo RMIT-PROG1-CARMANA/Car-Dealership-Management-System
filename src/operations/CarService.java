@@ -15,7 +15,7 @@ public class CarService implements CarInterfaces {
 
 
     @Override
-    public void createCar() {
+    public void addCar() {
         String carID = InputValidation.validateCarID("Car ID (format: c-XXXX where XXXX is a number): ");
         String make = InputValidation.validateString("Make: ");
         String model = InputValidation.validateString("Model: ");

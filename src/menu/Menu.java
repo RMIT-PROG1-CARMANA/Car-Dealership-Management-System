@@ -97,7 +97,7 @@ public class Menu  {
                     userService.displayInfoUsers();
                     break;
                 case 1:
-                    userService.editProfile(loggedUser);
+                    userService.updateProfile(loggedUser);
                     break;
                 case 2:
                     // Navigate to the appropriate menu based on the user's role

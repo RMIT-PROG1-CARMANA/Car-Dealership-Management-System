@@ -53,7 +53,7 @@ public class ClientMenu extends Menu {
                     userService.displayInfoUsersMembership();
                     break;
                 case 2:
-                    serviceService.listClientServiceHistory();
+                    serviceService.displayClientServiceHistory();
                     break;
 
                 case 3:

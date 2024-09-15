@@ -123,7 +123,7 @@ public class ManagerMenu extends Menu {
             choice = getValidatedChoice(0, 5);
             switch (choice) {
                 case 0:
-                    carService.createCar(); // Add a new car
+                    carService.addCar(); // Add a new car
                     break;
 
                 case 1:
@@ -184,7 +184,7 @@ public class ManagerMenu extends Menu {
                 autoPartService.deletePart();
                 break;
             case 3:
-                autoPartService.viewPartDetails();
+                autoPartService.displayPartDetails();
                 break;
             case 4:
                 autoPartService.listAllParts();
@@ -280,7 +280,7 @@ public class ManagerMenu extends Menu {
                 break;
 
             case 1:
-                userService.editProfile(loggedUser);
+                userService.updateUser();
                 break;
             case 2:
                 userService.deleteUser();
@@ -343,7 +343,7 @@ public class ManagerMenu extends Menu {
                     serviceService.removePartFromService();
                     break;
                 case 6:
-                    serviceService.listAllServices();
+                    serviceService.displayAllServices();
                     break;
                 case 7:
                     displayManagerMenu(); // Go back to the main menu

@@ -138,7 +138,7 @@ public class UserService implements UserInterfaces {
         Divider.printDivider();
     }
     @Override
-    public void editProfile(User loggedUser) {
+    public void updateProfile(User loggedUser) {
         if (loggedUser == null) {
             System.out.println("You need to be logged in to edit your profile.");
             return;

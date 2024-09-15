@@ -19,6 +19,29 @@ public class Service implements Serializable {
     private double serviceCost;
     private String notes;
 
+
+    public Service(){
+        this.serviceID = "s-0000";
+        this.serviceDate = null;
+        this.clientID = "u-0001";
+        this.mechanicID = "u-0002";
+        this.serviceType = "Default";
+        this.replacedParts = new ArrayList<AutoPart>();
+        this.serviceCost = 1000;
+        this.notes = "Default";
+    }
+
+    public Service(String serviceID, Date serviceDate, String clientID, String mechanicID, String serviceType, double serviceCost, String notes) {
+        this.serviceID = serviceID;
+        this.serviceDate = serviceDate;
+        this.clientID = clientID;
+        this.mechanicID = mechanicID;
+        this.serviceType = serviceType;
+        this.serviceCost = serviceCost;
+        this.notes = notes;
+    }
+
+
     // Getters and Setters
     public String getServiceID() {
         return serviceID;
@@ -86,29 +109,8 @@ public class Service implements Serializable {
 
     public ServiceService service = new ServiceService();
 
-
-    public void addPartService(AutoPart part) {
-        if (this.replacedParts == null) {
-            this.replacedParts = new ArrayList<>();
-        }
-        this.replacedParts.add(part);
-    }
-
-    public boolean removePartService(String partID) {
-        if (this.replacedParts != null) {
-            for (AutoPart part : this.replacedParts) {
-                if (part.getPartID().equals(partID)) {
-                    this.replacedParts.remove(part);
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
     @Override
     public String toString() {
-        // If replacedParts is not null and contains parts, format each part's ID, Name, and Price
         if (service == null) {
             service = new ServiceService();  // Ensure service is instantiated
         }

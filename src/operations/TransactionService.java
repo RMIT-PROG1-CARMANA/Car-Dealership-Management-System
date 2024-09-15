@@ -21,8 +21,6 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 
-import static crudhandlers.SalesTransactionCRUD.OrderType.clientID;
-import static crudhandlers.SalesTransactionCRUD.OrderType.transactionID;
 import static user.Authenticator.loggedUser;
 
 

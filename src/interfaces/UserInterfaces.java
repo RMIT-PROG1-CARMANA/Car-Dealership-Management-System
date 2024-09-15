@@ -13,5 +13,5 @@ public interface UserInterfaces {
 
     void displayInfoUsersMembership();
 
-    void editProfile(User loggedUser);
+    void updateProfile(User loggedUser);
 }

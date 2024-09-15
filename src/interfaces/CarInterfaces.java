@@ -1,7 +1,7 @@
 package interfaces;
 
 public interface CarInterfaces {
-    void createCar();        // Method to create a new car
+    void addCar();        // Method to create a new car
     void updateCar();        // Method to update an existing car
     void deleteCar();        // Method to delete a car
 
